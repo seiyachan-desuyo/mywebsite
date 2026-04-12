@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatShark Desktop Pet | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #8774ff;
+        }
+
+        /* 引入更柔和的开源中文字体 */
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)), 
+                url('picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        /* Fonts */
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+        .mono-font { font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            text-align: left;
+        }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Hero Image */
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            min-height: 400px;
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 30px;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 30px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 50px 0 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '🤖';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 2.5rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        /* Interactive Browser Mockup for iframe */
+        .interactive-section {
+            margin-top: 80px;
+            width: 92vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+        }
+        
+        .browser-mockup-wrapper {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+        
+        .browser-mockup {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header {
+            background: #f1f1f1;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        
+        .browser-url {
+            flex: 1;
+            text-align: center;
+            background: #fff;
+            margin: 0 20px;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .browser-mockup iframe {
+            width: 100%;
+            height: 850px;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        /* Dock */
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .dock a:hover, .dock a.active {
+            background: #f5f5f5;
+            color: var(--text-color);
+        }
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+        
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <!-- 底部导航 Dock -->
+    <div class="dock">
+        <a href="index.html#home" title="Home">
+            <i data-feather="home"></i>
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <i data-feather="grid"></i>
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="index.html#about" title="About">
+            <i data-feather="user"></i>
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="index.html#contact" title="Contact">
+            <i data-feather="mail"></i>
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- 顶部返回按钮 -->
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <!-- 页面头部信息 -->
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">猫猫鲨桌宠</span>
+                <span data-lang="en">CatShark Desktop Pet</span>
+                <span data-lang="ja">猫猫鮫 デスクトップペット</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">一款基于 Python 和 PyQt6 开发的趣味桌面虚拟宠物应用。包含 AI 聊天、多款打工小游戏、宠物养成及房贷系统。</span>
+                <span data-lang="en">A fun desktop virtual pet application developed with Python &amp; PyQt6. Features AI chat, multiple mini-games, pet nurturing, and a mortgage system.</span>
+                <span data-lang="ja">PythonとPyQt6で開発された楽しいデスクトップ仮想ペットアプリ。AIチャット、複数のミニゲーム、ペット育成、住宅ローンシステムを備えています。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Developer</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">Spring 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Desktop App / Virtual Pet</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 封面图 -->
+        <div class="hero-image-container">
+            <img src="../project/my%20own%20project/猫猫鲨/1.png" alt="猫猫鲨" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        </div>
+
+        <!-- 图文内容区 -->
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目简介</span>
+                <span data-lang="en">Project Overview</span>
+                <span data-lang="ja">プロジェクト概要</span>
+            </h2>
+            <p>
+                <span data-lang="zh">在日常的桌面工作中，我希望有一只可爱又带点调皮的虚拟宠物陪伴左右。因此，我开发了这款名为“猫猫鲨 (CatShark)”的桌面宠物模拟器。它不仅拥有完整的生命周期系统，还自带一套极其有趣的虚拟经济和房贷玩法！</span>
+                <span data-lang="en">During daily desktop work, I wanted a cute and slightly mischievous virtual pet for company. So, I developed this desktop pet simulator called "CatShark". It not only has a complete life cycle system but also features an extremely fun virtual economy and mortgage gameplay!</span>
+                <span data-lang="ja">毎日のデスクトップ作業中、かわいくて少しいたずら好きな仮想ペットの仲間が欲しいと思いました。そこで、「猫猫鮫（CatShark）」というデスクトップペットシミュレーターを開発しました。完全なライフサイクルシステムを持つだけでなく、非常に楽しい仮想経済と住宅ローンゲームも備えています！</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>🤖 核心亮点：</strong> 集成 DeepSeek API 打造沉浸式的智能对话体验，并通过丰富的小游戏（扫雷、数独、俄罗斯方块、五子棋等）赚取金币来维持宠物生活与还房贷！</span>
+                    <span data-lang="en"><strong>🤖 Core Highlight:</strong> Integrated DeepSeek API for immersive intelligent chat, and various mini-games (Minesweeper, Sudoku, Tetris, Gobang, etc.) to earn coins for pet care and mortgage payments!</span>
+                    <span data-lang="ja"><strong>🤖 主要な特徴：</strong> 没入型のインテリジェントチャット用のDeepSeek APIを統合し、様々なミニゲーム（マインスイーパー、数独、テトリス、五目並べなど）でコインを稼ぎ、ペットの世話や住宅ローンを支払います！</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">主要特性</span>
+                <span data-lang="en">Key Features</span>
+                <span data-lang="ja">主な機能</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>🍼 完整的状态系统与交互：</strong> 拥有静止、睡觉、饥饿、生病、哭泣等丰富状态。你可以给宝宝喂食、洗澡、去医院、去健身房。支持鼠标物理拖拽，高空摔下还会扣血和掉好感度！</span>
+                    <span data-lang="en"><strong>🍼 Complete Status &amp; Interaction:</strong> Features various states like idle, sleeping, hungry, sick, and crying. You can feed, bathe, take to hospital or gym. Supports mouse dragging physics—dropping from high places reduces health and affection!</span>
+                    <span data-lang="ja"><strong>🍼 完全なステータスと対話：</strong> 待機、睡眠、空腹、病気、泣きなどの様々な状態があります。餌やり、お風呂、病院やジムへ行くことができます。マウスのドラッグ物理をサポートし、高いところから落とすと体力と好感度が下がります！</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>💬 AI 智能对话系统：</strong> 内置气泡聊天界面，气泡智能跟随宠物移动。猫猫鲨拥有自己的独立人设，随时开启趣味陪伴聊天。</span>
+                    <span data-lang="en"><strong>💬 AI Chat System:</strong> Built-in bubble chat interface that smartly follows the pet's movement. CatShark has its own unique persona for fun companion chats anytime.</span>
+                    <span data-lang="ja"><strong>💬 AIチャットシステム：</strong> ペットの動きにスマートに追従する吹き出しチャットUIを内蔵。猫猫鮫には独自の設定があり、いつでも楽しいおしゃべりができます。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>🎮 多样化打工与经济体系：</strong> 想买大别墅？没问题，支持按揭贷款！每天通过打工（玩五子棋、扫雷、数独、俄罗斯方块、飞翔猫猫鲨等内置小游戏）赚取金币还房贷。</span>
+                    <span data-lang="en"><strong>🎮 Mini-games &amp; Economy:</strong> Want a big mansion? No problem, get a mortgage! Earn coins daily to pay it off by working (playing built-in games like Gobang, Minesweeper, Sudoku, Tetris, Flappy CatShark).</span>
+                    <span data-lang="ja"><strong>🎮 ミニゲームと経済：</strong> 大きな豪邸が欲しい？問題ありません、住宅ローンを組みましょう！毎日働いて（五目並べ、マインスイーパー、数独、テトリス、フラッピーなどの内蔵ゲームをプレイ）ローンを返済します。</span>
+                </li>
+            </ul>
+
+            <!-- 互动演示区域 / 下载地址 -->
+            <div class="interactive-section">
+                <h2 style="text-align: center; margin-top: 0;">
+                    <span data-lang="zh">项目主页与下载</span>
+                    <span data-lang="en">Project Site &amp; Download</span>
+                    <span data-lang="ja">プロジェクトとダウンロード</span>
+                </h2>
+                <p style="text-align: center; color: #888;">
+                    <span data-lang="zh">你可以访问下方的项目主页获取更多信息或下载体验。</span>
+                    <span data-lang="en">Visit the project page below for more info or to download the app.</span>
+                    <span data-lang="ja">以下のページから詳細情報の取得やアプリのダウンロードが可能です。</span>
+                </p>
+                
+                <div class="browser-mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">nekoshark-seiya-5201314.netlify.app</div>
+                            <div style="width: 44px;"></div> <!-- spacer to center URL -->
+                        </div>
+                        <!-- 嵌套的真实网站 -->
+                        <iframe src="https://nekoshark-seiya-5201314.netlify.app" title="CatShark Desktop Pet Live Demo"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="../music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

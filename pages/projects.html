@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Archive | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --modal-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button, .project-card, .modal-close {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.2), rgba(253, 251, 245, 0.2)), 
+                url('picture/other/background.jpg');
+            background-size: 100% auto, 100% auto;
+            background-repeat: repeat-y, repeat-y;
+            background-position: left top, left top;
+            background-attachment: scroll;
+            padding: 80px 0 140px 0; /* Add bottom padding for dock */
+        }
+
+        /* 统一卡通字体类 */
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        /* Nav & Dock */
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        .dock a:hover {
+            background: #f5f5f5;
+            color: var(--text-color);
+        }
+
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        .dock a i {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2.5px;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background-color: #eee;
+            margin: 0 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--text-color);
+            border-radius: 50%;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        
+        body[data-current-lang="en"] .page-title {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* 页面区块分类标题 */
+        .archive-section {
+            margin-bottom: 80px;
+        }
+        
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: bold;
+        }
+
+        body[data-current-lang="en"] .section-header h2 {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Grid Layout matching Framer Archives */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 40px 30px;
+        }
+
+        .project-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-image-wrap {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            transition: box-shadow 0.3s;
+        }
+        
+        .project-card:hover .card-image-wrap {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-info {
+            text-align: center;
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .card-date {
+            font-size: 0.9rem;
+            color: #888;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* 模态框/弹窗样式 (Framer Modal Effect) */
+        .project-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .project-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background: #fff;
+            width: 900px;
+            max-width: 95vw;
+            height: 500px;
+            max-height: 90vh;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+        }
+
+        .project-modal.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-left {
+            flex: 1;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            position: relative;
+        }
+        
+        .modal-left img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-right {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        
+        .modal-close:hover {
+            background: #e0e0e0;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .modal-date {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .modal-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 30px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .modal-role {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .visit-btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--text-color);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            align-self: flex-start;
+            transition: transform 0.2s, background 0.2s;
+            border: none;
+        }
+
+        .visit-btn:hover {
+            background: #222;
+            transform: scale(1.05);
+        }
+
+        /* 语言切换器 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--border-color, #474747);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc; /* sticky-yellow */
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] div[data-lang="zh"],
+        body[data-current-lang="en"] div[data-lang="en"],
+        body[data-current-lang="ja"] div[data-lang="ja"],
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h3[data-lang="zh"],
+        body[data-current-lang="en"] h3[data-lang="en"],
+        body[data-current-lang="ja"] h3[data-lang="ja"] { display: block; }
+
+        @media (max-width: 768px) {
+            .modal-container {
+                flex-direction: column;
+                height: 80vh;
+            }
+            .modal-left {
+                flex: 0.8;
+                font-size: 5rem;
+            }
+            .modal-right {
+                padding: 30px;
+            }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <!-- 底部导航 Dock -->
+    <div class="dock">
+        <a href="index.html#home" title="Home">
+            <i data-feather="home"></i>
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <i data-feather="grid"></i>
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="index.html#about" title="About">
+            <i data-feather="user"></i>
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="index.html#contact" title="Contact">
+            <i data-feather="mail"></i>
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+        <a href="#" title="Explore">
+            <i data-feather="compass"></i>
+            <span class="dock-label">
+                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
+            </span>
+        </a>
+        <div class="dock-divider"></div>
+        <a href="#" title="More">
+            <i data-feather="more-horizontal"></i>
+            <span class="dock-label">
+                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="container">
+        <div class="header-nav">
+            <a href="index.html#projects" class="back-btn">
+                <i data-feather="arrow-left"></i>
+            </a>
+            <h1 class="page-title">
+                <span data-lang="zh" class="cartoon-font-zh">所有项目档案</span>
+                <span data-lang="en">Projects Archive</span>
+                <span data-lang="ja" class="cartoon-font-ja">プロジェクトアーカイブ</span>
+            </h1>
+        </div>
+
+        <!-- Section 1: My Own Project -->
+        <div class="archive-section">
+            <div class="section-header">
+                <h2>
+                    <span data-lang="zh" class="cartoon-font-zh">个人项目</span>
+                    <span data-lang="en">My Own Projects</span>
+                    <span data-lang="ja" class="cartoon-font-ja">個人プロジェクト</span>
+                </h2>
+            </div>
+            <div class="archive-grid">
+                <!-- 项目 9: OurDiary 多人电子手帐本 -->
+                <a href="#" class="project-card" onclick="openModal('project-9'); return false;">
+                    <div class="card-image-wrap" style="background-color: #fff3e0;">
+                        <img src="../project/my%20own%20project/手帐本/1.png" alt="Cover">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">OurDiary电子手帐</span>
+                            <span data-lang="en">OurDiary Journal</span>
+                            <span data-lang="ja" class="cartoon-font-ja">OurDiary 電子手帳</span>
+                        </div>
+                        <div class="card-date">2026 (WIP)</div>
+                    </div>
+                </a>
+
+                <!-- 项目 8: 猫猫鲨桌面宠物 -->
+                <a href="#" class="project-card" onclick="openModal('project-8'); return false;">
+                    <div class="card-image-wrap" style="background-color: #e3f2fd;">
+                        <img src="../project/my%20own%20project/猫猫鲨/1.png" alt="Cover">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">猫猫鲨桌宠</span>
+                            <span data-lang="en">CatShark Pet</span>
+                            <span data-lang="ja" class="cartoon-font-ja">猫猫鮫 デスクトップペット</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+
+                <!-- 项目 7: Markdown 转换器 -->
+                <a href="#" class="project-card" onclick="openModal('project-7'); return false;">
+                    <div class="card-image-wrap" style="background-color: #fce4ec;">
+                        <img src="../project/my%20own%20project/markdown-converter/图片1.png" alt="Cover">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">Markdown 转换器</span>
+                            <span data-lang="en">Markdown Converter</span>
+                            <span data-lang="ja" class="cartoon-font-ja">Markdown 変換</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Section 2: Company Project -->
+        <div class="archive-section">
+            <div class="section-header">
+                <h2>
+                    <span data-lang="zh" class="cartoon-font-zh">公司项目</span>
+                    <span data-lang="en">Company Projects</span>
+                    <span data-lang="ja" class="cartoon-font-ja">企業プロジェクト</span>
+                </h2>
+            </div>
+            <div class="archive-grid">
+                <!-- 项目 4: RTM Automation -->
+                <a href="#" class="project-card" onclick="openModal('project-4'); return false;">
+                    <div class="card-image-wrap" style="background-color: #e8f5e9;">📊</div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">RTM 自动化</span>
+                            <span data-lang="en">RTM Automation</span>
+                            <span data-lang="ja" class="cartoon-font-ja">RTM 自動化</span>
+                        </div>
+                        <div class="card-date">Present</div>
+                    </div>
+                </a>
+
+                <!-- 项目 2: 巧妈妈 -->
+                <a href="#" class="project-card" onclick="openModal('project-2'); return false;">
+                    <div class="card-image-wrap" style="background-color: #fff3e0;">🎨</div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">巧妈妈包装设计</span>
+                            <span data-lang="en">Qiaomama Branding</span>
+                            <span data-lang="ja" class="cartoon-font-ja">巧ママのパッケージ</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Section 3: Competition Project -->
+        <div class="archive-section">
+            <div class="section-header">
+                <h2>
+                    <span data-lang="zh" class="cartoon-font-zh">比赛项目</span>
+                    <span data-lang="en">Competitions</span>
+                    <span data-lang="ja" class="cartoon-font-ja">競技プロジェクト</span>
+                </h2>
+            </div>
+            <div class="archive-grid">
+                <!-- 项目 1: 毛孩安心保 -->
+                <a href="#" class="project-card" onclick="openModal('project-1'); return false;">
+                    <div class="card-image-wrap" style="background-color: #fff8e1;">
+                        <img src="../project/competition%20project/华泰杯/1.png" alt="Cover">
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">毛孩安心保广告</span>
+                            <span data-lang="en">Paws Secure Ad</span>
+                            <span data-lang="ja" class="cartoon-font-ja">ペット安心保険</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+
+                <!-- 项目 3: 金融广告设计 -->
+                <a href="#" class="project-card" onclick="openModal('project-3'); return false;">
+                    <div class="card-image-wrap" style="background-color: #e3f2fd;">🎬</div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">金融广告设计</span>
+                            <span data-lang="en">Financial Ad Design</span>
+                            <span data-lang="ja" class="cartoon-font-ja">金融広告デザイン</span>
+                        </div>
+                        <div class="card-date">Winter 2026</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 弹窗模板 (隐藏状态) -->
+    <div class="project-modal" id="project-modal" onclick="if(event.target === this) closeModal()">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal()">
+                <i data-feather="x"></i>
+            </button>
+            <div class="modal-left" id="modal-image" style="background-color: #4ecdc4;">
+                <!-- 占位符或图片将动态插入这里 -->
+            </div>
+            <div class="modal-right">
+                <h3 class="modal-title" id="modal-title">Project Title</h3>
+                <div class="modal-date" id="modal-date">Date</div>
+                <div class="modal-desc" id="modal-desc">
+                    Description goes here...
+                </div>
+                <div class="modal-role">
+                    Role — <strong id="modal-role">Your Role</strong>
+                </div>
+                <a href="#" class="visit-btn" id="modal-link">
+                    <span data-lang="zh">访问项目</span>
+                    <span data-lang="en">Visit Project</span>
+                    <span data-lang="ja">プロジェクトへ</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 项目数据数据库 (JavaScript 对象模拟) -->
+    <script>
+        const projectDatabase = {
+            'project-9': {
+                bgColor: '#fff3e0',
+                image: './project/my%20own%20project/手帐本/1.png',
+                title: { zh: 'OurDiary 多人电子手帐本 (开发中)', en: 'OurDiary Multiplayer Journal (WIP)', ja: 'OurDiary マルチプレイヤー電子手帳 (開発中)' },
+                date: 'Fall 2026',
+                desc: {
+                    zh: '一款轻量级、高颜值的数字手帐本 Web 应用。提供高度模拟真实日记本的 3D 翻页体验，采用 Vue3 + Node.js 全栈开发，支持通过 Fabric.js 自由画板进行手写、贴纸与排版，以及私密房间状态同步。',
+                    en: 'A lightweight, aesthetic digital journal web app. Offers a realistic 3D page-flipping experience. Built with Vue3 & Node.js, it supports a freeform Fabric.js canvas for handwriting, stickers, and typography, with private room sync.',
+                    ja: '軽量で美しいデジタル手帳Webアプリ。リアルな3Dページめくり体験を提供します。Vue3とNode.jsで構築され、手書き、ステッカー、タイポグラフィのための自由なFabric.jsキャンバスをサポートし、プライベートルーム同期機能を備えています。'
+                },
+                role: 'Full-stack Developer',
+                link: 'project-ourdiary.html'
+            },
+            'project-8': {
+                bgColor: '#e3f2fd',
+                image: './project/my%20own%20project/猫猫鲨/1.png',
+                title: { zh: '猫猫鲨桌宠', en: 'CatShark Desktop Pet', ja: '猫猫鮫 デスクトップペット' },
+                date: 'Spring 2026',
+                desc: {
+                    zh: '一款基于 Python 和 PyQt6 开发的趣味桌面虚拟宠物应用。包含 AI 聊天、多款打工小游戏、宠物养成及房贷系统。',
+                    en: 'A fun desktop virtual pet application developed with Python and PyQt6. Features AI chat, multiple mini-games, pet nurturing, and a mortgage system.',
+                    ja: 'PythonとPyQt6で開発された楽しいデスクトップ仮想ペットアプリ。AIチャット、複数のミニゲーム、ペット育成、住宅ローンシステムを備えています。'
+                },
+                role: 'Developer',
+                link: 'project-nekoshark.html'
+            },
+            'project-7': {
+                bgColor: '#fce4ec',
+                image: './project/my%20own%20project/markdown-converter/图片1.png',
+                title: { zh: 'Markdown 转换器', en: 'Markdown Converter', ja: 'Markdown 変換ツール' },
+                date: '4 Weeks • Spring 2026',
+                desc: {
+                    zh: '一款轻量、优雅的网页端 Markdown 转换工具。支持将 Markdown 语法实时解析并渲染为排版精美的富文本，极大优化了创作者的排版工作流。',
+                    en: 'A lightweight and elegant web-based Markdown conversion tool. Parses and renders Markdown into beautifully styled rich text in real-time, streamlining the formatting workflow for creators.',
+                    ja: '軽量でエレガントなWebベースのMarkdown変換ツール。Markdownをリアルタイムで美しいリッチテキストにレンダリングし、クリエイターのワークフローを効率化します。'
+                },
+                role: 'Front-end Developer & Designer',
+                link: 'project-markdown.html'
+            },
+            'project-1': {
+                bgColor: '#fff8e1',
+                image: './project/competition%20project/华泰杯/1.png',
+                title: { zh: '毛孩安心保广告计划', en: 'Paws Secure Ad Plan', ja: 'ペット安心保険広告企画' },
+                date: '10 Weeks • Spring 2026',
+                desc: {
+                    zh: '华泰杯全国一等奖项目。结合可灵/豆包等AI视频生成工具，打造具有情感共鸣的宠物病险短视频广告；以拟人化萌宠视角切入，助力打破传统金融营销刻板认知。',
+                    en: 'Huatai Cup National 1st Prize Project. A pet insurance video ad from a pet\'s first-person perspective, utilizing AI-generated animations to evoke emotional resonance and break traditional marketing stereotypes.',
+                    ja: '華泰杯全国1等賞プロジェクト。人気ペットの視点から語られ、AI生成アニメーションを活用して感情的な共鳴を呼ぶペット保険の動画広告を作成し、従来のマーケティングの固定観念を打破します。'
+                },
+                role: 'Marketing Strategist & Video Producer',
+                link: '#'
+            },
+            'project-2': {
+                bgColor: '#fff3e0',
+                emoji: '🎨',
+                title: { zh: '巧妈妈包装设计', en: 'Qiaomama Branding', ja: '巧ママのパッケージ' },
+                date: '10 Weeks • Spring 2025',
+                desc: {
+                    zh: '传统品牌年轻化升级。独立完成产品外包装视觉更新与全新 IP 形象设计。',
+                    en: 'Rejuvenation of a traditional brand. Independently designed new packaging visuals and a brand new IP character.',
+                    ja: '伝統的ブランドの若返り。製品パッケージのビジュアル刷新と新しいIPキャラクターデザインを単独で完了。'
+                },
+                role: 'Brand Designer',
+                link: '#'
+            },
+            'project-3': {
+                bgColor: '#e3f2fd',
+                emoji: '🎬',
+                title: { zh: '金融广告设计', en: 'Financial Ad Design', ja: '金融広告デザイン' },
+                date: '10 Weeks • Winter 2025',
+                desc: {
+                    zh: '全国一等奖项目。利用 AI 工具生成视觉物料，完成帧重绘、视频剪辑及配音制作。',
+                    en: 'National 1st Prize Project. Utilized AI tools for visual generation, frame repainting, video editing, and voiceover production.',
+                    ja: '全国1等賞プロジェクト。AIツールを使用してビジュアル素材を生成し、フレーム再描画、動画編集、吹き替え制作を完了。'
+                },
+                role: 'Visual Designer',
+                link: '#'
+            },
+            'project-4': {
+                bgColor: '#e8f5e9',
+                emoji: '📊',
+                title: { zh: 'RTM 自动化 (Apple)', en: 'RTM Automation', ja: 'RTM 自動化' },
+                date: '12 Weeks • Present',
+                desc: {
+                    zh: '在 Apple Finance 团队中，使用 Dataiku、Tableau 等工具构建数据看板，优化业务流程。',
+                    en: 'At Apple Finance, built data dashboards and optimized workflows using Dataiku and Tableau.',
+                    ja: 'Apple Financeチームで、DataikuやTableauを使用してデータダッシュボードを構築し、ビジネスプロセスを最適化。'
+                },
+                role: 'Sales Finance Intern',
+                link: '#'
+            }
+        };
+
+        // 当前选中的语言
+        let currentLang = 'en';
+
+        // 语言切换
+        function switchLang(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 如果模态框开着，刷新模态框里的文本
+            const modal = document.getElementById('project-modal');
+            if(modal.classList.contains('active')) {
+                const currentId = modal.getAttribute('data-project-id');
+                if(currentId) {
+                    renderModalContent(currentId);
+                }
+            }
+        }
+
+        // 打开模态框
+        function openModal(projectId) {
+            const data = projectDatabase[projectId];
+            if (!data) return;
+
+            const modal = document.getElementById('project-modal');
+            const imgContainer = document.getElementById('modal-image');
+            
+            // 设置模态框缓存数据ID
+            modal.setAttribute('data-project-id', projectId);
+
+            // 渲染左侧视觉区域
+            imgContainer.style.backgroundColor = data.bgColor;
+            if (data.image) {
+                imgContainer.innerHTML = `<img src="${data.image}" alt="Cover">`;
+            } else {
+                imgContainer.innerHTML = data.emoji;
+            }
+
+            // 渲染右侧内容文本
+            renderModalContent(projectId);
+            
+            // 显示
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+
+        // 渲染文本内容，方便多语言切换时复用
+        function renderModalContent(projectId) {
+            const data = projectDatabase[projectId];
+            
+            const titleEl = document.getElementById('modal-title');
+            // 根据语言设置合适的字体
+            if(currentLang === 'en') {
+                titleEl.className = 'modal-title';
+                titleEl.style.fontFamily = "'Courier New', Courier, monospace";
+            } else if (currentLang === 'zh') {
+                titleEl.className = 'modal-title cartoon-font-zh';
+            } else {
+                titleEl.className = 'modal-title cartoon-font-ja';
+            }
+
+            titleEl.innerText = data.title[currentLang];
+            document.getElementById('modal-date').innerText = data.date;
+            document.getElementById('modal-desc').innerText = data.desc[currentLang];
+            document.getElementById('modal-role').innerText = data.role;
+            document.getElementById('modal-link').href = data.link;
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('project-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 渲染 Feather Icon
+        feather.replace();
+    </script>
+<iframe allow="autoplay" src="../music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

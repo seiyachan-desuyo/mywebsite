@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Converter | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #8774ff;
+        }
+
+        /* 引入更柔和的开源中文字体 */
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            /* 把全局基础字体统一替换为带有些圆角的无衬线字体，比死板的系统字体更活泼 */
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)), 
+                url('picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px; /* dock space */
+        }
+
+        /* Fonts */
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+        .mono-font { font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            text-align: left;
+        }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Hero Image */
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 30px;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 30px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 50px 0 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 2.5rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        /* Interactive Browser Mockup for iframe */
+        .interactive-section {
+            margin-top: 80px;
+            width: 92vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+        }
+        
+        .browser-mockup-wrapper {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+        
+        .browser-mockup {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header {
+            background: #f1f1f1;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        
+        .browser-url {
+            flex: 1;
+            text-align: center;
+            background: #fff;
+            margin: 0 20px;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .browser-mockup iframe {
+            width: 100%;
+            height: 850px; /* Taller iframe */
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        /* Dock */
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .dock a:hover, .dock a.active {
+            background: #f5f5f5;
+            color: var(--text-color);
+        }
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+        
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <!-- 底部导航 Dock -->
+    <div class="dock">
+        <a href="index.html#home" title="Home">
+            <i data-feather="home"></i>
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <i data-feather="grid"></i>
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="index.html#about" title="About">
+            <i data-feather="user"></i>
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="index.html#contact" title="Contact">
+            <i data-feather="mail"></i>
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- 顶部返回按钮 -->
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <!-- 页面头部信息 -->
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">Markdown 转换器</span>
+                <span data-lang="en">Markdown Converter</span>
+                <span data-lang="ja">Markdown 変換ツール</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">一款轻量、优雅的网页端 Markdown 转换工具，极大优化创作者排版工作流。</span>
+                <span data-lang="en">A lightweight and elegant web-based Markdown conversion tool, streamlining the formatting workflow for creators.</span>
+                <span data-lang="ja">軽量でエレガントなWebベースのMarkdown変換ツール。クリエイターのワークフローを効率化します。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Full Stack Developer</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">Mar 2026 (2 Weeks)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Web Development / Tool</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 封面图 -->
+        <div class="hero-image-container">
+            <img src="../project/my%20own%20project/markdown-converter/图片1.png" alt="Markdown Converter Interface">
+        </div>
+
+        <!-- 图文内容区 -->
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目背景</span>
+                <span data-lang="en">Background</span>
+                <span data-lang="ja">背景</span>
+            </h2>
+            <p>
+                <span data-lang="zh">我一直习惯使用 Markdown 来记录课程笔记，但我发现将 Markdown 转换为其他格式的文件（如 PDF、Word 等）总是充满麻烦。而且，对于不习惯使用 VSCode 等专业开发者应用的普通用户来说，去配置环境来预览和转换 Markdown 也有着很高的门槛。因此，我利用两周的时间开发了这个纯网页端的轻量级工具。</span>
+                <span data-lang="en">I have always been used to taking course notes in Markdown, but I found it quite troublesome to convert Markdown files into other formats like PDF or Word. Moreover, for regular users who are not accustomed to professional developer tools like VSCode, setting up an environment to preview and convert Markdown is a high barrier. Therefore, I spent two weeks developing this pure web-based lightweight tool.</span>
+                <span data-lang="ja">私はいつもMarkdownで講義ノートを取っていますが、MarkdownをPDFやWordなどの他の形式に変換するのは非常に面倒だと気付きました。さらに、VSCodeのようなプロ向けの開発ツールに慣れていない一般のユーザーにとって、Markdownをプレビューしたり変換したりする環境を設定するのはハードルが高いです。そこで、2週間かけてこの純粋なWebベースの軽量ツールを開発しました。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>💡 核心亮点：</strong> 支持开启可视化编辑（富文本模式）。用户可以直接在可视化的右侧界面中修改文字和排版，而无需在左侧繁琐的代码堆里寻找修改点！</span>
+                    <span data-lang="en"><strong>💡 Core Highlight:</strong> Supports Visual Editing (Rich Text Mode). Users can directly modify text and formatting in the visual interface on the right side, without having to dig through tedious code on the left!</span>
+                    <span data-lang="ja"><strong>💡 主要な特徴：</strong> ビジュアル編集（リッチテキストモード）をサポート。ユーザーは左側の煩雑なコードの中を探し回ることなく、右側のビジュアルインターフェースで直接テキストや書式を修正できます！</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">主要特性</span>
+                <span data-lang="en">Key Features</span>
+                <span data-lang="ja">主な機能</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>双栏分屏，实时预览：</strong> 左侧编写 Markdown 代码，右侧秒级同步渲染对应的富文本效果。</span>
+                    <span data-lang="en"><strong>Split-screen Real-time Preview:</strong> Write Markdown code on the left, and instantly see the synchronized rich-text rendering on the right.</span>
+                    <span data-lang="ja"><strong>分割画面のリアルタイムプレビュー：</strong> 左側でMarkdownを書き、右側で同期されたリッチテキストのレンダリングを即座に確認できます。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>一键复制：</strong> 内置复制富文本功能，完美兼容微信公众号、知乎、各大博客平台的网页编辑器。</span>
+                    <span data-lang="en"><strong>One-click Copy:</strong> Built-in rich text copy function, perfectly compatible with web editors of WeChat, Zhihu, and major blog platforms.</span>
+                    <span data-lang="ja"><strong>ワンクリックコピー：</strong> リッチテキストのコピー機能が組み込まれており、主要なブログプラットフォームのWebエディタと完全に互換性があります。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>定制化样式与代码高亮：</strong> 预设了优雅的排版 CSS，并引入了程序员友好的代码块语法高亮。</span>
+                    <span data-lang="en"><strong>Custom Styles & Code Highlighting:</strong> Pre-set with elegant typography CSS and developer-friendly code block syntax highlighting.</span>
+                    <span data-lang="ja"><strong>カスタムスタイルとコードハイライト：</strong> エレガントなタイポグラフィCSSと、開発者に優しいコードブロックの構文ハイライトが事前設定されています。</span>
+                </li>
+            </ul>
+
+            <!-- 互动演示区域 -->
+            <div class="interactive-section">
+                <h2 style="text-align: center; margin-top: 0;">
+                    <span data-lang="zh">在线体验</span>
+                    <span data-lang="en">Live Demo</span>
+                    <span data-lang="ja">ライブデモ</span>
+                </h2>
+                <p style="text-align: center; color: #888;">
+                    <span data-lang="zh">你可以在下方直接使用这款工具，或者访问独立站点进行体验。</span>
+                    <span data-lang="en">You can use the tool directly below, or visit the standalone site.</span>
+                    <span data-lang="ja">以下のツールを直接使用するか、スタンドアロンサイトにアクセスしてください。</span>
+                </p>
+                
+                <div class="browser-mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">markdown-converter-v1.netlify.app</div>
+                            <div style="width: 44px;"></div> <!-- spacer to center URL -->
+                        </div>
+                        <!-- 嵌套的真实网站 -->
+                        <iframe src="https://markdown-converter-v1.netlify.app" title="Markdown Converter Live Demo"></iframe>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="../music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

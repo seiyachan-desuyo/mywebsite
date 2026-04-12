@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand-drawn Cassette Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            /* 换成活泼温暖的橙色 */
+            --sticky-orange: #ffb169;
+        }
+        body {
+            font-family: 'Gaegu', cursive;
+            color: var(--text-color);
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+        }
+
+        .cassette-player {
+            position: relative;
+            width: 260px;
+            height: 165px;
+            background: rgba(245, 235, 227, 0.95);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(210, 180, 160, 0.8);
+            border-radius: 10px;
+            box-shadow: 
+                10px 10px 20px rgba(0, 0, 0, 0.15),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.8);
+            box-sizing: border-box;
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        .cassette-player:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 
+                15px 15px 25px rgba(0, 0, 0, 0.2),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 凹槽 */
+        .cassette-player::before {
+            content: '';
+            position: absolute;
+            top: 5px; bottom: 5px; left: 5px; right: 5px;
+            border: 1px solid rgba(210, 180, 160, 0.4);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        /* 螺丝和孔 */
+        .cassette-screws .screw, .cassette-screws .hole {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(220, 190, 170, 0.6);
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        .screw { width: 8px; height: 8px; }
+        .hole { width: 10px; height: 10px; background: rgba(0,0,0,0.08); }
+        .screw::after {
+            content: ''; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg);
+            width: 5px; height: 1px; background: rgba(0,0,0,0.3);
+        }
+        .screw.tl { top: 8px; left: 8px; transform: rotate(15deg); }
+        .screw.tr { top: 8px; right: 8px; transform: rotate(65deg); }
+        .hole.bl { bottom: 10px; left: 8px; }
+        .hole.br { bottom: 10px; right: 8px; }
+        .hole.bm { bottom: 10px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; }
+
+        /* 贴纸区域 */
+        .cassette-label {
+            position: absolute;
+            top: 14px; left: 14px; right: 14px; bottom: 32px;
+            background: #fdfdfd;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .cassette-label::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 42%;
+            background: #d66e40;
+            z-index: 1;
+        }
+
+        .cassette-lines {
+            position: absolute;
+            top: 18px; left: 55px; right: 10px;
+            height: 1px;
+            background: rgba(0,0,0,0.05);
+            box-shadow: 0 12px 0 rgba(0,0,0,0.05);
+            z-index: 2;
+        }
+
+        /* 专辑封面充满上半部白色区域 */
+        .cassette-album {
+            position: absolute;
+            top: 0px; 
+            left: 0px;
+            width: 100%; 
+            height: 58%; /* 占满整个上半部分白色区域 (100% - 42% = 58%) */
+            background: #333;
+            z-index: 0; /* 放在底层 */
+            background-image: url('./picture/my%20image/profile%20photo.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .cassette-title {
+            position: absolute;
+            top: 6px; right: 10px;
+            /* 换成中文字体 ZCOOL KuaiLe，并加入英文字体保证兼容 */
+            font-family: 'ZCOOL KuaiLe', 'Gaegu', cursive;
+            font-size: 1.1rem;
+            color: #b34a26;
+            font-weight: 400; /* ZCOOL 不适合太粗 */
+            z-index: 2;
+            transform: rotate(-3deg);
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cassette-side {
+            position: absolute;
+            bottom: 8px; left: 10px;
+            color: #fff;
+            z-index: 2;
+            line-height: 1;
+            font-family: -apple-system, sans-serif;
+        }
+        .cassette-side strong { font-size: 1.2rem; }
+        .cassette-side span { font-size: 0.5rem; letter-spacing: 1px; opacity: 0.9; }
+
+        .cassette-brand {
+            position: absolute;
+            bottom: 8px; right: 10px;
+            color: #fff;
+            z-index: 2;
+            font-family: 'Gaegu', sans-serif;
+        }
+        /* Adjusted font size here */
+        .cassette-brand span { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; }
+
+        /* 视窗 */
+        .cassette-window {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px; height: 42px;
+            background: linear-gradient(to bottom, #111 0%, #2a2a2a 10%, #111 100%);
+            border: 2px solid rgba(255,255,255,0.9);
+            border-radius: 6px;
+            z-index: 3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1), inset 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        .cassette-window::after {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%);
+            border-radius: 4px; pointer-events: none; z-index: 5;
+        }
+
+        .cassette-scale-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 45px; height: 18px;
+            background: rgba(220, 220, 220, 0.85);
+            border: 1px solid rgba(0,0,0,0.3); border-radius: 2px; z-index: 1;
+        }
+
+        .cassette-scale {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 12px;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding: 0 2px 2px; font-size: 6px; font-family: monospace; color: #333; z-index: 2;
+        }
+        .cassette-scale::before {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0;
+            height: 1px; background: #333;
+        }
+        .cassette-scale::after {
+            content: ''; position: absolute; top: 50%; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(to right, #333 1px, transparent 1px);
+            background-size: 4px 100%; opacity: 0.5;
+        }
+
+        .reel {
+            width: 28px; height: 28px;
+            background: #f0f0f0; border-radius: 50%;
+            position: relative; z-index: 2; box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+        }
+        .reel-inner {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 10px; height: 10px; background: #111; border-radius: 50%; border: 1.5px solid #ddd;
+        }
+        .reel-spoke {
+            position: absolute; top: 50%; left: 50%;
+            width: 9px; height: 6px; background: #111;
+            transform-origin: 0 50%; border-radius: 1px;
+        }
+        .reel-spoke:nth-child(1) { transform: translateY(-50%) rotate(0deg) translateX(5px); }
+        .reel-spoke:nth-child(2) { transform: translateY(-50%) rotate(120deg) translateX(5px); }
+        .reel-spoke:nth-child(3) { transform: translateY(-50%) rotate(240deg) translateX(5px); }
+
+        .reel.left-reel::before {
+            content: ''; position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border-radius: 50%; border: 4px solid #332b2b; z-index: -1;
+        }
+
+        .cassette-player.playing .reel { animation: spin-reel 2s linear infinite; }
+        @keyframes spin-reel { 100% { transform: rotate(360deg); } }
+
+        /* 底部读写口 - 使用绝对定位，保证不出界 */
+        .cassette-bottom-ridge {
+            position: absolute;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 70%; height: 15px;
+            background: rgba(245, 235, 227, 0.95);
+            border-top: 2px solid rgba(210, 180, 160, 0.8);
+            border-left: 2px solid rgba(210, 180, 160, 0.8);
+            border-right: 2px solid rgba(210, 180, 160, 0.8);
+            border-radius: 6px 6px 0 0;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 0 20px; box-sizing: border-box;
+            z-index: 2;
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.5);
+        }
+        .ridge-hole {
+            width: 6px; height: 6px;
+            background: rgba(0,0,0,0.15); border-radius: 50%;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* 交互遮罩 */
+        .cassette-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(253, 245, 235, 0); z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; transition: background 0.2s;
+        }
+        .cassette-player:hover .cassette-overlay {
+            background: rgba(245, 235, 227, 0.6); backdrop-filter: blur(2px);
+        }
+        
+        .play-btn-visual {
+            width: 45px; height: 45px;
+            background: var(--sticky-orange); /* 换成了温暖的橘色 */
+            border: 2px solid var(--text-color); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-color); opacity: 0; transform: scale(0.8);
+            transition: all 0.2s; box-shadow: 4px 4px 0 0 rgba(0,0,0,0.1);
+        }
+        .cassette-player:hover .play-btn-visual { opacity: 1; transform: scale(1); }
+        .play-btn-visual:hover {
+            background: var(--text-color); color: var(--sticky-orange); transform: scale(1.1) !important;
+        }
+        
+        /* 切歌按钮组调整 - 让它们稍微露出边缘 */
+        .cassette-player .skip-btn {
+            position: absolute; 
+            right: -15px; /* 移到盒子外边一半 */
+            top: 50%; 
+            transform: translateY(-50%); 
+            width: 36px; 
+            height: 36px; 
+            background: rgba(250, 237, 227, 0.95); 
+            border: 2px solid var(--text-color); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-color); 
+            cursor: pointer; 
+            pointer-events: auto; 
+            z-index: 50; 
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.15); 
+            opacity: 0; 
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .cassette-player .prev-btn {
+            position: absolute;
+            left: -15px; /* 移到盒子外边一半 */
+            top: 50%; 
+            transform: translateY(-50%); 
+            width: 36px; 
+            height: 36px; 
+            background: rgba(250, 237, 227, 0.95); 
+            border: 2px solid var(--text-color); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-color); 
+            cursor: pointer; 
+            pointer-events: auto; 
+            z-index: 50; 
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.15); 
+            opacity: 0; 
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .cassette-player .skip-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateY(-50%) translateX(15px) scale(1.1) !important;
+        }
+        .cassette-player .prev-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateY(-50%) translateX(-15px) scale(1.1) !important;
+        }
+
+        .cassette-player:hover .skip-btn {
+            opacity: 1;
+            transform: translateY(-50%) translateX(15px) scale(1);
+        }
+        .cassette-player:hover .prev-btn {
+            opacity: 1;
+            transform: translateY(-50%) translateX(-15px) scale(1);
+        }
+
+        /* 音符动画样式 */
+        .music-note {
+            position: absolute;
+            font-size: 22px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+            font-weight: bold;
+            font-family: 'Gaegu', cursive;
+        }
+        
+        /* 多彩的音符颜色类 */
+        .note-color-1 { color: #ff6b6b; } /* 珊瑚红 */
+        .note-color-2 { color: #4ecdc4; } /* 薄荷绿 */
+        .note-color-3 { color: #feca57; } /* 阳光黄 */
+        .note-color-4 { color: #a29bfe; } /* 梦幻紫 */
+        .note-color-5 { color: #fd79a8; } /* 樱花粉 */
+
+        @keyframes floatUpNote {
+            0% { 
+                transform: translateY(0) scale(0.5) rotate(0deg); 
+                opacity: 0; 
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% { 
+                /* 向上飘得更高，并带有随机的旋转角度 */
+                transform: translateY(-80px) scale(1.5) rotate(var(--rotation, 20deg)); 
+                opacity: 0; 
+            }
+        }
+
+        audio { display: none; }
+    </style>
+</head>
+<body>
+    <!-- 手绘风磁带播放器 -->
+    <div class="cassette-player" id="music-player">
+        <!-- 四角的螺丝与孔洞 -->
+        <div class="cassette-screws">
+            <div class="screw tl"></div>
+            <div class="screw tr"></div>
+            <div class="hole bl"></div>
+            <div class="hole bm"></div>
+            <div class="hole br"></div>
+        </div>
+
+        <!-- 贴纸区域 -->
+        <div class="cassette-label">
+            <div class="cassette-album"></div>
+            <div class="cassette-lines"></div>
+            <div class="cassette-title">@seiya</div>
+            
+            <!-- 磁带窗口 -->
+            <div class="cassette-window">
+                <div class="cassette-scale-bg"></div>
+                <div class="cassette-scale">
+                    <span>100</span><span>50</span><span>0</span>
+                </div>
+                <!-- 左转轴 -->
+                <div class="reel left-reel">
+                    <div class="reel-spoke"></div><div class="reel-spoke"></div><div class="reel-spoke"></div>
+                    <div class="reel-inner"></div>
+                </div>
+                <!-- 右转轴 -->
+                <div class="reel right-reel">
+                    <div class="reel-spoke"></div><div class="reel-spoke"></div><div class="reel-spoke"></div>
+                    <div class="reel-inner"></div>
+                </div>
+            </div>
+
+            <!-- 底部文字 -->
+            <div class="cassette-side">
+                <strong>A</strong><br><span>SIDE</span>
+            </div>
+            <div class="cassette-brand">
+                <span>Let's listen to some music!</span>
+            </div>
+        </div>
+
+        <!-- 磁带底部读写口结构 -->
+        <div class="cassette-bottom-ridge">
+            <div class="ridge-hole"></div>
+            <div class="ridge-hole"></div>
+        </div>
+
+        <!-- 交互遮罩与播放按钮 -->
+        <div class="cassette-overlay" id="play-btn">
+            <div class="play-btn-visual">
+                <i data-feather="play" class="icon-play" id="icon-play"></i>
+                <i data-feather="pause" class="icon-pause" id="icon-pause"></i>
+            </div>
+            <div class="prev-btn" id="prev-btn">
+                <i data-feather="skip-back" style="width: 16px; height: 16px; stroke-width: 3px;"></i>
+            </div>
+            <div class="skip-btn" id="next-btn">
+                <i data-feather="skip-forward" style="width: 16px; height: 16px; stroke-width: 3px;"></i>
+            </div>
+        </div>
+
+        <audio id="audio" src=""></audio>
+    </div>
+
+    <script>
+        feather.replace();
+
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const iconPlay = document.querySelector('.icon-play');
+        const iconPause = document.querySelector('.icon-pause');
+        const player = document.getElementById('music-player');
+        const albumCover = document.querySelector('.cassette-album');
+        const songTitle = document.querySelector('.cassette-title');
+
+        // 音乐列表配置
+        const playlist = [
+            {
+                name: "快鱼仔",
+                artist: "卢广仲",
+                file: "music/音乐/卢广仲 - 快鱼仔.mp3",
+                cover: "music/专辑封面/鱼仔.jpg"
+            },
+            {
+                name: "走建国路回家但后座少ㄌ泥",
+                artist: "多多 x 以捷",
+                file: "music/音乐/多多 x 以捷 - 走建国路回家但后座少ㄌ泥.mp3",
+                cover: "music/专辑封面/走建国路回家后座少个你.jpg"
+            },
+            {
+                name: "你說話的聲音好細",
+                artist: "JOYCE 就以斯",
+                file: "music/音乐/JOYCE 就以斯 - 你說話的聲音好細.mp3",
+                cover: "music/专辑封面/JOYCE 就以斯 - 你說話的聲音好細.jpg"
+            }
+        ];
+
+        let currentIndex = 0;
+        let isPlaying = false;
+
+        // 初始化播放器
+        function loadSong(index) {
+            const song = playlist[index];
+            audio.src = song.file;
+            albumCover.style.backgroundImage = `url('${song.cover}')`;
+            
+            // 简单处理名字过长
+            let shortName = song.name;
+            if(shortName.length > 8) {
+                shortName = shortName.substring(0, 8) + '...';
+            }
+            songTitle.innerText = `@${shortName}`;
+            
+            // 重新设置播放状态（如果不加这个，切歌可能会卡）
+            if(isPlaying) {
+                audio.play();
+            }
+        }
+        
+        // 初始加载第一首歌
+        loadSong(currentIndex);
+
+        // 尝试页面加载后自动播放
+        window.addEventListener('DOMContentLoaded', () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'inline-block';
+                player.classList.add('playing');
+                createNotes();
+            }).catch((err) => {
+                console.log("Browser autoplay prevented:", err);
+            });
+        });
+
+        function togglePlay(e) {
+            // 防止点到切歌按钮时触发播放暂停
+            if (e && (e.target.closest('#next-btn') || e.target.closest('#prev-btn'))) return;
+
+            if (isPlaying) {
+                audio.pause();
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+                player.classList.remove('playing');
+                isPlaying = false; // 状态先改，再执行其他逻辑
+            } else {
+                audio.play();
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+                player.classList.add('playing');
+                isPlaying = true; // 必须在这里先改成 true，否则 createNotes 里面会 return 掉！
+                createNotes();
+            }
+        }
+
+        function nextSong(e) {
+            e.stopPropagation(); // 阻止冒泡到外层的 playBtn
+            currentIndex = (currentIndex + 1) % playlist.length;
+            loadSong(currentIndex);
+        }
+
+        function prevSong(e) {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentIndex);
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        nextBtn.addEventListener('click', nextSong);
+        prevBtn.addEventListener('click', prevSong);
+
+        // 自动播放下一首
+        audio.addEventListener('ended', () => {
+            nextSong(new Event('mock'));
+        });
+
+        function createNotes() {
+            if(!isPlaying) return;
+            
+            // 更丰富的音符集合
+            const notes = ['♪', '♫', '♩', '♬', '♭', '♮'];
+            const note = document.createElement('div');
+            note.classList.add('music-note');
+            
+            // 随机分配一个颜色类
+            const colorClass = 'note-color-' + (Math.floor(Math.random() * 5) + 1);
+            note.classList.add(colorClass);
+            
+            note.innerText = notes[Math.floor(Math.random() * notes.length)];
+            
+            // 随机水平位置：分布在播放器的 10% ~ 90% 之间
+            const leftPos = Math.random() * 80 + 10;
+            note.style.left = leftPos + '%';
+            
+            // 初始高度在播放器的上半部分
+            note.style.top = (Math.random() * 20 + 20) + 'px';
+            
+            // 随机旋转角度 (直接写在样式里，有些浏览器不支持var在动画的rotate里)
+            const randomRotation = Math.floor(Math.random() * 120 - 60);
+            
+            // 动态注入包含固定角度的 style，强制生效
+            note.style.transform = `scale(0.5) rotate(${randomRotation}deg)`;
+            note.style.setProperty('--rotation', randomRotation + 'deg'); // 保留给兼容的浏览器
+            
+            // 随机动画时长：2秒到3秒之间，让飘动的节奏参差不齐更自然
+            const animDuration = (Math.random() * 1 + 2).toFixed(1) + 's';
+            note.style.animation = `floatUpNote ${animDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+            
+            // 关键修复：加在 player 内部但要确保它的 z-index 高于磁带贴纸
+            player.appendChild(note);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                if(note && note.parentNode) {
+                    note.remove();
+                }
+            }, parseFloat(animDuration) * 1000);
+            
+            // 继续生成下一个音符的间隔 (0.6 ~ 1.5秒之间)
+            const nextNoteInterval = 600 + Math.random() * 900;
+            setTimeout(createNotes, nextNoteInterval);
+        }
+    </script>
+</body>
+</html>

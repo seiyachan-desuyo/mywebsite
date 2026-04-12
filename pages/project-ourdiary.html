@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatShark Desktop Pet | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #8774ff;
+        }
+
+        /* 引入更柔和的开源中文字体 */
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)), 
+                url('picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        /* Fonts */
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+        .mono-font { font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            text-align: left;
+        }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Hero Image */
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            min-height: 400px;
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 30px;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 30px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 50px 0 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '🤖';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 2.5rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        /* Interactive Browser Mockup for iframe */
+        .interactive-section {
+            margin-top: 80px;
+            width: 92vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+        }
+        
+        .browser-mockup-wrapper {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+        
+        .browser-mockup {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header {
+            background: #f1f1f1;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        
+        .browser-url {
+            flex: 1;
+            text-align: center;
+            background: #fff;
+            margin: 0 20px;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .browser-mockup iframe {
+            width: 100%;
+            height: 850px;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        /* Dock */
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .dock a:hover, .dock a.active {
+            background: #f5f5f5;
+            color: var(--text-color);
+        }
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+        
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <!-- 底部导航 Dock -->
+    <div class="dock">
+        <a href="index.html#home" title="Home">
+            <i data-feather="home"></i>
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <i data-feather="grid"></i>
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="index.html#about" title="About">
+            <i data-feather="user"></i>
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="index.html#contact" title="Contact">
+            <i data-feather="mail"></i>
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- 顶部返回按钮 -->
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <!-- 页面头部信息 -->
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">OurDiary电子手帐</span>
+                <span data-lang="en">OurDiary Digital Journal</span>
+                <span data-lang="ja">OurDiary 電子手帳</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">一款采用 Vue3 + Node.js 开发的全栈手帐本应用，支持 3D 翻页、Fabric.js 自由画板及私密房间同步。</span>
+                <span data-lang="en">A full-stack journal app built with Vue3 &amp; Node.js, featuring 3D page flips, Fabric.js freeform canvas, and private room sync.</span>
+                <span data-lang="ja">Vue3とNode.jsで構築されたフルスタックの手帳アプリ。3Dページめくり、Fabric.jsの自由なキャンバス、プライベートルームの同期機能を備えています。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Full-stack Developer</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">Fall 2026 (WIP)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Web App / Full-stack</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 封面图 -->
+        <div class="hero-image-container">
+            <img src="../project/my%20own%20project/手帐本/1.png" alt="OurDiary" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        </div>
+
+        <!-- 图文内容区 -->
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目简介</span>
+                <span data-lang="en">Project Overview</span>
+                <span data-lang="ja">プロジェクト概要</span>
+            </h2>
+            <p>
+                <span data-lang="zh">OurDiary（手帐本 / CozyDiary）是一个轻量级、高颜值的数字手帐本 Web 应用。它提供了高度模拟真实日记本的 3D 翻页交互体验，并支持通过自由画板功能进行手写、贴纸、文字排版等创作。</span>
+                <span data-lang="en">OurDiary (CozyDiary) is a lightweight, highly aesthetic digital journal web app. It provides a highly realistic 3D page-flipping interaction experience and supports free handwriting, stickers, and text typography through a freeform canvas feature.</span>
+                <span data-lang="ja">OurDiary（CozyDiary）は、軽量で美しいデジタル電子手帳Webアプリです。非常にリアルな3Dページめくりインタラクション体験を提供し、自由なキャンバス機能を通じて手書き、ステッカー、タイポグラフィの作成をサポートします。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>🚀 核心亮点：</strong> 采用前后端分离架构（Vue 3 + Node.js + Prisma），支持创建带密码保护的“房间”（私密手帐本），实现画布状态的无损云端持久化，让你的日常记录安全又充满乐趣！</span>
+                    <span data-lang="en"><strong>🚀 Core Highlight:</strong> Uses a decoupled front/back-end architecture (Vue 3 + Node.js + Prisma) supporting password-protected "Rooms" (private journals) and lossless cloud persistence of canvas states, keeping your daily records safe and fun!</span>
+                    <span data-lang="ja"><strong>🚀 主要な特徴：</strong> フロントエンドとバックエンドの分離アーキテクチャ（Vue 3 + Node.js + Prisma）を採用し、パスワード保護された「ルーム」（プライベート手帳）の作成とキャンバス状態の無損失クラウド永続化をサポートし、毎日の記録を安全で楽しいものにします！</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">主要特性</span>
+                <span data-lang="en">Key Features</span>
+                <span data-lang="ja">主な機能</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>📖 沉浸式 3D 翻页与自适应：</strong> 基于 page-flip 引擎高度还原纸质书物理翻页，支持鼠标拖拽书角。宽屏呈现双页平铺模式，移动端自动适配单页模式，保证阅读体验。</span>
+                    <span data-lang="en"><strong>📖 Immersive 3D Page Flip &amp; Responsive:</strong> Highly restores the physical page flipping of paper books using the page-flip engine, supporting mouse dragging on corners. Displays a two-page spread on wide screens and adapts to single-page on mobile.</span>
+                    <span data-lang="ja"><strong>📖 没入型 3D ページめくりとレスポンシブ対応：</strong> page-flip エンジンを使用して紙の本の物理的なページめくりを高度に再現し、角のマウスドラッグをサポートします。ワイド画面では見開き2ページを表示し、モバイルでは単一ページに適応します。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>🎨 强大自由的排版画板：</strong> 基于 Fabric.js 提供类似专业编辑器的创作能力。支持自由手写涂鸦、插入富文本并自定义样式、上传图片素材并拖拽缩放拼贴，甚至可以叠加贴纸。提供完善的图层与撤销/重做管理。</span>
+                    <span data-lang="en"><strong>🎨 Powerful Freeform Canvas:</strong> Built on Fabric.js, providing pro-editor-like creative capabilities. Supports free handwriting, inserting rich text, uploading/collaging image assets, adding stickers, and full layer &amp; undo/redo management.</span>
+                    <span data-lang="ja"><strong>🎨 強力な自由タイポグラフィ・キャンバス：</strong> Fabric.js を基盤とし、プロのエディタのような創作機能を提供します。手書きの落書き、リッチテキストの挿入とスタイル設定、画像素材のアップロードやドラッグによるコラージュ、ステッカーの重ね合わせに対応。完全なレイヤー管理と取り消し/やり直し管理も備えています。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>🔒 私密房间与云端同步：</strong> 每个手帐本都在一个独立房间中并支持密码保护。所有画板上的笔画、图片位置与样式（JSON/SVG）都能通过 Node.js + SQLite/Prisma 安全无损地持久化到云端，跨设备无缝同步。</span>
+                    <span data-lang="en"><strong>🔒 Private Rooms &amp; Cloud Sync:</strong> Each journal is in an independent room with password protection. All strokes, image positions, and styles (JSON/SVG) are safely persisted to the cloud via Node.js + Prisma, syncing seamlessly across devices.</span>
+                    <span data-lang="ja"><strong>🔒 プライベートルームとクラウド同期：</strong> 各手帳は独立した部屋にあり、パスワード保護をサポートします。キャンバス上のすべてのストローク、画像の位置、スタイル（JSON/SVG）は、Node.js + Prisma を介してクラウドに安全に永続化され、デバイス間でシームレスに同期されます。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>🖨️ 导出与存档：</strong> 集成了 html2canvas 和 jsPDF，支持一键将当前单页渲染导出为高清 PNG/JPG，或者将整个手帐本所有页面打包成一个完整的 PDF 文档，用于永久离线存档。</span>
+                    <span data-lang="en"><strong>🖨️ Export &amp; Archive:</strong> Integrated with html2canvas and jsPDF, allowing one-click export of the current page as high-res PNG/JPG, or bundling the entire journal into a complete PDF document for permanent offline archiving.</span>
+                    <span data-lang="ja"><strong>🖨️ エクスポートとアーカイブ：</strong> html2canvas と jsPDF を統合し、現在の単一ページを高解像度の PNG/JPG としてワンクリックでエクスポートしたり、手帳全体の全ページを1つの完全な PDF ドキュメントにまとめて永久的なオフラインアーカイブにしたりできます。</span>
+                </li>
+            </ul>
+
+            <!-- 互动演示区域 / 仓库地址 -->
+            <div class="interactive-section">
+                <h2 style="text-align: center; margin-top: 0;">
+                    <span data-lang="zh">相关链接</span>
+                    <span data-lang="en">Related Links</span>
+                    <span data-lang="ja">関連リンク</span>
+                </h2>
+                <p style="text-align: center; color: #888;">
+                    <span data-lang="zh">OurDiary 正在积极开发中，未来敬请期待！</span>
+                    <span data-lang="en">OurDiary is under active development. Stay tuned for future updates!</span>
+                    <span data-lang="ja">OurDiaryは現在開発中です。今後のアップデートにご期待ください！</span>
+                </p>
+                
+                <div class="browser-mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">github.com/ourdiary</div>
+                            <div style="width: 44px;"></div> <!-- spacer to center URL -->
+                        </div>
+                        <div style="padding: 40px; text-align: center; background-color: #fff3e0; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <h3>🚧 Work In Progress...</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="../music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>
