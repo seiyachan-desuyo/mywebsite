@@ -1229,7 +1229,113 @@
                 height: 250px;
             }
         }
-    </style>
+    
+        /* FOLDER PROJECT CARDS */
+        .folder-project-card {
+            position: relative;
+            width: calc(33.333% - 20px);
+            height: 380px; 
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.4s;
+        }
+        .folder-back {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 75%;
+            border-radius: 16px 16px 24px 24px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+            overflow: visible;
+        }
+        .folder-tab {
+            position: absolute;
+            top: -15px;
+            right: 25px;
+            width: 35%;
+            height: 16px;
+            background-color: inherit;
+            border-radius: 12px 12px 0 0;
+        }
+        .folder-content {
+            position: absolute;
+            bottom: 22%;
+            left: 10%;
+            width: 80%;
+            height: 65%;
+        }
+        .folder-item {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            object-fit: cover;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .folder-item-3 { transform: rotate(-4deg) translateY(10px) translateX(-8px); z-index: 1; }
+        .folder-item-2 { transform: rotate(4deg) translateY(5px) translateX(8px); z-index: 2; }
+        .folder-item-1 { transform: rotate(0deg) translateY(0); z-index: 3; }
+        .folder-item-1.placeholder { display:flex; align-items:center; justify-content:center; font-size:40px; }
+
+        .folder-project-card:hover .folder-item-3 { transform: rotate(-8deg) translateY(-8px) translateX(-15px) scale(1.02); }
+        .folder-project-card:hover .folder-item-2 { transform: rotate(8deg) translateY(-4px) translateX(15px) scale(1.02); }
+        .folder-project-card:hover .folder-item-1 { transform: rotate(0deg) translateY(-20px) scale(1.05); }
+
+        .folder-front {
+            position: absolute;
+            bottom: 0;
+            left: -2px; right: -2px;
+            height: 48%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.05);
+            z-index: 10;
+            padding: 30px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .folder-wave {
+            position: absolute;
+            top: -29px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            fill: white;
+        }
+        .folder-meta {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .folder-meta strong {
+            color: #333;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .folder-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+            color: #111;
+        }
+        .card-myown .folder-back { background-color: #b2ebf2; }
+        .card-company .folder-back { background-color: #4ecdc4; }
+        .card-compete .folder-back { background-color: #ffe082; }
+
+        a.folder-project-card, a.folder-project-card * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+</style>
 </head>
 <body data-current-lang="en">
     <!-- SVG Pencil Filter for title drawing effect -->
@@ -1497,145 +1603,118 @@
             <div class="projects-grid">
                 
                 <!-- 1. 我的个人项目 (My Own Project) -->
-                <a href="pages/projects.html" class="project-card">
-                    <div class="framer-image-wrap">
-                        <!-- Bottom Layer -->
-                        <div class="framer-img framer-img-3" style="background-color: #fbe9e7;"></div>
-                        <!-- Middle Layer -->
-                        <div class="framer-img framer-img-2" style="background-color: #e0f7fa;"></div>
-                        <!-- Top Layer / Cover -->
-                        <div class="framer-img framer-img-1 placeholder" style="background-color: #b2ebf2;">🎨</div>
-                        <div class="framer-date-badge">
-                            <strong>3 Projects</strong>
-                            <span>Since 2023</span>
-                        </div>
+                <a href="pages/projects.html" class="folder-project-card card-myown">
+                    <div class="folder-back">
+                        <div class="folder-tab"></div>
                     </div>
-                    <div class="framer-info">
-                        <h4 class="project-title">
-                            <span data-lang="zh" class="cartoon-font-zh">个人项目</span>
-                            <span data-lang="en" class="cartoon-font-en">My Own Projects</span>
-                            <span data-lang="ja" class="cartoon-font-ja">個人プロジェクト</span>
-                        </h4>
-                        <div class="framer-desc">
-                            <p>
-                                <span data-lang="zh">探索想象力与技术边界的创意个人项目集合。</span>
-                                <span data-lang="en">A visionary collection of personal projects exploring the depths of imagination and technical boundaries.</span>
-                                <span data-lang="ja">想像力と技術の境界を探求する、独創的な個人プロジェクトのコレクション。</span>
-                            </p>
-                            <p class="framer-role">Role — <strong>Developer & Designer</strong></p>
+                    <div class="folder-content">
+                        <div class="folder-item folder-item-3" style="background: #e0f7fa;"></div>
+                        <div class="folder-item folder-item-2" style="background: #80deea;"></div>
+                        <img class="folder-item folder-item-1" src="./project/my%20own%20project/猫猫鲨/1.png" alt="My Own Projects">
+                    </div>
+                    <div class="folder-front">
+                        <svg class="folder-wave" viewBox="0 0 100 20" preserveAspectRatio="none">
+                            <path d="M0,20 L0,10 Q25,-5 50,8 T100,2 L100,20 Z" />
+                        </svg>
+                        <div class="folder-info">
+                            <div class="folder-meta">
+                                <div>
+                                    <strong>3 Projects</strong>
+                                    <span>Since 2023</span>
+                                </div>
+                            </div>
+                            <h4 class="project-title">
+                                <span data-lang="zh" class="cartoon-font-zh">个人项目</span>
+                                <span data-lang="en" class="cartoon-font-en">My Own Projects</span>
+                                <span data-lang="ja" class="cartoon-font-ja">個人プロジェクト</span>
+                            </h4>
+                            <div class="framer-desc" style="display:none;">
+                                <p>
+                                    <span data-lang="zh">探索想象力与技术边界的创意个人项目集合。</span>
+                                    <span data-lang="en">A visionary collection of personal projects exploring the depths of imagination and technical boundaries.</span>
+                                    <span data-lang="ja">想像力と技術の境界を探求する、独創的な個人プロジェクトのコレクション。</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </a>
 
                 <!-- 2. 公司项目 (Company Project) -->
-                <a href="pages/projects.html" class="project-card">
-                    <div class="framer-image-wrap">
-                        <div class="framer-img framer-img-3" style="background-color: #e8f5e9;"></div>
-                        <div class="framer-img framer-img-2" style="background-color: #e0f2f1;"></div>
-                        <div class="framer-img framer-img-1 placeholder" style="background-color: #4ecdc4; color: #fff;">📊</div>
-                        <div class="framer-date-badge">
-                            <strong>5 Projects</strong>
-                            <span>Apple & Orient Sec.</span>
-                        </div>
+                <a href="pages/projects.html" class="folder-project-card card-company">
+                    <div class="folder-back">
+                        <div class="folder-tab"></div>
                     </div>
-                    <div class="framer-info">
-                        <h4 class="project-title">
-                            <span data-lang="zh" class="cartoon-font-zh">公司项目</span>
-                            <span data-lang="en" class="cartoon-font-en">Company Projects</span>
-                            <span data-lang="ja" class="cartoon-font-ja">企業プロジェクト</span>
-                        </h4>
-                        <div class="framer-desc">
-                            <p>
-                                <span data-lang="zh">解决真实业务痛点的落地实践。使用 Dataiku、Tableau 等工具构建数据看板，优化业务流程。</span>
-                                <span data-lang="en">Solving real-world business challenges. Built data dashboards and optimized workflows using Dataiku and Tableau.</span>
-                                <span data-lang="ja">実際のビジネス課題を解決する実践。DataikuやTableauを使用してデータダッシュボードを構築し、ビジネスプロセスを最適化。</span>
-                            </p>
-                            <p class="framer-role">Role — <strong>Data & Finance Intern</strong></p>
+                    <div class="folder-content">
+                        <div class="folder-item folder-item-3" style="background: #e8f5e9;"></div>
+                        <div class="folder-item folder-item-2" style="background: #e0f2f1;"></div>
+                        <div class="folder-item folder-item-1 placeholder" style="background-color: #4ecdc4; color: #fff;">📊</div>
+                    </div>
+                    <div class="folder-front">
+                        <svg class="folder-wave" viewBox="0 0 100 20" preserveAspectRatio="none">
+                            <path d="M0,20 L0,10 Q25,-5 50,8 T100,2 L100,20 Z" />
+                        </svg>
+                        <div class="folder-info">
+                            <div class="folder-meta">
+                                <div>
+                                    <strong>5 Projects</strong>
+                                    <span>Apple & Orient Sec.</span>
+                                </div>
+                            </div>
+                            <h4 class="project-title">
+                                <span data-lang="zh" class="cartoon-font-zh">公司项目</span>
+                                <span data-lang="en" class="cartoon-font-en">Company Projects</span>
+                                <span data-lang="ja" class="cartoon-font-ja">企業プロジェクト</span>
+                            </h4>
+                            <div class="framer-desc" style="display:none;">
+                                <p>
+                                    <span data-lang="zh">为行业领先企业打造的企业级解决方案。</span>
+                                    <span data-lang="en">Enterprise-grade solutions built for industry-leading organizations.</span>
+                                    <span data-lang="ja">業界をリードする企業向けに構築されたエンタープライズソリューション。</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </a>
 
                 <!-- 3. 比赛项目 (Competition Project) -->
-                <a href="pages/projects.html" class="project-card">
-                    <div class="framer-image-wrap">
-                        <div class="framer-img framer-img-3" style="background-color: #fff8e1;"></div>
-                        <div class="framer-img framer-img-2" style="background-color: #ffe082;"></div>
-                        <div class="framer-img framer-img-1" style="background-image: url('./project/competition%20project/华泰杯/1.png');"></div>
-                        <div class="framer-date-badge">
-                            <strong>National 1st</strong>
-                            <span>Competition</span>
-                        </div>
+                <a href="pages/projects.html" class="folder-project-card card-compete">
+                    <div class="folder-back">
+                        <div class="folder-tab"></div>
                     </div>
-                    <div class="framer-info">
-                        <h4 class="project-title">
-                            <span data-lang="zh" class="cartoon-font-zh">比赛项目</span>
-                            <span data-lang="en" class="cartoon-font-en">Competitions</span>
-                            <span data-lang="ja" class="cartoon-font-ja">競技プロジェクト</span>
-                        </h4>
-                        <div class="framer-desc">
-                            <p>
-                                <span data-lang="zh">追求卓越与创新的竞技之旅。利用 AI 工具生成视觉物料，打造具有情感共鸣的短视频广告。</span>
-                                <span data-lang="en">A journey of competitive excellence. Utilized AI tools for visual generation to create emotional short video ads.</span>
-                                <span data-lang="ja">卓越性と革新を追求する競技の旅。AIツールを使用してビジュアル素材を生成し、感情的な共鳴を呼ぶ短編動画広告を作成。</span>
-                            </p>
-                            <p class="framer-role">Role — <strong>Marketing Strategist</strong></p>
+                    <div class="folder-content">
+                        <div class="folder-item folder-item-3" style="background: #fff8e1;"></div>
+                        <div class="folder-item folder-item-2" style="background: #ffe082;"></div>
+                        <img class="folder-item folder-item-1" src="./project/competition%20project/华泰杯/1.png" alt="Competition">
+                    </div>
+                    <div class="folder-front">
+                        <svg class="folder-wave" viewBox="0 0 100 20" preserveAspectRatio="none">
+                            <path d="M0,20 L0,10 Q25,-5 50,8 T100,2 L100,20 Z" />
+                        </svg>
+                        <div class="folder-info">
+                            <div class="folder-meta">
+                                <div>
+                                    <strong>National 1st</strong>
+                                    <span>Competition</span>
+                                </div>
+                            </div>
+                            <h4 class="project-title">
+                                <span data-lang="zh" class="cartoon-font-zh">比赛项目</span>
+                                <span data-lang="en" class="cartoon-font-en">Competitions</span>
+                                <span data-lang="ja" class="cartoon-font-ja">競技プロジェクト</span>
+                            </h4>
+                            <div class="framer-desc" style="display:none;">
+                                <p>
+                                    <span data-lang="zh">追求卓越与创新的竞技之旅。</span>
+                                    <span data-lang="en">A journey of competitive excellence.</span>
+                                    <span data-lang="ja">卓越性と革新を追求する競技の旅。</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </a>
 
             </div>
-        </div>
-
-        <!-- 经历区域（已移除，整合到了上面的 About Section 中） -->
-    </div>
-
-    <!-- 联系区域 -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="contact-title">
-                <span data-lang="zh" class="cartoon-font-zh">联系我</span>
-                <span data-lang="en" class="cartoon-font-en">Let's talk</span>
-                <span data-lang="ja" class="cartoon-font-ja">連絡しよう</span>
-            </h2>
-            <a href="mailto:202306069@uibe.com" class="cartoon-font-en contact-email">202306069@uibe.com</a>
-            
-            <div class="social-icons">
-                <a href="#" aria-label="WeChat" onclick="showCustomModal('WeChat', 'boymoemoe', 'message-circle'); return false;" title="WeChat"><i data-feather="message-circle"></i></a>
-                <a href="#" aria-label="QQ" onclick="showCustomModal('QQ', '2861146026', 'message-square'); return false;" title="QQ"><i data-feather="message-square"></i></a>
-                <a href="#" aria-label="Email" onclick="showCustomModal('Email', '2861146026@qq.com\n202306069@uibe.com', 'mail'); return false;" title="Email"><i data-feather="mail"></i></a>
-            </div>
-
-            <form class="contact-form" id="email-form" action="https://formspree.io/f/xvgzpyod" method="POST">
-                <div class="form-row">
-                    <div class="input-wrapper">
-                        <!-- 添加 name 属性，表单服务需要它 -->
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
-                        <i data-feather="smile" class="input-icon"></i>
-                    </div>
-                    <div class="input-wrapper">
-                        <!-- 这里的 name="subject" 才是邮件主题 -->
-                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                        <i data-feather="edit-2" class="input-icon"></i>
-                    </div>
-                </div>
-                <div class="input-wrapper">
-                    <!-- 添加 name 属性 -->
-                    <textarea id="message" name="message" rows="4" placeholder="Message" required></textarea>
-                </div>
-                <!-- 由于移除了 email 输入框，这里将不需要动态设置 _replyto，而是直接给一个固定的默认值或者留空 -->
-                <button type="submit" class="submit-btn" id="submit-btn-text">Send</button>
-            </form>
-            
-            <div class="contact-footer">
-                <p>
-                    <span data-lang="zh" class="cartoon-font-zh">📍 北京 / 贵州</span>
-                    <span data-lang="en" class="cartoon-font-en">📍 Beijing / Guizhou</span>
-                    <span data-lang="ja" class="cartoon-font-ja">📍 北京 / 貴州</span>
-                </p>
-                <p class="cartoon-font-en">📞 18886541507</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
     <!-- 自定义弹窗 -->
     <div id="custom-modal" class="custom-modal" onclick="if(event.target === this) closeCustomModal()">
