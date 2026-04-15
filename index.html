@@ -288,14 +288,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
+            width: 90px;
+            height: 90px;
             gap: 4px;
             text-decoration: none;
             color: #888;
             border-radius: 20px;
-            transition: all 0.2s ease;
+            /* 优化过渡动画，使果冻回弹效果更加丝滑自然 */
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
         }
 
         .dock-label {
@@ -309,6 +312,17 @@
         .dock a:hover {
             background: #f5f5f5;
             color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+
+        /* 纯 CSS 实现相邻元素果冻缩放，彻底解决 JS 布局重绘 (Layout Thrashing) 导致的卡顿问题 */
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
         }
 
         .dock a.active {
@@ -329,10 +343,22 @@
             border-radius: 2px;
         }
 
-        .dock a i {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2.5px;
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        /* 专门维持 More 图标保持原大小 */
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+        
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
         }
 
         .dock-divider {
@@ -399,11 +425,10 @@
         .section-title {
             text-align: center;
             font-size: 3rem;
-            margin: 100px 0 50px;
+            margin: 100px auto 50px; /* 用 auto 实现居中，不要用绝对定位 */
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            display: block; /* 改成block或者table以配合 auto 居中 */
+            width: fit-content;
         }
 
         .section-title::before, .section-title::after {
@@ -421,71 +446,52 @@
 
         /* Category Section Header */
         .category-section {
-            margin-bottom: 120px;
+            margin-top: 200px;
+            margin-bottom: 520px;
             width: 100%;
         }
         .category-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px; /* Reduced from 40px to leave room for expanding cards */
+            justify-content: center;
+            margin-bottom: 20px;
             padding-bottom: 20px;
+            text-align: center;
         }
         .category-title-wrap {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
         .category-icon {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--text-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-5deg);
-        }
-        .category-icon svg {
-            width: 24px;
-            height: 24px;
+            display: none; /* 隐藏原来的文件夹小图标 */
         }
         .category-title-text h3 {
-            /* 统一为与 about-block-title 以及联系方式类似的字体风格体系 */
-            font-size: 2.5rem;
-            margin: 0;
-            color: var(--text-color);
-            font-weight: bold;
+            display: none; /* 隐藏原来的小标题，直接使用外层的 section-title */
         }
-        
-        /* 根据当前语言设置合适的卡通/特殊字体，与 About 模块保持一致 */
-        body[data-current-lang="en"] .category-title-text h3 {
-            font-family: 'Courier New', Courier, monospace; /* 与 About 内的英文字体风格一致 */
-        }
-        body[data-current-lang="zh"] .category-title-text h3 {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        body[data-current-lang="ja"] .category-title-text h3 {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
         .category-title-text p {
             font-family: 'Gaegu', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #888;
-            margin: 5px 0 0 0;
+            margin: 0;
             font-weight: 400;
         }
         .category-see-all {
             background: var(--text-color);
             color: #fff;
-            padding: 10px 24px;
+            padding: 12px 30px;
             border-radius: 30px;
             text-decoration: none;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            display: inline-block;
             transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .category-see-all:hover {
             transform: scale(1.05);
@@ -667,12 +673,24 @@
             overflow: hidden;
             margin-bottom: 80px;
             position: relative;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+        }
+        
+        .about-profile:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .about-profile:active {
+            transform: scale(0.95);
         }
 
         .about-profile img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.3s ease;
         }
 
         .yours-truly-arrow {
@@ -725,6 +743,33 @@
             cursor: grab;
             transition: transform 0.2s, box-shadow 0.2s, z-index 0s;
             margin-top: -20px; /* Ensure vertical overlap */
+            opacity: 0; /* 初始隐藏，等待滑入动画 */
+        }
+
+        /* 便签从左侧滑入贴上的动画效果 */
+        .about-stickies.animate .about-sticky {
+            animation: stickOnEffect 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* 依次延迟入场，营造一张张贴上去的感觉，增加一点间隔让节奏更从容 */
+        .about-stickies.animate .about-sticky:nth-child(1) { animation-delay: 0.1s; }
+        .about-stickies.animate .about-sticky:nth-child(2) { animation-delay: 0.3s; }
+        .about-stickies.animate .about-sticky:nth-child(3) { animation-delay: 0.5s; }
+        .about-stickies.animate .about-sticky:nth-child(4) { animation-delay: 0.7s; }
+        .about-stickies.animate .about-sticky:nth-child(5) { animation-delay: 0.9s; }
+        .about-stickies.animate .about-sticky:nth-child(6) { animation-delay: 1.1s; }
+
+        @keyframes stickOnEffect {
+            0% {
+                opacity: 0;
+                translate: -250px 30px; /* 从左边飞来 */
+                scale: 1.4; /* 刚出现时比较大，像被手拿着靠近屏幕 */
+            }
+            100% {
+                opacity: 1;
+                translate: 0px 0px;
+                scale: 1;
+            }
         }
 
         .about-sticky:hover {
@@ -1336,7 +1381,529 @@
         a.folder-project-card, a.folder-project-card * {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
         }
+
+        /* ================= 滚动动效 (Scroll Reveal) CSS ================= */
+        .scroll-fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .scroll-fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-pop-in {
+            opacity: 0;
+            transform: scale(0.7) rotate(-5deg);
+            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .scroll-pop-in.is-visible {
+            opacity: 1;
+            /* 考虑到原本元素自己可能有的倾斜，不再强制归 0 */
+            transform: scale(1) rotate(var(--target-rotate, 0deg));
+        }
+
+        /* 专门修复 Guestbook 标题被覆盖的问题 */
+        .guestbook-title.scroll-pop-in.is-visible {
+            transform: scale(1) rotate(-2deg); /* 强制恢复其原本的 -2deg，且不需要居中用的 translateX 干扰 */
+        }
+
+        /* 阶梯式延迟 - Fade Up (针对长列表如实习经历、项目卡片) */
+        .stagger-container > * {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .stagger-container.is-visible > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 特殊处理 project-card：恢复它本身的 transition 以保留 hover */
+        .stagger-container.projects-grid > .project-card {
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .stagger-container.projects-grid.is-visible > .project-card {
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); /* 入场后迅速恢复它原本的0.3s动画速度 */
+        }
+        
+        /* 阶梯式延迟 - Pop In (针对小标签如 Links, Skills) */
+        .stagger-pop-container > * {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .stagger-pop-container.is-visible > * {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 批量定义子元素的延迟时间 (Delay) */
+        .stagger-container > *:nth-child(1), .stagger-pop-container > *:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-container > *:nth-child(2), .stagger-pop-container > *:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-container > *:nth-child(3), .stagger-pop-container > *:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-container > *:nth-child(4), .stagger-pop-container > *:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-container > *:nth-child(5), .stagger-pop-container > *:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-container > *:nth-child(6), .stagger-pop-container > *:nth-child(6) { transition-delay: 0.6s; }
+        .stagger-container > *:nth-child(7), .stagger-pop-container > *:nth-child(7) { transition-delay: 0.7s; }
+        .stagger-container > *:nth-child(8), .stagger-pop-container > *:nth-child(8) { transition-delay: 0.8s; }
+        .stagger-container > *:nth-child(9), .stagger-pop-container > *:nth-child(9) { transition-delay: 0.9s; }
+        .stagger-container > *:nth-child(10), .stagger-pop-container > *:nth-child(10) { transition-delay: 1.0s; }
+
+        /* 手绘箭头逐渐绘制出来的动画 */
+        .draw-arrow svg path {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .scroll-pop-in.is-visible .draw-arrow svg path {
+            stroke-dashoffset: 0;
+            transition-delay: 0.4s;
+        }
+
+        /* Guestbook 整体旋转飞入 */
+        .guestbook-anim {
+            opacity: 0;
+            transform: rotate(-5deg) translateX(80px);
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .guestbook-anim.is-visible {
+            opacity: 1;
+            transform: rotate(0deg) translateX(0);
+        }
+
+        /* Guestbook 左上角贴纸 - 定格动画般掉落 */
+        .sticker-sitting {
+            opacity: 0;
+            transform: translateY(-80px) rotate(-10deg) scale(1.2) !important;
+            transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .guestbook-anim.is-visible .sticker-sitting {
+            opacity: 1;
+            transform: translateY(0) rotate(-10deg) scale(1) !important;
+            transition-delay: 0.6s; /* 等相框稳住后掉落 */
+        }
+        /* 确保自转动画不被覆盖，使用 keyframes 直接播放 */
+        .sticker-spin {
+            animation: spinOnce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        }
+
+        @keyframes spinOnce {
+            0% {
+                transform: translateY(0) rotate(-10deg) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg) scale(1.1);
+            }
+            100% {
+                transform: translateY(0) rotate(350deg) scale(1);
+            }
+        }
+
+        /* 底部 Me 贴纸从右下角冒出 */
+        .sticker-me-wrapper {
+            opacity: 0;
+            transform: translateY(50px) translateX(30px) rotate(15deg);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .guestbook-anim.is-visible .sticker-me-wrapper {
+            opacity: 1;
+            transform: translateY(0) translateX(0) rotate(0deg);
+            transition-delay: 0.8s;
+        }
 </style>
+    <!-- Styles for Notice Board (Guestbook) -->
+    <style>
+        /* Guestbook Section (Notice Board) */
+        .guestbook-section {
+            /* 1. 调整宽度和上方的 container 完全一致 */
+            max-width: 1160px;
+            width: calc(100% - 40px);
+            margin: 200px auto 100px; /* 大幅增加 marginTop，让它与 Featured Projects 的距离翻倍 */
+            
+            /* 2. 软木板底色与手绘涂鸦 + 软木纹理点点 */
+            background-color: #E6D5B8;
+            background-image: 
+                /* 涂鸦 1: 小星星 */
+                url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><path d="M20 20 Q30 5 40 20 Q25 30 20 20" fill="rgba(0,0,0,0.06)"/><path d="M160 160 Q170 140 180 160 Q165 170 160 160" fill="rgba(0,0,0,0.06)"/></svg>'),
+                /* 涂鸦 2: 漩涡线 */
+                url('data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg"><path d="M50 250 C 80 200, 150 280, 200 220 S 250 250, 280 210" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="4" stroke-linecap="round"/></svg>'),
+                /* 涂鸦 3: 爱心 */
+                url('data:image/svg+xml;utf8,<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg"><path d="M75 100 C 30 70, 40 20, 75 40 C 110 20, 120 70, 75 100" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="3"/></svg>'),
+                /* 软木板颗粒路理 */
+                radial-gradient(rgba(0, 0, 0, 0.06) 1.5px, transparent 1.5px),
+                radial-gradient(rgba(0, 0, 0, 0.04) 1.5px, transparent 1.5px);
+            background-size: 200px 200px, 300px 300px, 150px 150px, 12px 12px, 18px 18px;
+            background-position: 10% 20%, 80% 80%, 50% 10%, 0 0, 6px 6px;
+            background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat;
+            
+            /* 3. 更有立体感的木头边框 */
+            border: 20px solid #8c5a35; /* 基础木色 */
+            border-radius: 12px;
+            box-shadow: 
+                0 0 0 2px #4a2f13, /* 外圈深色描边 */
+                inset 0 0 30px rgba(0,0,0,0.5), /* 内圈阴影营造相框深度 */
+                0 15px 40px rgba(0,0,0,0.15); /* 整体外阴影 */
+            
+            position: relative;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        /* 木纹效果遮罩 (叠加在相框上) */
+        .guestbook-section::before {
+            content: '';
+            position: absolute;
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+            border: 20px solid transparent;
+            border-image: repeating-linear-gradient(45deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0.05) 4px, rgba(0,0,0,0) 8px) 20;
+            border-radius: 12px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .guestbook-title {
+            text-align: center;
+            font-family: 'ZCOOL KuaiLe', 'Gaegu', cursive;
+            font-size: 2.5rem;
+            color: #4A3B2C;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            background: #fff;
+            padding: 5px 20px;
+            border-radius: 4px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            
+            /* 【核心修复】必须把 display 从 inline-block 改为 block 并设置最大宽度/自适应 */
+            display: block; 
+            width: fit-content;
+            
+            /* 因为有 rotate 的影响，原先左移后 translateX(-50%) 容易被动效干扰，现在统一处理 */
+            margin-left: auto;
+            margin-right: auto;
+            transform: rotate(-2deg);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .guestbook-title::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: #D32F2F;
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3), 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            min-height: 200px;
+            margin-bottom: 40px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .sticky-note {
+            width: 200px;
+            min-height: 180px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
+            font-family: 'Gaegu', 'Caveat', cursive;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: grab;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .sticky-note:hover {
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .sticky-note:active {
+            cursor: grabbing;
+        }
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 2px;
+        }
+
+        .note-content {
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.4;
+            flex-grow: 1;
+            word-wrap: break-word;
+        }
+
+        .note-author {
+            text-align: right;
+            font-size: 1rem;
+            color: #555;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .note-date {
+            font-size: 0.7rem;
+            color: #777;
+            text-align: right;
+        }
+
+        /* 纯贴纸风格 - me.png */
+        .sticker-me-wrapper {
+            position: absolute;
+            bottom: -30px;
+            right: -100px; /* 继续往右边移一些，原先是 -60px，现在移出更多 */
+            z-index: 20;
+            width: 320px; /* 缩小到原来的 2/3： 480px 的 2/3 是 320px */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sticker-me {
+            width: 100%;
+            height: auto;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2)); 
+            transform: rotate(8deg); 
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+            object-fit: cover;
+        }
+        
+        .sticker-me:hover {
+            filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.3)); 
+            transform: rotate(8deg) scale(1.05);
+        }
+        
+        .sticker-me:active {
+            transform: rotate(5deg) scale(0.95);
+        }
+
+        /* 左上角坐着的不动贴纸 - 我坐着.png */
+        .sticker-sitting {
+            position: absolute;
+            top: -80px; /* 保持在上方，跨过顶部木框 */
+            left: -60px; /* 向左移动，让它跨在左侧木框和外部背景的交界处 */
+            width: 270px; /* 保持 1.5 倍放大 */
+            height: auto;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2)); 
+            transform: rotate(-10deg); 
+            z-index: 15;
+            cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
+            object-fit: cover;
+        }
+
+        .sticker-sitting:hover {
+            filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.3)); 
+        }
+        
+        /* 旋转的动画类 */
+        .sticker-spin {
+            transform: rotate(350deg) scale(1.1) !important;
+        }
+
+        /* 气泡样式 */
+        .chat-bubble {
+            position: absolute;
+            top: -60px; /* 控制气泡出现在头顶 */
+            left: -120px;  /* 往左移动很多，移到人物左侧上方 */
+            background: #fff;
+            padding: 15px 25px;
+            border: 3px solid #333;
+            border-radius: 20px;
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive;
+            font-size: 1.3rem;
+            color: #333;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 250px;
+            text-align: center;
+            z-index: 21;
+            pointer-events: none;
+        }
+
+        /* 气泡的小尾巴 */
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            right: 30px; /* 尾巴放在气泡的右侧下方，指向左下的人物 */
+            left: auto; /* 清除默认左边距 */
+            border-width: 12px 12px 0;
+            border-style: solid;
+            border-color: #fff transparent transparent;
+            display: block;
+            width: 0;
+            z-index: 1;
+        }
+        
+        .chat-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -17px;
+            right: 28px; /* 尾巴边框跟着放到右侧 */
+            left: auto;
+            border-width: 15px 14px 0;
+            border-style: solid;
+            border-color: #333 transparent transparent;
+            display: block;
+            width: 0;
+            z-index: 0;
+        }
+
+        /* 气泡显示的动画状态 */
+        .chat-bubble.show-bubble {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Form Area */
+        .add-note-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+            transform: rotate(1deg);
+        }
+        
+        .add-note-form::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 80px;
+            height: 25px;
+            background: rgba(255, 200, 200, 0.8);
+            transform: rotate(-5deg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Gaegu', cursive;
+            font-size: 1.1rem;
+            background: #fafafa;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #ffb169;
+            background: #fff;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-post {
+            background: #ffb169;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .btn-post:hover {
+            background: #ff9838;
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+        
+        /* 颜色选择器 */
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+        
+        .color-option {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+        
+        .color-option.selected {
+            border-color: #333;
+            transform: scale(1.2);
+        }
+        
+        .loading-text {
+            text-align: center;
+            font-family: 'Gaegu', cursive;
+            color: #555;
+            font-size: 1.5rem;
+            width: 100%;
+        }
+    </style>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 <body data-current-lang="en">
     <!-- SVG Pencil Filter for title drawing effect -->
@@ -1357,38 +1924,38 @@
     <!-- 底部导航 Dock -->
     <div class="dock">
         <a href="index.html#home" class="active" title="Home" onclick="updateDock(this)">
-            <i data-feather="home"></i>
+            <img src="icon/Home.png" alt="Home">
             <span class="dock-label">
                 <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
             </span>
         </a>
         <a href="pages/projects.html" title="Projects">
-            <i data-feather="grid"></i>
+            <img src="icon/Projects.png" alt="Projects">
             <span class="dock-label">
                 <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
             </span>
         </a>
         <a href="index.html#about" title="About" onclick="updateDock(this)">
-            <i data-feather="user"></i>
+            <img src="icon/About.png" alt="About">
             <span class="dock-label">
                 <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
             </span>
         </a>
         <a href="index.html#contact" title="Contact" onclick="updateDock(this)">
-            <i data-feather="mail"></i>
+            <img src="icon/Contact.png" alt="Contact">
             <span class="dock-label">
                 <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
             </span>
         </a>
-        <a href="#search" title="Explore" onclick="updateDock(this)">
-            <i data-feather="compass"></i>
+        <a href="pages/explore.html" title="Explore" onclick="updateDock(this)">
+            <img src="icon/Explore.png" alt="Explore">
             <span class="dock-label">
                 <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
             </span>
         </a>
         <div class="dock-divider"></div>
         <a href="#" title="More" onclick="updateDock(this)">
-            <i data-feather="more-horizontal"></i>
+            <img src="icon/More.png" alt="More">
             <span class="dock-label">
                 <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
             </span>
@@ -1456,7 +2023,7 @@
 
     <div class="container">
         <!-- About (Me) Section - Moved to top -->
-        <h2 class="section-title" id="about">
+        <h2 class="section-title scroll-fade-up" id="about">
             <span data-lang="zh" class="cartoon-font-zh">关于我</span>
             <span data-lang="en" class="cartoon-font-en">About</span>
             <span data-lang="ja" class="cartoon-font-ja">私について</span>
@@ -1464,11 +2031,11 @@
         
         <div class="about-section">
             <div class="about-left">
-                <div style="position: relative;">
-                    <div class="about-profile">
-                        <img src="./picture/my%20image/profile%20photo.jpg" alt="Profile">
+                <div style="position: relative;" class="scroll-pop-in">
+                    <div class="about-profile" id="about-profile-btn">
+                        <img src="./picture/my%20image/profile%20photo.jpg" alt="Profile" id="profile-img">
                     </div>
-                    <div class="yours-truly-arrow">
+                    <div class="yours-truly-arrow draw-arrow">
                         <span class="yours-text">Me</span>
                         <svg width="60" height="60" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M 30 90 Q 60 50 90 20"></path>
@@ -1505,8 +2072,8 @@
             <div class="about-right">
                 <!-- Links -->
                 <div>
-                    <h3 class="about-block-title">Links</h3>
-                    <div class="links-grid">
+                    <h3 class="about-block-title scroll-fade-up">Links</h3>
+                    <div class="links-grid stagger-pop-container">
                         <a href="https://github.com/seiyachan-desuyo" target="_blank" class="link-btn"><i data-feather="github"></i></a>
                         <a href="https://blog.csdn.net/2501_92366047?spm=1000.2115.3001.5343" target="_blank" class="link-btn" style="font-weight:900; font-size:1.2rem; font-family:-apple-system;">C</a>
                         <a href="https://www.xiaohongshu.com/user/profile/5f0a8f5a0000000001003570" target="_blank" class="link-btn"><i data-feather="book-open"></i></a>
@@ -1517,8 +2084,8 @@
 
                 <!-- Skills -->
                 <div>
-                    <h3 class="about-block-title">Skills</h3>
-                    <div class="skills-container">
+                    <h3 class="about-block-title scroll-fade-up">Skills</h3>
+                    <div class="skills-container stagger-pop-container">
                         <span class="skill-pill">UI Design</span>
                         <span class="skill-pill">Illustration</span>
                         <span class="skill-pill">Graphic Design</span>
@@ -1534,8 +2101,8 @@
 
                 <!-- Experience -->
                 <div>
-                    <h3 class="about-block-title">Experience</h3>
-                    <div class="exp-list-new">
+                    <h3 class="about-block-title scroll-fade-up">Experience</h3>
+                    <div class="exp-list-new stagger-container">
                         <div class="exp-item-new">
                             <h4><span data-lang="zh">Sales Finance 实习生 - RTM finance（Beijing)</span><span data-lang="en">Sales Finance Intern - RTM finance (Beijing)</span><span data-lang="ja">Sales Finance インターン - RTM finance (北京)</span></h4>
                             <div class="meta">
@@ -1565,7 +2132,7 @@
 
                 <!-- Download Resume -->
                 <div>
-                    <a href="#" class="download-resume" onclick="showCustomModal('Coming Soon!', 'Resume download will be available shortly.', 'clock'); return false;">
+                    <a href="#" class="download-resume scroll-fade-up" onclick="showCustomModal('Coming Soon!', 'Resume download will be available shortly.', 'clock'); return false;">
                         Download Resume
                         <i data-feather="download"></i>
                     </a>
@@ -1575,25 +2142,22 @@
 
         <!-- Category Section Header -->
         <div class="category-section">
+            <h2 class="section-title scroll-fade-up" id="projects" style="margin-top: 0; margin-bottom: 40px;">
+                <span data-lang="zh" class="cartoon-font-zh">项目作品</span>
+                <span data-lang="en" class="cartoon-font-en">Featured Projects</span>
+                <span data-lang="ja" class="cartoon-font-ja">プロジェクト</span>
+            </h2>
             <div class="category-header">
                 <div class="category-title-wrap">
-                    <div class="category-icon">
-                        <i data-feather="folder"></i>
-                    </div>
-                    <div class="category-title-text">
-                        <h3>
-                            <span data-lang="zh">项目作品</span>
-                            <span data-lang="en">Featured Projects</span>
-                            <span data-lang="ja">プロジェクト</span>
-                        </h3>
+                    <div class="category-title-text scroll-fade-up">
                         <p>
-                            <span data-lang="zh">用热爱与汗水浇灌的心血之作</span>
-                            <span data-lang="en">Blood, sweat, and tears were sacrificed</span>
-                            <span data-lang="ja">情熱と汗を注いだ作品</span>
+                            <span data-lang="zh">一些有趣的、好玩的东西</span>
+                            <span data-lang="en">Something fun and interesting</span>
+                            <span data-lang="ja">面白くて楽しいもの</span>
                         </p>
                     </div>
                 </div>
-                <a href="pages/projects.html" class="category-see-all">
+                <a href="pages/projects.html" class="category-see-all scroll-pop-in">
                     <span data-lang="zh">查看全部</span>
                     <span data-lang="en">See All</span>
                     <span data-lang="ja">すべて見る</span>
@@ -1601,10 +2165,10 @@
             </div>
 
             <!-- Projects Grid - Horizontal layout replacing flex wrap for exact Framer look -->
-            <div class="projects-grid">
+            <div class="projects-grid stagger-container">
                 
                 <!-- 1. 我的个人项目 (My Own Project) -->
-                <a href="pages/projects.html" class="folder-project-card card-myown">
+                <a href="pages/projects.html?filter=myown#projects-content" class="folder-project-card card-myown">
                     <div class="folder-back">
                         <div class="folder-tab"></div>
                     </div>
@@ -1641,7 +2205,7 @@
                 </a>
 
                 <!-- 2. 公司项目 (Company Project) -->
-                <a href="pages/projects.html" class="folder-project-card card-company">
+                <a href="pages/projects.html?filter=company#projects-content" class="folder-project-card card-company">
                     <div class="folder-back">
                         <div class="folder-tab"></div>
                     </div>
@@ -1678,7 +2242,7 @@
                 </a>
 
                 <!-- 3. 比赛项目 (Competition Project) -->
-                <a href="pages/projects.html" class="folder-project-card card-compete">
+                <a href="pages/projects.html?filter=competition#projects-content" class="folder-project-card card-compete">
                     <div class="folder-back">
                         <div class="folder-tab"></div>
                     </div>
@@ -1717,6 +2281,62 @@
             </div>
         </section>
 
+    <!-- Guestbook Section (Notice Board) -->
+    <section class="guestbook-section guestbook-anim" id="guestbook">
+        <h2 class="guestbook-title scroll-pop-in">
+            <span data-lang="zh">留言板</span>
+            <span data-lang="en">Guestbook</span>
+            <span data-lang="ja">掲示板</span>
+        </h2>
+        
+        <div class="notes-container" id="notes-container">
+            <div class="loading-text">Loading messages... ✏️</div>
+            <!-- Notes will be injected here by JS -->
+        </div>
+        
+        <!-- Draggable sticker: me.png with chat bubble -->
+        <div class="sticky sticker-me-wrapper" id="sticker-me-container">
+            <div class="chat-bubble" id="chat-bubble">hi, 你今天过得怎么样？</div>
+            <img src="./picture/my%20image/me.png" class="sticker-me" id="sticker-me-img" draggable="false" alt="Me">
+        </div>
+        
+        <!-- Left top static sticker: 我坐着.png -->
+        <img src="./picture/my%20image/我坐着.png" class="sticker-sitting" id="sticker-sitting-img" draggable="false" alt="Me sitting">
+
+        <!-- Add Note Form -->
+        <div class="add-note-form">
+            <div class="form-group">
+                <label>
+                    <span data-lang="zh">你的名字 Name</span>
+                    <span data-lang="en">Name</span>
+                    <span data-lang="ja">お名前</span>
+                </label>
+                <input type="text" id="note-author" class="form-control" placeholder="Anonymous" maxlength="20">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <span data-lang="zh">留言内容 Message</span>
+                    <span data-lang="en">Message</span>
+                    <span data-lang="ja">メッセージ</span>
+                </label>
+                <textarea id="note-content" class="form-control" placeholder="Write something nice... ✨" required maxlength="150"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <div class="color-picker" id="color-picker">
+                    <!-- Colors will be injected by JS -->
+                </div>
+            </div>
+
+            <button class="btn-post" id="btn-post-note">
+                <span data-lang="zh">贴到墙上！</span>
+                <span data-lang="en">Pin it!</span>
+                <span data-lang="ja">貼る！</span>
+            </button>
+        </div>
+    </section>
+
     <!-- 自定义弹窗 -->
     <div id="custom-modal" class="custom-modal" onclick="if(event.target === this) closeCustomModal()">
         <div class="custom-modal-content">
@@ -1728,7 +2348,7 @@
     </div>
 
     <!-- 引入外部手绘风磁带播放器 -->
-    <iframe src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" allow="autoplay"></iframe>
+    <iframe src="pages/music-player.html?v=16" class="music-player-iframe" allowtransparency="true" allow="autoplay"></iframe>
 
     <script>
         // 简单的便利贴拖拽功能实现
@@ -1750,20 +2370,28 @@
         document.addEventListener('touchend', dragEnd);
 
         function dragStart(e) {
-            initialX = e.clientX || e.touches[0].clientX;
-            initialY = e.clientY || e.touches[0].clientY;
+            const targetSticky = e.target.closest('.sticky');
 
-            if (e.target.classList.contains('sticky')) {
+            if (targetSticky) {
+                initialX = e.clientX || e.touches[0].clientX;
+                initialY = e.clientY || e.touches[0].clientY;
+                
                 isDragging = true;
-                currentSticky = e.target;
+                currentSticky = targetSticky;
                 
                 // 将正在拖拽的元素放到最上层
                 stickies.forEach(s => s.style.zIndex = 5);
                 currentSticky.style.zIndex = 10;
                 
-                // 获取当前的 transform 属性
-                const style = window.getComputedStyle(currentSticky);
-                const transform = style.getPropertyValue('transform');
+                // 获取并存储原始的 transform 字符串（去掉所有的 translate 增量）
+                if (!currentSticky.dataset.baseTransform) {
+                    const inlineTransform = currentSticky.style.transform || '';
+                    currentSticky.dataset.baseTransform = inlineTransform.replace(/translate\([^)]+\)/g, '').trim();
+                }
+                
+                // 初始化累计位移变量
+                if (!currentSticky.dataset.tx) currentSticky.dataset.tx = 0;
+                if (!currentSticky.dataset.ty) currentSticky.dataset.ty = 0;
                 
                 // 暂时移除 transition 以防止拖拽延迟
                 currentSticky.style.transition = 'none';
@@ -1779,14 +2407,14 @@
 
                 const dx = currentX - initialX;
                 const dy = currentY - initialY;
-
-                // 我们通过调整 top 和 left 来移动，保持它原有的 rotate 变换
-                const rect = currentSticky.getBoundingClientRect();
-                const currentTop = parseFloat(currentSticky.style.top || currentSticky.offsetTop);
-                const currentLeft = parseFloat(currentSticky.style.left || currentSticky.offsetLeft);
                 
-                // 为了简单起见，这里直接使用相对位移
-                currentSticky.style.transform += ` translate(${dx}px, ${dy}px)`;
+                let tx = parseFloat(currentSticky.dataset.tx) + dx;
+                let ty = parseFloat(currentSticky.dataset.ty) + dy;
+                currentSticky.dataset.tx = tx;
+                currentSticky.dataset.ty = ty;
+
+                // 优化：仅应用单一的 translate 以及基础变换，防止 transform 字符串无限累加导致 CPU 暴涨和严重卡顿
+                currentSticky.style.transform = `${currentSticky.dataset.baseTransform} translate(${tx}px, ${ty}px)`;
                 
                 initialX = currentX;
                 initialY = currentY;
@@ -1838,6 +2466,8 @@
             clickedItem.classList.add('active');
         }
 
+
+
         // --- 音乐播放器逻辑 ---
         const audio = document.getElementById('audio');
         const playBtn = document.getElementById('play-btn');
@@ -1847,6 +2477,8 @@
         let isPlaying = false;
 
         function togglePlay() {
+            if (!audio || !playIcon || !player) return;
+            
             if (isPlaying) {
                 audio.pause();
                 playIcon.setAttribute('data-feather', 'play');
@@ -1857,11 +2489,13 @@
                 player.classList.add('playing');
                 createNotes();
             }
-            feather.replace();
+            if (typeof feather !== 'undefined') feather.replace();
             isPlaying = !isPlaying;
         }
 
-        playBtn.addEventListener('click', togglePlay);
+        if (playBtn) {
+            playBtn.addEventListener('click', togglePlay);
+        }
 
         function createNotes() {
             if(!isPlaying) return;
@@ -1888,50 +2522,319 @@
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
-        // Formspree 邮箱提交流辑
-        const emailForm = document.getElementById("email-form");
-        const submitBtnText = document.getElementById("submit-btn-text");
 
-        emailForm.addEventListener("submit", async function(event) {
-            event.preventDefault();
+        // ================= Supabase 留言板逻辑 =================
+        
+        // 1. 初始化 Supabase
+        const SUPABASE_URL = 'https://ivkerbyrsdwznsjsmbyr.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_zoClneoyOrMrYK2IxnVYhg_lD-gflCj';
+        
+        // 关键修改：避免使用 'supabase' 作为变量名，因为它可能与全局对象冲突
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. 便利贴颜色配置
+        const stickyColors = ['#ffb169', '#ff6b6b', '#4ecdc4', '#feca57', '#a29bfe', '#fd79a8'];
+        let selectedColor = stickyColors[0];
+        
+        // 生成颜色选择器
+        const colorPickerContainer = document.getElementById('color-picker');
+        stickyColors.forEach((color, index) => {
+            const circle = document.createElement('div');
+            circle.className = 'color-option' + (index === 0 ? ' selected' : '');
+            circle.style.backgroundColor = color;
+            circle.dataset.color = color;
+            circle.onclick = function() {
+                document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedColor = this.dataset.color;
+            };
+            colorPickerContainer.appendChild(circle);
+        });
+
+        // 3. 渲染单个便利贴的函数
+        function renderNote(noteData) {
+            const noteEl = document.createElement('div');
+            noteEl.className = 'sticky-note';
             
-            // 提交状态
-            const originalBtnText = submitBtnText.innerText;
-            submitBtnText.innerText = "Sending...";
-            submitBtnText.style.background = "#888";
-            submitBtnText.style.pointerEvents = "none";
+            // 随机旋转角度和一点点平移，增加真实感
+            const rotate = (Math.random() * 8) - 4; // -4deg 到 4deg
+            noteEl.style.transform = `rotate(${rotate}deg)`;
+            noteEl.style.backgroundColor = noteData.color || stickyColors[Math.floor(Math.random() * stickyColors.length)];
             
-            const formData = new FormData(emailForm);
+            // 格式化日期
+            const dateObj = new Date(noteData.created_at);
+            const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            // 防止 XSS 攻击，简单的文本转义
+            const escapeHTML = (str) => str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+
+            noteEl.innerHTML = `
+                <div class="note-content">${escapeHTML(noteData.message_content)}</div>
+                <div>
+                    <div class="note-author">- ${escapeHTML(noteData.author_name || 'Anonymous')}</div>
+                    <div class="note-date">${dateStr}</div>
+                </div>
+            `;
+            
+            return noteEl;
+        }
+
+        // 4. 获取留言列表
+        async function fetchNotes() {
+            const container = document.getElementById('notes-container');
+            
+            try {
+                // 使用新的变量名 supabaseClient
+                const { data, error } = await supabaseClient
+                    .from('messages')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                    
+                if (error) throw error;
+                
+                container.innerHTML = ''; // 清空 loading 提示
+                
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="loading-text">Be the first to leave a message! ✨</div>';
+                    return;
+                }
+                
+                data.forEach(note => {
+                    container.appendChild(renderNote(note));
+                });
+                
+            } catch (err) {
+                console.error("获取留言失败:", err);
+                container.innerHTML = '<div class="loading-text" style="color:red;">Oops! Failed to load messages.</div>';
+            }
+        }
+
+        // 5. 提交留言
+        document.getElementById('btn-post-note').addEventListener('click', async function() {
+            const authorInput = document.getElementById('note-author');
+            const contentInput = document.getElementById('note-content');
+            const btn = this;
+            
+            const author = authorInput.value.trim() || 'Anonymous';
+            const content = contentInput.value.trim();
+            
+            if (!content) {
+                showCustomModal('Oops!', 'Message cannot be empty!', 'alert-circle');
+                return;
+            }
+            
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Posting... ✏️';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
 
             try {
-                const response = await fetch("https://formspree.io/f/xvgzpyod", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+                // 使用新的变量名 supabaseClient 插入数据
+                const { error } = await supabaseClient
+                    .from('messages')
+                    .insert([
+                        { 
+                            author_name: author, 
+                            message_content: content, 
+                            color: selectedColor 
+                        }
+                    ]);
 
-                if (response.ok) {
-                    showCustomModal('Success!', 'Your message has been sent.\nI will get back to you soon!', 'check-circle');
-                    emailForm.reset();
-                } else {
-                    const data = await response.json();
-                    if (Object.hasOwn(data, 'errors')) {
-                        showCustomModal('Oops!', data["errors"].map(error => error["message"]).join(", "), 'alert-circle');
-                    } else {
-                        showCustomModal('Oops!', 'There was a problem submitting your form', 'alert-circle');
-                    }
+                if (error) {
+                    console.error("Supabase 返回的详细错误:", error);
+                    throw error;
                 }
-            } catch (error) {
-                showCustomModal('Oops!', 'There was a problem submitting your form', 'alert-circle');
+                
+                // 成功后：清空输入框并重新拉取列表
+                contentInput.value = '';
+                authorInput.value = ''; // 也清空名字
+                showCustomModal('Success!', 'Your note has been pinned!', 'check-circle');
+                
+                // 刷新留言板
+                fetchNotes();
+                
+            } catch (err) {
+                console.error("发送留言失败:", err);
+                showCustomModal('Error!', 'Failed to post note. Please try again.', 'alert-triangle');
             } finally {
-                // 恢复按钮状态
-                submitBtnText.innerText = originalBtnText;
-                submitBtnText.style.background = "";
-                submitBtnText.style.pointerEvents = "auto";
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.style.opacity = '1';
             }
         });
+
+        // 页面加载完成后立即拉取留言
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchNotes();
+        });
+
+        // ================= 贴纸聊天气泡逻辑 =================
+        const chatPhrases = [
+            "Hi，你今天过得怎么样？",
+            "欢迎来到我的小宇宙！✨",
+            "写点什么贴在墙上吧！",
+            "今天的风很温柔哦~",
+            "点我干嘛？戳我痒痒肉了！",
+            "好困哦... zZz...",
+            "记得要多喝水！",
+            "有在好好吃饭吗？",
+            "很高兴遇见你！",
+            "这是一块充满魔法的留言板哦！"
+        ];
+        
+        const stickerMeImg = document.getElementById('sticker-me-img');
+        const chatBubble = document.getElementById('chat-bubble');
+        let bubbleTimeout;
+
+        if (stickerMeImg && chatBubble) {
+            stickerMeImg.addEventListener('click', function(e) {
+                // 如果正在被拖拽，不触发点击
+                if (isDragging) return;
+                
+                // 随机获取一句话
+                const randomPhrase = chatPhrases[Math.floor(Math.random() * chatPhrases.length)];
+                chatBubble.innerText = randomPhrase;
+                
+                // 显示气泡
+                chatBubble.classList.add('show-bubble');
+                
+                // 清除之前的定时器
+                if (bubbleTimeout) clearTimeout(bubbleTimeout);
+                
+                // 3秒后自动隐藏
+                bubbleTimeout = setTimeout(() => {
+                    chatBubble.classList.remove('show-bubble');
+                }, 3000);
+            });
+        }
+        
+        // ================= 左上角贴纸旋转逻辑 =================
+        const stickerSittingImg = document.getElementById('sticker-sitting-img');
+        if (stickerSittingImg) {
+            stickerSittingImg.addEventListener('click', function() {
+                // 如果动画已经在播放，就先移除，触发重绘，再重新添加，以支持连续快速点击
+                this.classList.remove('sticker-spin');
+                void this.offsetWidth; // 触发 reflow
+                this.classList.add('sticker-spin');
+            });
+            
+            // 动画结束时自动移除类，这样它就不会卡在转了一圈的状态里，下次点击还能触发
+            stickerSittingImg.addEventListener('animationend', function() {
+                this.classList.remove('sticker-spin');
+            });
+        }
+        
+        // ================= 头像点击切换逻辑 =================
+        const profileBtn = document.getElementById('about-profile-btn');
+        const profileImg = document.getElementById('profile-img');
+        if (profileBtn && profileImg) {
+            const defaultImg = "./picture/my%20image/profile%20photo.jpg";
+            const altImg = "./picture/my%20image/头像.jpg";
+            let isDefaultImg = true;
+
+            profileBtn.addEventListener('click', function() {
+                // 简单的淡出淡入动画
+                profileImg.style.opacity = '0';
+                
+                setTimeout(() => {
+                    if (isDefaultImg) {
+                        profileImg.src = altImg;
+                    } else {
+                        profileImg.src = defaultImg;
+                    }
+                    isDefaultImg = !isDefaultImg;
+                    profileImg.style.opacity = '1';
+                }, 300); // 等待淡出完成后再切换图片源
+            });
+        }
+        
+        // ================= 滚动动效 (Scroll Reveal) Intersection Observer =================
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    // 兼容原来的 about-stickies 动画逻辑
+                    if (entry.target.classList.contains('about-stickies')) {
+                        entry.target.classList.add('animate');
+                    }
+                    
+                    // 特殊情况：由于留言板内的便签是动态加载的，可以后续加入，或者任其自然（不需要观察器）
+                    
+                    observer.unobserve(entry.target); // 动画只触发一次，避免上下滚动重复闪烁
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.15 // 当容器露出 15% 时触发
+        });
+
+        // 监听所有需要滚动动效的模块
+        const animatedElements = document.querySelectorAll(`
+            .scroll-fade-up, 
+            .scroll-pop-in, 
+            .stagger-container, 
+            .stagger-pop-container, 
+            .guestbook-anim, 
+            .about-stickies
+        `);
+        animatedElements.forEach(el => scrollObserver.observe(el));
+        // =================================================================
+
+        // Formspree 邮箱提交流辑
+        const emailForm = document.getElementById("email-form");
+        if (emailForm) {
+            const submitBtnText = document.getElementById("submit-btn-text");
+
+            emailForm.addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                // 提交状态
+                const originalBtnText = submitBtnText.innerText;
+                submitBtnText.innerText = "Sending...";
+                submitBtnText.style.background = "#888";
+                submitBtnText.style.pointerEvents = "none";
+                
+                const formData = new FormData(emailForm);
+
+                try {
+                    const response = await fetch("https://formspree.io/f/xvgzpyod", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        showCustomModal('Success!', 'Your message has been sent.\nI will get back to you soon!', 'check-circle');
+                        emailForm.reset();
+                    } else {
+                        const data = await response.json();
+                        if (Object.hasOwn(data, 'errors')) {
+                            showCustomModal('Oops!', data["errors"].map(error => error["message"]).join(", "), 'alert-circle');
+                        } else {
+                            showCustomModal('Oops!', 'There was a problem submitting your form', 'alert-circle');
+                        }
+                    }
+                } catch (error) {
+                    showCustomModal('Oops!', 'There was a problem submitting your form', 'alert-circle');
+                } finally {
+                    // 恢复按钮状态
+                    submitBtnText.innerText = originalBtnText;
+                    submitBtnText.style.background = "";
+                    submitBtnText.style.pointerEvents = "auto";
+                }
+            });
+        }
     </script>
 </body>
 </html>

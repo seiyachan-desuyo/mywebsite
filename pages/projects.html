@@ -73,14 +73,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
+            width: 90px;
+            height: 90px;
             gap: 4px;
             text-decoration: none;
             color: #888;
             border-radius: 20px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
         }
 
         .dock-label {
@@ -94,6 +96,16 @@
         .dock a:hover {
             background: #f5f5f5;
             color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
         }
 
         .dock a.active {
@@ -114,10 +126,21 @@
             border-radius: 2px;
         }
 
-        .dock a i {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2.5px;
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+        
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
         }
 
         .dock-divider {
@@ -166,8 +189,9 @@
             font-weight: bold;
         }
         
-        body[data-current-lang="en"] .page-title {
-            font-family: 'Courier New', Courier, monospace;
+        body[data-current-lang="en"] .page-title,
+        body[data-current-lang="en"] .section-header h2 {
+            font-family: 'Gaegu', 'Courier New', Courier, monospace; /* 英文字体修改为更可爱的 Gaegu */
         }
 
         /* 页面区块分类标题 */
@@ -188,60 +212,160 @@
             font-weight: bold;
         }
 
-        body[data-current-lang="en"] .section-header h2 {
-            font-family: 'Courier New', Courier, monospace;
+        body[data-current-lang="ja"] .page-title,
+        body[data-current-lang="ja"] .section-header h2 {
+            font-family: 'M PLUS Rounded 1c', sans-serif; /* 日文字体统一为圆润体 */
         }
 
-        /* Grid Layout matching Framer Archives */
+        /* 修复英文环境下因为多重设置导致的旧字体遗留 */
+        body[data-current-lang="en"] .section-header h2 {
+            font-family: 'Gaegu', 'Courier New', Courier, monospace;
+        }
+
+        /* Grid Layout matching Bookshelf */
         .archive-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 40px 30px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 100px 50px; /* 拉大每本书之间的上下和左右间距 */
+            /* Bookshelf wood background styling */
+            background-color: transparent;
         }
 
+        /* 木质书架板，现在把它提出来放在每一行对应的位置，不再跟卡片绑定悬浮 */
         .project-card {
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
+            z-index: 1;
         }
 
-        .project-card:hover {
-            transform: translateY(-8px);
+        /* 这里是那个黑灰色的书架隔板，只产生透视不出位移 */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            bottom: 60px; /* 根据 card-info 的高度微调，使书正好坐在架子上 */
+            left: -25px; /* 延伸进 grid gap，使相邻书架相连 */
+            right: -25px;
+            height: 16px;
+            background: linear-gradient(to bottom, #444 0%, #222 100%); /* 黑灰色书架 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 书本本身包含厚度的容器 */
+        .book-model {
+            position: relative;
+            width: 100%;
+            height: auto;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            z-index: 5;
+        }
+
+        .project-card:hover .book-model {
+            transform: translateY(-15px); /* 悬停时只有书本上升，架子不动 */
+            z-index: 10;
         }
 
         .card-image-wrap {
             width: 100%;
-            aspect-ratio: 1 / 1;
-            border-radius: 24px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            aspect-ratio: 3 / 4;
+            border-radius: 4px 14px 14px 4px;
+            overflow: visible;
+            margin-bottom: 25px;
+            box-shadow: 
+                inset 4px 0 10px rgba(0,0,0,0.1), 
+                inset -1px 0 2px rgba(255,255,255,0.4),
+                -4px 6px 12px rgba(0,0,0,0.15);
             position: relative;
             background-color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 5rem;
-            transition: box-shadow 0.3s;
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+            transform-origin: left center;
         }
         
         .project-card:hover .card-image-wrap {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: rotateY(-25deg) translateX(5px); /* 稍微翻开的效果，不需要再写 perspective 因为父级已有 */
+            box-shadow: 
+                -15px 20px 30px rgba(0,0,0,0.25), 
+                inset 6px 0 12px rgba(0,0,0,0.1);
+        }
+
+        /* 模拟书本的侧边纸张厚度 */
+        .card-image-wrap::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            right: -8px; /* 稍微加厚一点点 */
+            width: 8px;
+            background: repeating-linear-gradient(to bottom, #f9f9f9 0px, #f9f9f9 2px, #ececec 2px, #ececec 3px);
+            border-radius: 0 4px 4px 0;
+            box-shadow: inset -1px 0 3px rgba(0,0,0,0.2);
+            z-index: -1;
+            transform: perspective(500px) rotateY(25deg);
+            transform-origin: left center;
+        }
+
+        /* 模拟书脊处的压痕线 */
+        .card-image-wrap::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(0,0,0,0.1) 100%);
+            z-index: 10;
+        }
+
+        /* 给项目点击增加一个快速的“翻页/翻开”小动画类 */
+        .card-image-wrap.book-opening {
+            transform: rotateY(-75deg) translateX(10px) !important;
+            box-shadow: -25px 20px 40px rgba(0,0,0,0.1) !important;
+            transition: transform 0.4s cubic-bezier(0.6, 0.05, 0.1, 1), box-shadow 0.4s !important;
         }
 
         .card-image-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 4px 14px 14px 4px;
         }
 
         .card-info {
             text-align: center;
-            width: 100%;
+            width: 90%;
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 博物馆吊牌的挂绳 */
+        .card-info::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 12px;
+            background: 
+                radial-gradient(circle at 10px 0, transparent 2px, #aaa 3px, transparent 4px),
+                radial-gradient(circle at 30px 0, transparent 2px, #aaa 3px, transparent 4px);
+            z-index: 1;
         }
 
         .card-title {
@@ -257,11 +381,11 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        /* 模态框/弹窗样式 (Framer Modal Effect) */
+        /* 模态框/弹窗样式 (Framer Modal Effect -> Open Book) */
         .project-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--modal-bg);
+            background: rgba(0, 0, 0, 0.5); /* 稍微变暗一点背景，突出书本 */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 10000;
@@ -279,49 +403,109 @@
             pointer-events: auto;
         }
 
+        /* 模拟展开的书本 */
         .modal-container {
-            background: #fff;
-            width: 900px;
+            background: #fdfbf7; /* 复古偏黄的纸张颜色 */
+            width: 1000px;
             max-width: 95vw;
-            height: 500px;
+            height: 600px;
             max-height: 90vh;
-            border-radius: 24px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            border-radius: 12px; /* 对于书页来说，不需要那么圆滑 */
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.25),
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 40px rgba(139, 110, 80, 0.08); /* 书页四周微黄的阴影 */
             display: flex;
             flex-direction: row;
-            overflow: hidden;
-            transform: scale(0.95) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: scale(0.9) translateY(40px) rotateX(-20deg); /* 增加3D开合感 */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
+            perspective: 1500px; /* 增加 3D 透视 */
+        }
+
+        /* 模拟书本中央的装订折痕线与阴影 */
+        .modal-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            background: linear-gradient(
+                to right,
+                rgba(0,0,0,0) 0%,
+                rgba(0,0,0,0.06) 35%,
+                rgba(0,0,0,0.15) 50%,
+                rgba(0,0,0,0.06) 65%,
+                rgba(0,0,0,0) 100%
+            );
+            pointer-events: none;
+            z-index: 5;
         }
 
         .project-modal.active .modal-container {
-            transform: scale(1) translateY(0);
+            transform: scale(1) translateY(0) rotateX(0deg);
         }
 
         .modal-left {
             flex: 1;
-            background-color: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
             position: relative;
+            padding: 50px;
+            z-index: 2;
+            /* 左侧纸张质感，带点淡淡的光晕和纸张底色 */
+            background: transparent; 
         }
         
         .modal-left img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* 包含整图，不再填充满屏裁切 */
+            border-radius: 4px;
+            /* 照片贴纸/拍立得风格 */
+            box-shadow: 4px 6px 15px rgba(0,0,0,0.15); 
+            background: #fff; 
+            padding: 12px 12px 35px 12px; /* 下方留白多一点，仿拍立得 */
+            transform: rotate(-3deg); /* 随意的斜放感 */
+            transition: transform 0.3s;
+        }
+        
+        .modal-left img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+        
+        /* 如果是占位的 Emoji */
+        .emoji-placeholder {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+            transform: rotate(-5deg);
         }
 
         .modal-right {
             flex: 1;
-            padding: 60px 50px;
+            padding: 50px 60px 50px 60px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            background: #fff;
+            justify-content: flex-start; /* 顶部对齐 */
+            z-index: 2;
+            
+            /* 手帐本的横线底纹 */
+            background-image: repeating-linear-gradient(
+                transparent, 
+                transparent 39px, 
+                rgba(0, 0, 0, 0.08) 39px, 
+                rgba(0, 0, 0, 0.08) 40px
+            );
+            background-position: 0 30px; /* 对齐线条位置 */
         }
 
         .modal-close {
@@ -330,65 +514,122 @@
             right: 20px;
             width: 40px;
             height: 40px;
-            background: #f5f5f5;
+            background: transparent;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: none;
-            transition: background 0.2s;
+            border: 2px solid rgba(0,0,0,0.1);
+            color: #555;
+            transition: all 0.2s;
             z-index: 10;
         }
         
         .modal-close:hover {
-            background: #e0e0e0;
+            background: rgba(0,0,0,0.05);
+            transform: rotate(90deg);
         }
 
         .modal-title {
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 20px; /* 调整和横线的节奏 */
+            line-height: 40px;
             color: var(--text-color);
+        }
+        
+        body[data-current-lang="zh"] .modal-title,
+        body[data-current-lang="en"] .modal-title {
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive !important;
+        }
+
+        body[data-current-lang="ja"] .modal-title {
+            font-family: 'M PLUS Rounded 1c', sans-serif !important;
         }
 
         .modal-date {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: #888;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            line-height: 40px;
+        }
+        
+        body[data-current-lang="zh"] .modal-date,
+        body[data-current-lang="en"] .modal-date {
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive;
+        }
+
+        body[data-current-lang="ja"] .modal-date {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
         }
 
         .modal-desc {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 30px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 1.25rem;
+            line-height: 40px; /* 严丝合缝对准 40px 的横纹背景 */
+            color: #444;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+        
+        body[data-current-lang="zh"] .modal-desc,
+        body[data-current-lang="en"] .modal-desc {
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive;
+        }
+
+        body[data-current-lang="ja"] .modal-desc {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-weight: 700; /* 日文通常笔画更细，稍微加粗 */
         }
 
         .modal-role {
-            font-size: 1.1rem;
-            color: #333;
+            font-size: 1.3rem;
+            color: #222;
             margin-bottom: 40px;
+            line-height: 40px;
+            font-weight: 700;
+        }
+        
+        body[data-current-lang="zh"] .modal-role,
+        body[data-current-lang="en"] .modal-role {
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive;
+        }
+
+        body[data-current-lang="ja"] .modal-role {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
         }
 
         .visit-btn {
             display: inline-flex;
             align-items: center;
-            background: var(--text-color);
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 30px;
+            justify-content: center;
+            background: transparent;
+            color: var(--text-color);
+            padding: 5px 30px;
+            height: 40px; /* 占用一格横线 */
+            border-radius: 20px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 1.2rem;
             align-self: flex-start;
-            transition: transform 0.2s, background 0.2s;
-            border: none;
+            transition: all 0.2s;
+            border: 2px solid var(--text-color);
+            transform: rotate(-2deg);
+        }
+        
+        body[data-current-lang="zh"] .visit-btn,
+        body[data-current-lang="en"] .visit-btn {
+            font-family: 'Gaegu', 'ZCOOL KuaiLe', cursive;
+        }
+
+        body[data-current-lang="ja"] .visit-btn {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
         }
 
         .visit-btn:hover {
-            background: #222;
-            transform: scale(1.05);
+            background: var(--text-color);
+            color: #fff !important; /* 强制覆盖成白色 */
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 4px 6px 0 rgba(0,0,0,0.1);
         }
 
         /* 语言切换器 */
@@ -454,38 +695,38 @@
     <!-- 底部导航 Dock -->
     <div class="dock">
         <a href="../index.html#home" title="Home">
-            <i data-feather="home"></i>
+            <img src="../icon/Home.png" alt="Home">
             <span class="dock-label">
                 <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
             </span>
         </a>
         <a href="projects.html" class="active" title="Projects">
-            <i data-feather="grid"></i>
+            <img src="../icon/Projects.png" alt="Projects">
             <span class="dock-label">
                 <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
             </span>
         </a>
         <a href="../index.html#about" title="About">
-            <i data-feather="user"></i>
+            <img src="../icon/About.png" alt="About">
             <span class="dock-label">
                 <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
             </span>
         </a>
         <a href="../index.html#contact" title="Contact">
-            <i data-feather="mail"></i>
+            <img src="../icon/Contact.png" alt="Contact">
             <span class="dock-label">
                 <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
             </span>
         </a>
         <a href="#" title="Explore">
-            <i data-feather="compass"></i>
+            <img src="../icon/Explore.png" alt="Explore">
             <span class="dock-label">
                 <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
             </span>
         </a>
         <div class="dock-divider"></div>
         <a href="#" title="More">
-            <i data-feather="more-horizontal"></i>
+            <img src="../icon/More.png" alt="More">
             <span class="dock-label">
                 <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
             </span>
@@ -511,7 +752,7 @@
         </div>
 
         <!-- Section 1: My Own Project -->
-        <div class="archive-section">
+        <div class="archive-section" id="section-myown">
             <div class="section-header">
                 <h2>
                     <span data-lang="zh" class="cartoon-font-zh">个人项目</span>
@@ -521,9 +762,11 @@
             </div>
             <div class="archive-grid">
                 <!-- 项目 9: OurDiary 多人电子手帐本 -->
-                <a href="#" class="project-card" onclick="openModal('project-9'); return false;">
-                    <div class="card-image-wrap" style="background-color: #fff3e0;">
-                        <img src="../project/my%20own%20project/手帐本/1.png" alt="Cover">
+                <a href="#" class="project-card" onclick="openModal('project-9', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #fff3e0;">
+                            <img src="../project/my%20own%20project/手帐本/1.png" alt="Cover">
+                        </div>
                     </div>
                     <div class="card-info">
                         <div class="card-title">
@@ -536,9 +779,11 @@
                 </a>
 
                 <!-- 项目 8: 猫猫鲨桌面宠物 -->
-                <a href="#" class="project-card" onclick="openModal('project-8'); return false;">
-                    <div class="card-image-wrap" style="background-color: #e3f2fd;">
-                        <img src="../project/my%20own%20project/猫猫鲨/1.png" alt="Cover">
+                <a href="#" class="project-card" onclick="openModal('project-8', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #e3f2fd;">
+                            <img src="../project/my%20own%20project/猫猫鲨/1.png" alt="Cover">
+                        </div>
                     </div>
                     <div class="card-info">
                         <div class="card-title">
@@ -551,9 +796,11 @@
                 </a>
 
                 <!-- 项目 7: Markdown 转换器 -->
-                <a href="#" class="project-card" onclick="openModal('project-7'); return false;">
-                    <div class="card-image-wrap" style="background-color: #fce4ec;">
-                        <img src="../project/my%20own%20project/markdown-converter/图片1.png" alt="Cover">
+                <a href="#" class="project-card" onclick="openModal('project-7', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #fce4ec;">
+                            <img src="../project/my%20own%20project/markdown-converter/图片1.png" alt="Cover">
+                        </div>
                     </div>
                     <div class="card-info">
                         <div class="card-title">
@@ -568,7 +815,7 @@
         </div>
 
         <!-- Section 2: Company Project -->
-        <div class="archive-section">
+        <div class="archive-section" id="section-company">
             <div class="section-header">
                 <h2>
                     <span data-lang="zh" class="cartoon-font-zh">公司项目</span>
@@ -578,8 +825,10 @@
             </div>
             <div class="archive-grid">
                 <!-- 项目 4: RTM Automation -->
-                <a href="#" class="project-card" onclick="openModal('project-4'); return false;">
-                    <div class="card-image-wrap" style="background-color: #e8f5e9;">📊</div>
+                <a href="#" class="project-card" onclick="openModal('project-4', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #e8f5e9;">📊</div>
+                    </div>
                     <div class="card-info">
                         <div class="card-title">
                             <span data-lang="zh" class="cartoon-font-zh">RTM 自动化</span>
@@ -591,8 +840,10 @@
                 </a>
 
                 <!-- 项目 2: 巧妈妈 -->
-                <a href="#" class="project-card" onclick="openModal('project-2'); return false;">
-                    <div class="card-image-wrap" style="background-color: #fff3e0;">🎨</div>
+                <a href="#" class="project-card" onclick="openModal('project-2', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #fff3e0;">🎨</div>
+                    </div>
                     <div class="card-info">
                         <div class="card-title">
                             <span data-lang="zh" class="cartoon-font-zh">巧妈妈包装设计</span>
@@ -606,7 +857,7 @@
         </div>
 
         <!-- Section 3: Competition Project -->
-        <div class="archive-section">
+        <div class="archive-section" id="section-competition">
             <div class="section-header">
                 <h2>
                     <span data-lang="zh" class="cartoon-font-zh">比赛项目</span>
@@ -616,9 +867,11 @@
             </div>
             <div class="archive-grid">
                 <!-- 项目 1: 毛孩安心保 -->
-                <a href="#" class="project-card" onclick="openModal('project-1'); return false;">
-                    <div class="card-image-wrap" style="background-color: #fff8e1;">
-                        <img src="../project/competition%20project/华泰杯/1.png" alt="Cover">
+                <a href="#" class="project-card" onclick="openModal('project-1', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #fff8e1;">
+                            <img src="../project/competition%20project/华泰杯/1.png" alt="Cover">
+                        </div>
                     </div>
                     <div class="card-info">
                         <div class="card-title">
@@ -631,8 +884,10 @@
                 </a>
 
                 <!-- 项目 3: 金融广告设计 -->
-                <a href="#" class="project-card" onclick="openModal('project-3'); return false;">
-                    <div class="card-image-wrap" style="background-color: #e3f2fd;">🎬</div>
+                <a href="#" class="project-card" onclick="openModal('project-3', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #e3f2fd;">🎬</div>
+                    </div>
                     <div class="card-info">
                         <div class="card-title">
                             <span data-lang="zh" class="cartoon-font-zh">金融广告设计</span>
@@ -792,9 +1047,18 @@
         }
 
         // 打开模态框
-        function openModal(projectId) {
+        function openModal(projectId, event) {
             const data = projectDatabase[projectId];
             if (!data) return;
+
+            // 获取被点击的卡片的翻页元素
+            let clickedBook = null;
+            if (event && event.currentTarget) {
+                clickedBook = event.currentTarget.querySelector('.card-image-wrap');
+                if (clickedBook) {
+                    clickedBook.classList.add('book-opening');
+                }
+            }
 
             const modal = document.getElementById('project-modal');
             const imgContainer = document.getElementById('modal-image');
@@ -803,19 +1067,28 @@
             modal.setAttribute('data-project-id', projectId);
 
             // 渲染左侧视觉区域
-            imgContainer.style.backgroundColor = data.bgColor;
+            imgContainer.style.backgroundColor = 'transparent'; // 因为是纸张底色了，取消之前的填充色
             if (data.image) {
                 imgContainer.innerHTML = `<img src="${data.image}" alt="Cover">`;
             } else {
-                imgContainer.innerHTML = data.emoji;
+                imgContainer.innerHTML = `<div class="emoji-placeholder" style="background-color: ${data.bgColor}">${data.emoji}</div>`;
             }
 
             // 渲染右侧内容文本
             renderModalContent(projectId);
             
-            // 显示
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            // 延迟一点点显示弹窗，让翻页动画能被看清
+            setTimeout(() => {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+                
+                // 弹窗显示后，把原卡片的动画类移除（为关掉弹窗后恢复做准备）
+                if (clickedBook) {
+                    setTimeout(() => {
+                        clickedBook.classList.remove('book-opening');
+                    }, 400);
+                }
+            }, 150);
         }
 
         // 渲染文本内容，方便多语言切换时复用
@@ -848,6 +1121,29 @@
 
         // 渲染 Feather Icon
         feather.replace();
+
+        // 页面加载时检查 URL 参数并进行滚动和高亮
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filter = urlParams.get('filter');
+            
+            if (filter) {
+                const targetElement = document.getElementById('section-' + filter);
+                if (targetElement) {
+                    // 1. 临时关闭 CSS 里的全局平滑滚动，避免跨页面时慢吞吞地滑过去
+                    document.documentElement.style.scrollBehavior = 'auto';
+                    
+                    // 2. 去除了原本 300ms 的硬性等待时间，立刻计算位置并瞬间跳转
+                    const y = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({ top: y, behavior: 'auto' });
+                    
+                    // 3. 瞬间跳转完成后，恢复全局的平滑滚动特性（不影响页面内的其他按钮）
+                    requestAnimationFrame(() => {
+                        document.documentElement.style.scrollBehavior = '';
+                    });
+                }
+            }
+        });
     </script>
-<iframe allow="autoplay" src="../music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
 </html>

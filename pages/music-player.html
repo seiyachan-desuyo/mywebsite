@@ -470,25 +470,71 @@
             {
                 name: "快鱼仔",
                 artist: "卢广仲",
-                file: "music/音乐/卢广仲 - 快鱼仔.mp3",
-                cover: "music/专辑封面/鱼仔.jpg"
+                file: "../music/音乐/卢广仲 - 快鱼仔.mp3",
+                cover: "../music/专辑封面/鱼仔.jpg"
             },
             {
                 name: "走建国路回家但后座少ㄌ泥",
                 artist: "多多 x 以捷",
-                file: "music/音乐/多多 x 以捷 - 走建国路回家但后座少ㄌ泥.mp3",
-                cover: "music/专辑封面/走建国路回家后座少个你.jpg"
+                file: "../music/音乐/多多 x 以捷 - 走建国路回家但后座少ㄌ泥.mp3",
+                cover: "../music/专辑封面/走建国路回家后座少个你.jpg"
             },
             {
                 name: "你說話的聲音好細",
                 artist: "JOYCE 就以斯",
-                file: "music/音乐/JOYCE 就以斯 - 你說話的聲音好細.mp3",
-                cover: "music/专辑封面/JOYCE 就以斯 - 你說話的聲音好細.jpg"
+                file: "../music/音乐/JOYCE 就以斯 - 你說話的聲音好細.mp3",
+                cover: "../music/专辑封面/JOYCE 就以斯 - 你說話的聲音好細.jpg"
             }
         ];
 
-        let currentIndex = 0;
-        let isPlaying = false;
+        // ===================== 核心修改部分：读取和保存状态 =====================
+        const STORAGE_KEY = 'my_cassette_player_state';
+        let savedState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        
+        let currentIndex = savedState.currentIndex !== undefined ? savedState.currentIndex : 0;
+        let isPlaying = false; 
+        let shouldResumePlay = savedState.isPlaying || false; // 跳转页面前是否在播放
+        let savedTime = savedState.currentTime || 0;          // 跳转页面前播放到了几秒
+
+        // 实时保存状态到浏览器记忆
+        function saveState() {
+            if (!audio.src) return;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                currentIndex: currentIndex,
+                currentTime: audio.currentTime,
+                isPlaying: isPlaying
+            }));
+        }
+
+        // 当歌曲数据加载完毕后，应用之前的播放进度
+        audio.addEventListener('loadedmetadata', () => {
+            if (savedTime > 0) {
+                audio.currentTime = savedTime;
+                savedTime = 0; // 消耗掉，防止下次切歌也跳进度
+            }
+            
+            // 如果跳转前是播放的，那就继续播放
+            if (shouldResumePlay) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    iconPlay.style.display = 'none';
+                    iconPause.style.display = 'inline-block';
+                    player.classList.add('playing');
+                    createNotes();
+                }).catch((err) => {
+                    console.log("浏览器限制了跨页面的自动播放，需用户手动点击:", err);
+                    isPlaying = false;
+                    iconPlay.style.display = 'inline-block';
+                    iconPause.style.display = 'none';
+                    player.classList.remove('playing');
+                });
+                shouldResumePlay = false; // 消耗掉
+            }
+        });
+
+        // 监听播放进度，时刻保存进度
+        audio.addEventListener('timeupdate', saveState);
+        // =====================================================================
 
         // 初始化播放器
         function loadSong(index) {
@@ -496,24 +542,23 @@
             audio.src = song.file;
             albumCover.style.backgroundImage = `url('${song.cover}')`;
             
-            // 简单处理名字过长
             let shortName = song.name;
             if(shortName.length > 8) {
                 shortName = shortName.substring(0, 8) + '...';
             }
             songTitle.innerText = `@${shortName}`;
             
-            // 重新设置播放状态（如果不加这个，切歌可能会卡）
-            if(isPlaying) {
+            if(isPlaying && !shouldResumePlay) {
                 audio.play();
             }
         }
         
-        // 初始加载第一首歌
         loadSong(currentIndex);
 
-        // 尝试页面加载后自动播放
+        // 尝试页面加载后自动播放 (用于第一次打开或刷新)
         window.addEventListener('DOMContentLoaded', () => {
+            if (shouldResumePlay) return; // 如果有历史记录，交由 loadedmetadata 处理
+            
             audio.play().then(() => {
                 isPlaying = true;
                 iconPlay.style.display = 'none';
@@ -526,89 +571,82 @@
         });
 
         function togglePlay(e) {
-            // 防止点到切歌按钮时触发播放暂停
             if (e && (e.target.closest('#next-btn') || e.target.closest('#prev-btn'))) return;
 
             if (isPlaying) {
                 audio.pause();
-                iconPlay.style.display = 'block';
+                iconPlay.style.display = 'inline-block';
                 iconPause.style.display = 'none';
                 player.classList.remove('playing');
-                isPlaying = false; // 状态先改，再执行其他逻辑
+                isPlaying = false;
             } else {
                 audio.play();
                 iconPlay.style.display = 'none';
-                iconPause.style.display = 'block';
+                iconPause.style.display = 'inline-block';
                 player.classList.add('playing');
-                isPlaying = true; // 必须在这里先改成 true，否则 createNotes 里面会 return 掉！
+                isPlaying = true;
                 createNotes();
             }
+            saveState();
         }
 
         function nextSong(e) {
-            e.stopPropagation(); // 阻止冒泡到外层的 playBtn
+            if(e) e.stopPropagation();
             currentIndex = (currentIndex + 1) % playlist.length;
+            shouldResumePlay = isPlaying; 
+            savedTime = 0; 
             loadSong(currentIndex);
+            saveState();
         }
 
         function prevSong(e) {
-            e.stopPropagation();
+            if(e) e.stopPropagation();
             currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            shouldResumePlay = isPlaying;
+            savedTime = 0;
             loadSong(currentIndex);
+            saveState();
         }
 
         playBtn.addEventListener('click', togglePlay);
         nextBtn.addEventListener('click', nextSong);
         prevBtn.addEventListener('click', prevSong);
 
-        // 自动播放下一首
         audio.addEventListener('ended', () => {
-            nextSong(new Event('mock'));
+            nextSong();
         });
 
         function createNotes() {
             if(!isPlaying) return;
             
-            // 更丰富的音符集合
             const notes = ['♪', '♫', '♩', '♬', '♭', '♮'];
             const note = document.createElement('div');
             note.classList.add('music-note');
             
-            // 随机分配一个颜色类
             const colorClass = 'note-color-' + (Math.floor(Math.random() * 5) + 1);
             note.classList.add(colorClass);
             
             note.innerText = notes[Math.floor(Math.random() * notes.length)];
             
-            // 随机水平位置：分布在播放器的 10% ~ 90% 之间
             const leftPos = Math.random() * 80 + 10;
             note.style.left = leftPos + '%';
-            
-            // 初始高度在播放器的上半部分
             note.style.top = (Math.random() * 20 + 20) + 'px';
             
-            // 随机旋转角度 (直接写在样式里，有些浏览器不支持var在动画的rotate里)
             const randomRotation = Math.floor(Math.random() * 120 - 60);
-            
-            // 动态注入包含固定角度的 style，强制生效
             note.style.transform = `scale(0.5) rotate(${randomRotation}deg)`;
-            note.style.setProperty('--rotation', randomRotation + 'deg'); // 保留给兼容的浏览器
+            note.style.setProperty('--rotation', randomRotation + 'deg'); 
             
-            // 随机动画时长：2秒到3秒之间，让飘动的节奏参差不齐更自然
             const animDuration = (Math.random() * 1 + 2).toFixed(1) + 's';
             note.style.animation = `floatUpNote ${animDuration} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
             
-            // 关键修复：加在 player 内部但要确保它的 z-index 高于磁带贴纸
             player.appendChild(note);
             
-            // 动画结束后移除元素
             setTimeout(() => {
                 if(note && note.parentNode) {
                     note.remove();
                 }
             }, parseFloat(animDuration) * 1000);
             
-            // 继续生成下一个音符的间隔 (0.6 ~ 1.5秒之间)
             const nextNoteInterval = 600 + Math.random() * 900;
             setTimeout(createNotes, nextNoteInterval);
         }
