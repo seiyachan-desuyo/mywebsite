@@ -151,6 +151,9 @@
             justify-content: flex-end;
             flex-shrink: 0;
             pointer-events: none;
+            opacity: 0;
+            transform: translateX(-90px) rotate(-3deg);
+            animation: panelSlideInLeft 0.95s cubic-bezier(0.2, 0.75, 0.2, 1.05) 0.18s forwards;
         }
 
         /* 画廊区域（右侧）与左侧面板同宽，保持中心对齐 */
@@ -166,6 +169,9 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             flex-shrink: 0;
+            opacity: 0;
+            transform: translateX(90px) rotate(3deg);
+            animation: panelSlideInRight 0.95s cubic-bezier(0.2, 0.75, 0.2, 1.05) 0.24s forwards;
         }
 
         /* 画廊标签头 */
@@ -268,6 +274,134 @@
             align-items: center;
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
             flex-shrink: 0;
+            transform-origin: 50% 86%;
+            opacity: 0;
+            animation: boardDropImpact 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) 0.05s forwards;
+            will-change: transform, opacity, filter;
+            overflow: visible;
+        }
+
+        .board-container.impact-shock {
+            animation:
+                boardDropImpact 1.15s cubic-bezier(0.16, 0.84, 0.24, 1) 0.05s forwards,
+                boardAfterShock 0.42s ease-out 1.2s 1;
+        }
+
+        .impact-stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 40;
+            overflow: visible;
+        }
+
+        .impact-star {
+            position: absolute;
+            left: var(--sx, 50%);
+            top: var(--sy, 78%);
+            width: var(--size, 14px);
+            height: var(--size, 14px);
+            transform: translate(-50%, -50%) scale(0.35) rotate(0deg);
+            opacity: 0;
+            filter: drop-shadow(0 2px 4px rgba(255, 140, 0, 0.3));
+            animation: starBurst 0.95s cubic-bezier(0.15, 0.8, 0.25, 1) var(--delay, 0s) forwards;
+        }
+
+        .impact-star::before {
+            content: '✦';
+            display: block;
+            font-size: var(--size, 14px);
+            line-height: 1;
+            color: var(--star-color, #ffb200);
+            text-shadow: 0 0 8px rgba(255, 190, 64, 0.4);
+        }
+
+        @keyframes panelSlideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-120px) rotate(-5deg) scale(0.96);
+            }
+            68% {
+                opacity: 1;
+                transform: translateX(12px) rotate(1deg) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) rotate(0deg) scale(1);
+            }
+        }
+
+        @keyframes panelSlideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(120px) rotate(5deg) scale(0.96);
+            }
+            68% {
+                opacity: 1;
+                transform: translateX(-12px) rotate(-1deg) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) rotate(0deg) scale(1);
+            }
+        }
+
+        @keyframes boardDropImpact {
+            0% {
+                opacity: 0;
+                transform: translateY(-130vh) rotate(-6deg) scale(0.88);
+                filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+            }
+            56% {
+                opacity: 1;
+                transform: translateY(22px) rotate(1.2deg) scale(1.03, 0.96);
+                filter: drop-shadow(0 24px 32px rgba(0,0,0,0.2));
+            }
+            72% {
+                transform: translateY(-14px) rotate(-0.9deg) scale(0.99, 1.02);
+            }
+            86% {
+                transform: translateY(8px) rotate(0.5deg) scale(1.01, 0.99);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+                filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15));
+            }
+        }
+
+        @keyframes boardAfterShock {
+            0% { transform: translateY(0) rotate(0deg); }
+            30% { transform: translateY(2px) rotate(-0.4deg); }
+            65% { transform: translateY(-2px) rotate(0.35deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes starBurst {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+            }
+            15% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(40deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0.75) rotate(var(--rot, 180deg));
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .left-panel,
+            .gallery-area,
+            .board-container,
+            .board-container.impact-shock,
+            .impact-star {
+                animation: none !important;
+                opacity: 1;
+                transform: none;
+            }
         }
 
         .board-bg {
@@ -536,6 +670,21 @@
             .music-player-iframe { bottom: 80px; right: -20px; width: 300px; height: 250px; }
             .dock { width: 90%; justify-content: space-around; }
             .dock a { font-size: 18px; padding: 5px; }
+
+            .left-panel,
+            .gallery-area {
+                animation-duration: 0.8s;
+                animation-delay: 0.06s;
+            }
+
+            .gallery-area {
+                animation-delay: 0.12s;
+            }
+
+            .board-container,
+            .board-container.impact-shock {
+                animation-duration: 1s;
+            }
         }
     </style>
 </head>
@@ -724,6 +873,7 @@
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         const boardBg = document.querySelector('.board-bg');
+        const boardContainer = document.querySelector('.board-container');
         
         let isDrawing = false;
         let currentColor = '#2c3e50';
@@ -756,6 +906,56 @@
         window.addEventListener('resize', resizeCanvas);
         setTimeout(resizeCanvas, 100);
         setTimeout(resizeCanvas, 500);
+
+        function triggerBoardImpactEffects() {
+            if (!boardContainer) return;
+
+            boardContainer.classList.add('impact-shock');
+
+            const starsLayer = document.createElement('div');
+            starsLayer.className = 'impact-stars';
+
+            const starPalette = ['#ffb200', '#ffd54f', '#ff8a65', '#ffe082', '#ffca28'];
+            const starCount = 28;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('span');
+                star.className = 'impact-star';
+
+                const angleBase = (Math.PI * 2 * i) / starCount;
+                const angleJitter = (Math.random() - 0.5) * 0.5;
+                const angle = angleBase + angleJitter;
+                const radius = 55 + Math.random() * 170;
+                const dx = Math.cos(angle) * radius;
+                const dy = Math.sin(angle) * radius * 0.7 - 35;
+                const size = 10 + Math.random() * 12;
+                const delay = Math.random() * 0.12;
+                const rot = (Math.random() * 280 + 120) * (Math.random() > 0.5 ? 1 : -1);
+
+                star.style.setProperty('--sx', `${46 + Math.random() * 8}%`);
+                star.style.setProperty('--sy', `${74 + Math.random() * 8}%`);
+                star.style.setProperty('--dx', `${dx.toFixed(1)}px`);
+                star.style.setProperty('--dy', `${dy.toFixed(1)}px`);
+                star.style.setProperty('--size', `${size.toFixed(1)}px`);
+                star.style.setProperty('--delay', `${delay.toFixed(2)}s`);
+                star.style.setProperty('--rot', `${rot.toFixed(1)}deg`);
+                star.style.setProperty('--star-color', starPalette[i % starPalette.length]);
+
+                starsLayer.appendChild(star);
+            }
+
+            boardContainer.appendChild(starsLayer);
+
+            setTimeout(() => {
+                starsLayer.remove();
+            }, 1400);
+
+            setTimeout(() => {
+                boardContainer.classList.remove('impact-shock');
+            }, 1700);
+        }
+
+        setTimeout(triggerBoardImpactEffects, 900);
 
         function updateBrushStyle() {
             ctx.lineCap = 'round';

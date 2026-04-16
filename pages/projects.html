@@ -761,6 +761,23 @@
                 </h2>
             </div>
             <div class="archive-grid">
+                <!-- 项目 10: 贸小饭智能推荐系统 -->
+                <a href="#" class="project-card" onclick="openModal('project-10', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #f0fff4;">
+                            <img src="../project/my%20own%20project/贸小饭/1.png" alt="Cover">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">贸小饭智能推荐</span>
+                            <span data-lang="en">MaoXiaoFan AI Canteen</span>
+                            <span data-lang="ja" class="cartoon-font-ja">贸小饭 食堂レコメンド</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+
                 <!-- 项目 9: OurDiary 多人电子手帐本 -->
                 <a href="#" class="project-card" onclick="openModal('project-9', event); return false;">
                     <div class="book-model">
@@ -824,8 +841,25 @@
                 </h2>
             </div>
             <div class="archive-grid">
-                <!-- 项目 4: Case Data Builder -->
+                <!-- 项目 4: Case Analysis Board -->
                 <a href="#" class="project-card" onclick="openModal('project-4', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #ffffff; padding: 0;">
+                            <img src="../project/company project/case-web/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">Case Analysis Board</span>
+                            <span data-lang="en">Case Analysis Board</span>
+                            <span data-lang="ja" class="cartoon-font-ja">ケース分析ボード</span>
+                        </div>
+                        <div class="card-date">Present</div>
+                    </div>
+                </a>
+
+                <!-- 项目 5: Case Data Builder -->
+                <a href="#" class="project-card" onclick="openModal('project-5', event); return false;">
                     <div class="book-model">
                         <div class="card-image-wrap" style="background-color: #ffffff; padding: 0;">
                             <img src="../project/company project/data-refresh/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
@@ -933,6 +967,19 @@
     <!-- 项目数据数据库 (JavaScript 对象模拟) -->
     <script>
         const projectDatabase = {
+            'project-10': {
+                bgColor: '#f0fff4',
+                image: '../project/my%20own%20project/贸小饭/1.png',
+                title: { zh: '贸小饭智能推荐系统', en: 'MaoXiaoFan Smart Recommender', ja: '贸小饭 スマート推薦システム' },
+                date: 'Spring 2026',
+                desc: {
+                    zh: '校园版“今天吃什么”对话推荐系统。通过 Flask + DeepSeek API 收集位置、时间、口味、忌口和预算，按 6 步 if-else 决策链输出具体食堂窗口和菜品建议。',
+                    en: 'A campus "What to Eat Today" conversational recommender. Built with Flask + DeepSeek API, it collects location, urgency, flavor, dietary restrictions, and budget, then outputs specific canteen windows and dishes via a 6-step if-else chain.',
+                    ja: 'キャンパス向け「今日何を食べる？」会話型推薦システム。Flask + DeepSeek API により位置・時間余裕・味・食事制限・予算を取得し、6段階の if-else で具体的な食堂と料理を提案します。'
+                },
+                role: 'Product Designer / Full-stack Developer',
+                link: 'catten.html'
+            },
             'project-9': {
                 bgColor: '#fff3e0',
                 image: '../project/my%20own%20project/手帐本/1.png',
@@ -1012,6 +1059,19 @@
                 link: '#'
             },
             'project-4': {
+                bgColor: '#ffffff',
+                image: '../project/company project/case-web/1.png',
+                title: { zh: 'Case Analysis Board', en: 'Case Analysis Board', ja: 'ケース分析ボード' },
+                date: 'Present',
+                desc: {
+                    zh: '在 Apple Finance 团队中，基于内部财务系统数据，开发可视化交互式仪表板（Case Web），为分析提供一站式支持。',
+                    en: 'At Apple Finance, developed an interactive visual dashboard (Case Web) based on internal financial systems to provide one-stop support for analysis.',
+                    ja: 'Apple Financeチームで、内部財務システムデータに基づき、分析をワンストップでサポートするインタラクティブなダッシュボード（Case Web）を開発。'
+                },
+                role: 'Sales Finance Intern',
+                link: 'project-caseweb.html'
+            },
+            'project-5': {
                 bgColor: '#ffffff',
                 image: '../project/company project/data-refresh/1.png',
                 title: { zh: 'Case Data Builder', en: 'Case Data Builder', ja: 'Case Data Builder' },

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贸小饭智能推荐系统 | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #2f9e7a;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image:
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)),
+                url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.2rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px; }
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.45rem;
+            color: #666;
+            max-width: 760px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item { text-align: left; }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+            background: linear-gradient(180deg, #f0fff4 0%, #ecfdf3 100%);
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .hero-image-container img {
+            width: 100%;
+            max-width: 780px;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .article-content {
+            max-width: 820px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p { margin-bottom: 24px; }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 24px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 34px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '🍱';
+            position: absolute;
+            top: -28px;
+            left: 34px;
+            font-size: 2.3rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .article-content ul {
+            margin: 0 0 20px 24px;
+        }
+        .article-content li {
+            margin-bottom: 14px;
+        }
+
+        .dialog-box {
+            background: #fffef7;
+            border: 2px dashed #d7c58b;
+            border-radius: 18px;
+            padding: 24px;
+            margin: 35px 0;
+        }
+        .dialog-box p {
+            margin-bottom: 12px;
+        }
+
+        .interactive-section {
+            margin-top: 80px;
+            width: 92vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+        }
+
+        .browser-mockup-wrapper {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+
+        .browser-mockup {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header {
+            background: #f1f1f1;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .browser-url {
+            flex: 1;
+            text-align: center;
+            background: #fff;
+            margin: 0 20px;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .browser-mockup iframe {
+            width: 100%;
+            height: 850px;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        .cta-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            background: #fff;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .cta-link:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
+        }
+
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        .dock a:hover {
+            background: #f5f5f5;
+            color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
+        }
+
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background-color: #eee;
+            margin: 0 10px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                text-align: center;
+            }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .browser-mockup iframe { height: 620px; }
+            .dock {
+                width: 90%;
+                justify-content: space-around;
+            }
+            .dock a {
+                width: 64px;
+                height: 64px;
+            }
+            .dock a img {
+                width: 42px;
+                height: 42px;
+            }
+            .dock-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="dock">
+        <a href="../index.html#home" title="Home">
+            <img src="../icon/Home.png" alt="Home">
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <img src="../icon/Projects.png" alt="Projects">
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="../index.html#about" title="About">
+            <img src="../icon/About.png" alt="About">
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="../index.html#contact" title="Contact">
+            <img src="../icon/Contact.png" alt="Contact">
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+        <a href="explore.html" title="Explore">
+            <img src="../icon/Explore.png" alt="Explore">
+            <span class="dock-label">
+                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
+            </span>
+        </a>
+        <div class="dock-divider"></div>
+        <a href="#" title="More">
+            <img src="../icon/More.png" alt="More">
+            <span class="dock-label">
+                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">贸小饭智能推荐系统</span>
+                <span data-lang="en">MaoXiaoFan Smart Canteen Recommender</span>
+                <span data-lang="ja">贸小饭 スマート食堂レコメンド</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">“今天吃什么”校园版决策系统：用自然语言对话快速收集位置、赶课状态、口味和预算，在 30 秒内给出可执行的食堂窗口推荐。</span>
+                <span data-lang="en">A campus-focused "What to Eat Today" decision system: gathers location, urgency, taste, and budget via natural conversation, then returns actionable canteen recommendations in about 30 seconds.</span>
+                <span data-lang="ja">キャンパス向け「今日何食べる？」意思決定システム。自然言語の会話で位置・時間余裕・味の好み・予算を収集し、約30秒で実行可能な食堂レコメンドを返します。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Product Designer / Full-stack Developer</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">Spring 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">AI Chat / Campus Utility</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="hero-image-container">
+            <img src="../project/my%20own%20project/贸小饭/1.png" alt="贸小饭智能推荐系统截图">
+        </div>
+
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目简介</span>
+                <span data-lang="en">Project Overview</span>
+                <span data-lang="ja">プロジェクト概要</span>
+            </h2>
+            <p>
+                <span data-lang="zh">猫大食堂智能推荐系统（贸小饭）是一个基于 Flask + HTML 的对话式推荐 Demo。系统通过接入 DeepSeek API，让用户用最自然的话表达“我在哪、赶不赶、想吃什么、预算多少”，再将这些信息映射到食堂窗口数据中，快速输出具体菜品建议。</span>
+                <span data-lang="en">MaoXiaoFan is a Flask + HTML conversational recommendation demo. Powered by DeepSeek API, it captures user context such as location, urgency, flavor preference, and budget, then maps these signals to canteen data for specific dish suggestions.</span>
+                <span data-lang="ja">贸小饭は Flask + HTML で構築された会話型レコメンドのデモです。DeepSeek API を活用し、位置・時間余裕・味の好み・予算などを自然な会話で取得し、食堂データにマッピングして具体的な料理を提案します。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>核心价值：</strong> 不要求用户先想清楚偏好，也能完成点餐决策。就算全程回答“都行”，系统也会按校园热门度给出兜底推荐，解决高频“选择困难”场景。</span>
+                    <span data-lang="en"><strong>Core Value:</strong> Users do not need perfectly defined preferences to get a decision. Even with "anything is fine" answers, the system can fall back to campus-popular options.</span>
+                    <span data-lang="ja"><strong>コア価値：</strong> 好みが明確でなくても意思決定が可能。回答が「どれでも可」中心でも、学内人気データで適切な提案を返します。</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">6步决策链设计</span>
+                <span data-lang="en">6-Step Decision Chain</span>
+                <span data-lang="ja">6段階の意思決定チェーン</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>位置定位：</strong> 先锁定最近 1-2 个食堂，减少无效选择范围。</span>
+                    <span data-lang="en"><strong>Location First:</strong> Narrow to the nearest 1-2 canteens.</span>
+                    <span data-lang="ja"><strong>位置：</strong> 最寄りの食堂 1-2 か所に絞り込みます。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>场景状态：</strong> 区分赶课快吃 / 慢慢吃 / 都行，决定是否优先快取窗口。</span>
+                    <span data-lang="en"><strong>Scenario Status:</strong> Fast meal vs. relaxed meal affects queue-speed preference.</span>
+                    <span data-lang="ja"><strong>状況：</strong> 急ぎ/ゆっくり/どちらでもで提供速度の優先度を調整。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>形态偏好：</strong> 米饭、粉面、面点、油炸或都行，筛选主食形态。</span>
+                    <span data-lang="en"><strong>Food Form:</strong> Rice, noodles, snacks, fried, or flexible.</span>
+                    <span data-lang="ja"><strong>形態：</strong> ご飯・麺・点心・揚げ物などの主食タイプで絞り込み。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>口味感受：</strong> 清淡、浓郁、麻辣、酱香、酸甜等口味标签过滤。</span>
+                    <span data-lang="en"><strong>Flavor Profile:</strong> Light, rich, spicy, savory, sweet/sour tags.</span>
+                    <span data-lang="ja"><strong>味：</strong> あっさり/濃厚/辛い/甘酸っぱい等のタグでフィルタ。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>忌口排除：</strong> 不吃辣、海鲜、猪肉等约束优先剔除。</span>
+                    <span data-lang="en"><strong>Restrictions:</strong> Exclude spicy, seafood, pork, etc.</span>
+                    <span data-lang="ja"><strong>除外条件：</strong> 辛味・海鮮・豚肉などを除外。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>预算限制：</strong> 最后按价格区间完成最终排序与输出。</span>
+                    <span data-lang="en"><strong>Budget:</strong> Final ranking and recommendation by price bands.</span>
+                    <span data-lang="ja"><strong>予算：</strong> 価格帯で最終候補を並べて出力。</span>
+                </li>
+            </ul>
+
+            <h2>
+                <span data-lang="zh">对话体验示例</span>
+                <span data-lang="en">Conversation Example</span>
+                <span data-lang="ja">会話例</span>
+            </h2>
+            <div class="dialog-box">
+                <p>
+                    <span data-lang="zh"><strong>用户：</strong> 我在宁远楼，1点半有课，有点赶，想吃偏米饭，辣一点但不要太油，预算 12-15。</span>
+                    <span data-lang="en"><strong>User:</strong> I am near Ningyuan Building, class at 1:30, in a hurry, prefer rice, spicy but not greasy, budget 12-15.</span>
+                    <span data-lang="ja"><strong>ユーザー：</strong> 寧遠楼にいて 1:30 に授業。急ぎ。ご飯系、少し辛め、油っこくない、予算 12-15。</span>
+                </p>
+                <p>
+                    <span data-lang="zh"><strong>贸小饭：</strong> 推荐一食堂二楼黄焖鸡米饭（13元）。步行约6分钟，出餐快，辣口但不油，预算匹配。</span>
+                    <span data-lang="en"><strong>MaoXiaoFan:</strong> Recommend Braised Chicken Rice (13 RMB) on 2F of Canteen 1. About 6 minutes walk, quick serving, spicy but not greasy, budget fit.</span>
+                    <span data-lang="ja"><strong>贸小饭：</strong> 第一食堂2階の黄焖鸡米饭（13元）を推奨。徒歩約6分、提供が早く、辛めだが重すぎず、予算内です。</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">系统实现思路</span>
+                <span data-lang="en">Implementation Approach</span>
+                <span data-lang="ja">実装アプローチ</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>前后端分离：</strong> Flask 提供 API，前端以单页对话交互承载体验。</span>
+                    <span data-lang="en"><strong>Separated Architecture:</strong> Flask backend API + lightweight chat frontend.</span>
+                    <span data-lang="ja"><strong>分離構成：</strong> Flask API と軽量チャットUIの分離設計。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>可扩展数据层：</strong> 当前可本地维护菜品表，后续可导入 CSV/RAG 扩展知识库。</span>
+                    <span data-lang="en"><strong>Extensible Data Layer:</strong> Local dish tables now, CSV/RAG integration later.</span>
+                    <span data-lang="ja"><strong>拡張可能なデータ層：</strong> 現在はローカル管理、将来は CSV/RAG 連携へ。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>上下文对话：</strong> 多轮会话保留用户历史条件，逐步补全缺失信息。</span>
+                    <span data-lang="en"><strong>Contextual Dialogue:</strong> Multi-turn memory fills missing decision attributes.</span>
+                    <span data-lang="ja"><strong>文脈会話：</strong> 複数ターンで条件を保持し不足情報を補完。</span>
+                </li>
+            </ul>
+
+            <div class="interactive-section">
+                <h2 style="text-align: center; margin-top: 0;">
+                    <span data-lang="zh">在线体验</span>
+                    <span data-lang="en">Live Demo</span>
+                    <span data-lang="ja">オンライン体験</span>
+                </h2>
+                <p style="text-align: center; color: #888; margin-bottom: 10px;">
+                    <span data-lang="zh">项目演示地址如下，可直接在浏览器中交互体验。</span>
+                    <span data-lang="en">Try the live project below directly in your browser.</span>
+                    <span data-lang="ja">以下のデモURLからブラウザで直接体験できます。</span>
+                </p>
+                <p style="text-align: center;">
+                    <a class="cta-link" href="https://maoxiaofan.zh-cn.edgeone.cool" target="_blank" rel="noopener noreferrer">https://maoxiaofan.zh-cn.edgeone.cool</a>
+                </p>
+
+                <div class="browser-mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">maoxiaofan.zh-cn.edgeone.cool</div>
+                            <div style="width: 44px;"></div>
+                        </div>
+                        <iframe src="https://maoxiaofan.zh-cn.edgeone.cool" title="贸小饭在线演示"></iframe>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brief Cost Tracker | 吴丹</title>
+    <title>Brief Cost Tracker - Case Data Builder | 吴丹</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
             --accent-color: #8774ff;
         }
 
-        @import url("https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
 
         * {
             margin: 0;
@@ -45,12 +45,11 @@
             padding-bottom: 150px;
         }
 
-        /* Fonts */
         .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
         .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
         .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
         
-        .sys-font { font-family: 'Poppins', sans-serif; }
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
         .mono-font { font-family: 'Courier New', Courier, monospace; font-weight: bold; }
 
         .container {
@@ -59,7 +58,6 @@
             padding: 40px 20px;
         }
 
-        /* Top Nav */
         .top-nav {
             display: flex;
             align-items: center;
@@ -85,7 +83,6 @@
             transform: translateX(-5px);
         }
 
-        /* Hero Section */
         .project-header {
             text-align: center;
             margin-bottom: 60px;
@@ -96,9 +93,9 @@
             margin-bottom: 20px;
             color: var(--text-color);
         }
-        body[data-current-lang="en"] .project-title { font-family: 'Zilla Slab', serif; }
-        body[data-current-lang="zh"] .project-title { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; letter-spacing: 2px;}
-        body[data-current-lang="ja"] .project-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
 
         .project-subtitle {
             font-size: 1.5rem;
@@ -132,7 +129,20 @@
             color: var(--text-color);
         }
 
-        /* Article Content */
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .article-content {
             max-width: 800px;
             margin: 0 auto;
@@ -148,7 +158,7 @@
             margin: 60px 0 30px 0;
             color: var(--text-color);
         }
-        body[data-current-lang="en"] .article-content h2 { font-family: 'Zilla Slab', serif; }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
 
         .highlight-box {
             background: #fff;
@@ -160,7 +170,7 @@
             position: relative;
         }
         .highlight-box::before {
-            content: '💼';
+            content: '💡';
             position: absolute;
             top: -30px;
             left: 40px;
@@ -176,56 +186,6 @@
             line-height: 1;
         }
 
-        /* 三张图片的散落拍立得排版 */
-        .polaroid-gallery {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 80px 0;
-            padding: 20px 0;
-        }
-        .polaroid {
-            background: #fff;
-            padding: 10px 10px 35px 10px; /* 模拟拍立得底部留白 */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border-radius: 4px;
-            width: 32%;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">👀</text></g></svg>') 8 16, pointer !important;
-        }
-        .polaroid img {
-            width: 100%;
-            display: block;
-            border: 1px solid #f0f0f0;
-            border-radius: 2px;
-        }
-        
-        /* 赋予三张照片不同的角度、高度和层级，模拟散落桌面的真实感 */
-        .polaroid:nth-child(1) { 
-            transform: rotate(-6deg); 
-            z-index: 1; 
-            right: -8%; 
-        }
-        .polaroid:nth-child(2) { 
-            transform: rotate(2deg) translateY(-20px); 
-            z-index: 3; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        .polaroid:nth-child(3) { 
-            transform: rotate(8deg) translateY(10px); 
-            z-index: 2; 
-            left: -8%; 
-        }
-        
-        /* 鼠标悬停时像拿起来查看一样 */
-        .polaroid:hover {
-            transform: scale(1.15) rotate(0deg) translateY(-10px) !important;
-            z-index: 10 !important;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-        }
-
-        /* Language Switcher */
         .lang-switch {
             position: fixed;
             top: 20px;
@@ -245,10 +205,9 @@
             transition: all 0.2s;
         }
         .lang-btn:hover, .lang-btn.active {
-            background: #e8f5e9;
+            background: #faefcc;
         }
 
-                /* Nav & Dock */
         .dock {
             position: fixed;
             bottom: 30px;
@@ -263,9 +222,8 @@
             align-items: center;
             gap: 5px;
             box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
-            z-index: 9999; /* 大幅提升 z-index，防止被别的贴纸层盖住 */
+            z-index: 9999;
         }
-
         .dock a {
             display: flex;
             flex-direction: column;
@@ -277,13 +235,11 @@
             text-decoration: none;
             color: #888;
             border-radius: 20px;
-            /* 优化过渡动画，使果冻回弹效果更加丝滑自然 */
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
             transform-origin: bottom center;
             will-change: transform, margin;
         }
-
         .dock-label {
             font-size: 11px;
             font-weight: 600;
@@ -291,7 +247,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             pointer-events: none;
         }
-
         .dock a:hover {
             background: #f5f5f5;
             color: var(--text-color);
@@ -299,21 +254,17 @@
             margin: 0 12px;
             z-index: 10;
         }
-
-        /* 纯 CSS 实现相邻元素果冻缩放，彻底解决 JS 布局重绘 (Layout Thrashing) 导致的卡顿问题 */
         .dock a:has(+ a:hover),
         .dock a:hover + a {
             transform: scale(1.15) translateY(-4px);
             margin: 0 6px;
             z-index: 5;
         }
-
         .dock a.active {
             color: var(--text-color);
             background: #f5f5f5;
             box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
         }
-        
         .dock a.active::after {
             content: '';
             position: absolute;
@@ -325,35 +276,26 @@
             background-color: #555;
             border-radius: 2px;
         }
-
         .dock a img {
             width: 60px;
             height: 60px;
             object-fit: contain;
             transition: transform 0.2s ease;
         }
-
-        /* 专门维持 More 图标保持原大小 */
         .dock a[title="More"] {
             width: 72px;
             height: 72px;
         }
-        
         .dock a[title="More"] img {
             width: 40px;
             height: 40px;
         }
-
         .dock-divider {
             width: 1px;
             height: 40px;
-            background-color: #eee;
+            background: #eee;
             margin: 0 10px;
         }
-
-
-
-
 
         [data-lang] { display: none; }
         body[data-current-lang="zh"] [data-lang="zh"],
@@ -376,13 +318,9 @@
             .project-title { font-size: 3rem; }
             .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
             .meta-item { text-align: center; }
-                        .dock { width: 90%; justify-content: space-around; }
+            .dock { width: 90%; justify-content: space-around; }
             .dock a { font-size: 18px; padding: 5px; width: 60px; height: 60px; }
             .dock a img { width: 40px; height: 40px; }
-            
-            .polaroid { width: 80%; transform: none !important; margin-bottom: 20px; z-index: 1; right: auto; left: auto;}
-            .polaroid:hover { transform: scale(1.05) !important; }
-            .polaroid-gallery { flex-direction: column; gap: 15px; margin: 40px 0; }
         }
     </style>
 </head>
@@ -394,39 +332,46 @@
         <button class="lang-btn" onclick="switchLang('ja')">JA</button>
     </div>
 
-        <!-- 底部导航 Dock -->
+    <!-- 底部导航 Dock -->
     <div class="dock">
-        <a href="../index.html#home"  title="Home" onclick="updateDock(this)">
+        <a href="../index.html#home" title="Home">
             <img src="../icon/Home.png" alt="Home">
             <span class="dock-label">
                 <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
             </span>
         </a>
-        <a href="projects.html" title="Projects">
+        <a href="projects.html" class="active" title="Projects">
             <img src="../icon/Projects.png" alt="Projects">
             <span class="dock-label">
                 <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
             </span>
         </a>
-        <a href="../index.html#about" title="About" onclick="updateDock(this)">
+        <a href="../index.html#about" title="About">
             <img src="../icon/About.png" alt="About">
             <span class="dock-label">
                 <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
             </span>
         </a>
-        <a href="../index.html#contact" title="Contact" onclick="updateDock(this)">
+        <a href="../index.html#contact" title="Contact">
             <img src="../icon/Contact.png" alt="Contact">
             <span class="dock-label">
                 <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
             </span>
         </a>
-        <a href="explore.html" title="Explore" onclick="updateDock(this)">
+        <a href="explore.html" title="Explore">
             <img src="../icon/Explore.png" alt="Explore">
             <span class="dock-label">
                 <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
             </span>
         </a>
         <div class="dock-divider"></div>
+        <a href="#" title="More">
+            <img src="../icon/More.png" alt="More">
+            <span class="dock-label">
+                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
+            </span>
+        </a>
+    </div>
 
     <div class="container">
         <!-- 顶部返回按钮 -->
@@ -442,14 +387,14 @@
         <!-- 页面头部信息 -->
         <header class="project-header">
             <h1 class="project-title">
-                <span data-lang="zh">案例与成本数据大屏</span>
-                <span data-lang="en">Case Data Builder</span>
-                <span data-lang="ja">データビルダー</span>
+                <span data-lang="zh" class="cartoon-font-zh">Case Analysis Board</span>
+                <span data-lang="en">Case Analysis Board</span>
+                <span data-lang="ja">ケース分析ボード</span>
             </h1>
             <p class="project-subtitle cartoon-font-en">
-                <span data-lang="zh" class="cartoon-font-zh">融合极速 OCR 与自研模板引擎，为 Apple Finance 打造的智能化成本追踪分析平台。</span>
-                <span data-lang="en">An intelligent cost tracking platform built for Apple Finance, integrating fast OCR and a custom template engine.</span>
-                <span data-lang="ja">高速OCRと独自のテンプレートエンジンを統合した、Apple Finance向けのインテリジェントなコスト追跡プラットフォーム。</span>
+                <span data-lang="zh" class="cartoon-font-zh">直观的用户界面，用于查看、搜索和分析 Case 财务及业务数据。</span>
+                <span data-lang="en">An intuitive user interface for viewing, searching, and analyzing Case financial and business data.</span>
+                <span data-lang="ja">直感的なユーザーインターフェースで、Caseの財務およびビジネスデータを閲覧、検索、分析できます。</span>
             </p>
 
             <div class="project-meta">
@@ -457,84 +402,402 @@
                     <div class="meta-label">
                         <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
                     </div>
-                    <div class="meta-value sys-font">Full Stack Dev / Analyst</div>
+                    <div class="meta-value sys-font">Sales Finance Intern</div>
                 </div>
                 <div class="meta-item">
                     <div class="meta-label">
-                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                        <span data-lang="zh">状态</span><span data-lang="en">Status</span><span data-lang="ja">状態</span>
                     </div>
-                    <div class="meta-value sys-font">12 Weeks • Present</div>
+                    <div class="meta-value sys-font">Ongoing</div>
                 </div>
                 <div class="meta-item">
                     <div class="meta-label">
-                        <span data-lang="zh">类别</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
                     </div>
-                    <div class="meta-value sys-font">Data App / Automation</div>
+                    <div class="meta-value sys-font">Dashboard / UI</div>
                 </div>
             </div>
         </header>
 
+        <!-- 封面图 -->
+        <div class="hero-image-container">
+            <img src="../project/company%20project/case-web/1.png" alt="Case Analysis Board Interface">
+        </div>
+
         <!-- 图文内容区 -->
         <article class="article-content">
-            
-            <!-- 散落的拍立得照片排版 -->
-            <div class="polaroid-gallery">
-                <div class="polaroid">
-                    <img src="../project/company project/case-web/1.png" alt="Platform Screenshot 1">
-                </div>
-                <div class="polaroid">
-                    <img src="../project/company project/case-web/2.png" alt="Platform Screenshot 2">
-                </div>
-                <div class="polaroid">
-                    <img src="../project/company project/case-web/3.png" alt="Platform Screenshot 3">
-                </div>
-            </div>
-
             <h2>
-                <span data-lang="zh">项目背景</span>
-                <span data-lang="en">Background</span>
-                <span data-lang="ja">背景</span>
+                <span data-lang="zh">一、案例摘要搜索 (Case Summary Search)</span>
+                <span data-lang="en">1. Case Summary Search</span>
+                <span data-lang="ja">一、ケースサマリー検索</span>
             </h2>
             <p>
-                <span data-lang="zh">在 Apple Finance 团队中，分析多维度的成本数据及审批各类门店扩展案例需要耗费大量人工去核对 Excel 表格和 PDF 文件。为了将繁重的工作自动化并打通数据孤岛，我设计并开发了这个名为 Brief Cost Tracker（Case Data Builder）的数据应用平台。</span>
-                <span data-lang="en">Within the Apple Finance team, analyzing multi-dimensional cost data and approving various store expansion cases previously required extensive manual effort to cross-check Excel sheets and PDFs. To automate this heavy workload and break down data silos, I designed and developed this data application platform named Brief Cost Tracker (Case Data Builder).</span>
-                <span data-lang="ja">Apple Financeチームでは、多次元のコストデータを分析し、さまざまな出店ケースを承認するために、ExcelシートとPDFを手作業で照合する膨大な労力が必要でした。この重労働を自動化し、データの孤立を解消するために、Brief Cost Tracker（Case Data Builder）というデータアプリケーションプラットフォームを設計および開発しました。</span>
+                <span data-lang="zh">提供全文智能搜索和多维度的高级时间/属性筛选。支持表格与卡片双视图模式，双击即可复制内容。内建 KPI 仪表板和数据导出功能，同时可以保存用户的筛选预设与搜索历史。</span>
+                <span data-lang="en">Offers full-text smart search and multi-dimensional advanced filtering by time and attributes. Supports both table and card views, with double-click to copy functionality. Features built-in KPI dashboards, data export, and saves user filter presets and search history.</span>
+                <span data-lang="ja">フルテキストのスマート検索と、時間や属性による多次元の高度なフィルタリングを提供します。テーブルとカードの両方のビューをサポートし、ダブルクリックでコンテンツをコピーできます。組み込みのKPIダッシュボード、データエクスポート機能を備え、ユーザーのフィルタープリセットと検索履歴を保存します。</span>
             </p>
 
-            <div class="highlight-box">
-                <p style="margin: 0;">
-                    <span data-lang="zh"><strong>💼 商业价值：</strong> 大幅提升跨维度案例检索的效率，实现成本追踪的可视化，并将原本繁琐的英文商业审批报告实现了「一键生成」，极大解放了财务团队的生产力。</span>
-                    <span data-lang="en"><strong>💼 Business Value:</strong> Significantly improved the efficiency of cross-dimensional case retrieval, realized visual cost tracking, and achieved "one-click generation" of previously tedious English business approval reports, greatly freeing up the finance team's productivity.</span>
-                    <span data-lang="ja"><strong>💼 ビジネス価値：</strong> 多次元ケース検索の効率を大幅に向上させ、コスト追跡を視覚化し、以前は面倒だった英語のビジネス承認レポートの「ワンクリック生成」を実現し、財務チームの生産性を大幅に解放しました。</span>
-                </p>
+            <div class="hero-image-container" style="margin-top: 40px;">
+                <img src="../project/company%20project/case-web/2.png" alt="Case Summary Search Feature">
             </div>
 
             <h2>
-                <span data-lang="zh">核心功能展示</span>
-                <span data-lang="en">Core Features</span>
-                <span data-lang="ja">主な機能の紹介</span>
+                <span data-lang="zh">二、成本追踪可视化 (Brief Cost Tracker)</span>
+                <span data-lang="en">2. Brief Cost Tracker Visualization</span>
+                <span data-lang="ja">二、コスト追跡の視覚化</span>
             </h2>
-            <ul style="padding-left: 20px;">
-                <li data-lang="zh"><strong>多维数据看板 (Streamlit)：</strong> 采用 Streamlit 构建响应式前端界面，提供全文智能搜索与双视图模式（表格/卡片），能够快速对海量案例和成本数据进行筛选、联动展示与下钻分析。</li>
-                <li data-lang="en"><strong>Multi-dimensional Dashboard (Streamlit):</strong> Built a responsive frontend interface using Streamlit, featuring full-text smart search and dual view modes (Table/Card) to quickly filter, link, and drill-down into massive cases and cost data.</li>
-                <li data-lang="ja"><strong>多次元ダッシュボード (Streamlit)：</strong> Streamlitを使用してレスポンシブなフロントエンドインターフェースを構築し、全文スマート検索とデュアルビューモード（テーブル/カード）を備え、大量のケースとコストデータの迅速なフィルタリングとドリルダウン分析を可能にしました。</li>
-
-                <li data-lang="zh" style="margin-top: 25px;"><strong>极速定点 OCR 与智能解析：</strong> 基于 <code>pdf2image</code> 与 <code>easyocr</code> 集成了防内存溢出的极速 OCR 技术。通过生成 72 DPI 缩略图速查锁定页面，再行 300 DPI 定点精确解析，一键提取 PDF 与 Excel 中的关键商业及财务指标。</li>
-                <li data-lang="en" style="margin-top: 25px;"><strong>Targeted OCR & Smart Parsing:</strong> Integrated high-speed OCR using <code>pdf2image</code> and <code>easyocr</code> with OOM prevention. It uses 72 DPI thumbnails for rapid page targeting followed by 300 DPI precision extraction, pulling key business and financial metrics from PDFs and Excel instantly.</li>
-                <li data-lang="ja" style="margin-top: 25px;"><strong>高速OCRとスマート解析：</strong> メモリ不足を防ぐために <code>pdf2image</code> と <code>easyocr</code> を使用した高速OCRを統合しました。72 DPIのサムネイルでターゲットページを素早く見つけ、300 DPIの高精度抽出を行い、PDFやExcelから重要なビジネス指標と財務指標を瞬時に抽出します。</li>
-
-                <li data-lang="zh" style="margin-top: 25px;"><strong>自动化文案组装与推荐 (Template Engine)：</strong> 搭载自研的模板引擎，自动汇集解析后的数据填入标准化句式中。同时匹配历史数据库，依据多维度权重打分 (Scoring)，智能推荐历史最佳的审批金句供直接采纳。</li>
-                <li data-lang="en" style="margin-top: 25px;"><strong>Automated Report Assembly & Recommendation:</strong> Features a custom template engine that aggregates parsed data into standardized sentences. It also matches historical databases, scoring them across multiple dimensions to recommend the best historical approval phrases for immediate use.</li>
-                <li data-lang="ja" style="margin-top: 25px;"><strong>自動レポート作成と推奨：</strong> 解析されたデータを標準化された文に集約するカスタムテンプレートエンジンを搭載しています。また、過去のデータベースと照合し、多次元のスコアリングに基づいて最適な過去の承認フレーズを推奨し、すぐに使用できるようにします。</li>
-            </ul>
-
-            <p style="text-align: center; margin-top: 40px; font-size: 0.9rem; color: #aaa;">
-                <span data-lang="zh">🔒 由于企业数据隐私政策，线上版本及截图包含的是脱敏或模拟数据。</span>
-                <span data-lang="en">🔒 Due to corporate data privacy policies, the live version and screenshots contain anonymized or mock data.</span>
-                <span data-lang="ja">🔒 企業のデータプライバシーポリシーにより、ライブバージョンとスクリーンショットには匿名化またはモックデータが含まれています。</span>
+            <p>
+                <span data-lang="zh">成本追踪模块提供 8 个核心字段的侧边栏快速筛选与全局搜索，搭配灵活的数据列自定义视图，帮助决策者直观地洞察总投资、平均 EBITDA 及新旧店比例的分布情况。</span>
+                <span data-lang="en">The Cost Tracker module provides quick sidebar filtering on 8 core fields and global search, along with flexible custom data column views. It helps decision-makers intuitively gain insights into total investment, average EBITDA, and new vs. renovated store ratios.</span>
+                <span data-lang="ja">コスト追跡モジュールは、8つのコアフィールドのサイドバークイックフィルターとグローバル検索を提供し、柔軟なカスタムデータ列ビューと組み合わせて、意思決定者が総投資額、平均EBITDA、および新旧店舗の比率の分布を直感的に洞察するのを支援します。</span>
             </p>
 
+            <div class="hero-image-container" style="margin-top: 40px;">
+                <img src="../project/company%20project/case-web/3.png" alt="Brief Cost Tracker Feature">
+            </div>
         </article>
+
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div id="music-widget">
+        <div id="music-icon" onclick="toggleMusicWidget()">
+            <img src="../icon/music-icon.svg" alt="Music" id="music-img">
+        </div>
+        <div id="music-player-container" class="hidden">
+            <!-- 直接嵌入音乐播放器的 HTML 结构和脚本 -->
+            <div id="mini-player" class="mini-player mini-player-light">
+                <div class="player-content">
+                    <img id="mini-cover" src="https://y.qq.com/music/photo_new/T002R300x300M000000rC01T3xT2Ym_1.jpg" alt="Album Cover">
+                    <div class="song-info">
+                        <div id="mini-title" class="song-title">Perfect Night</div>
+                        <div id="mini-artist" class="song-artist">LE SSERAFIM</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" id="mini-prev" onclick="miniPlayPrev()">
+                        <i data-feather="skip-back" style="width: 14px; height: 14px;"></i>
+                    </button>
+                    <button class="control-btn play-pause-btn" id="mini-play" onclick="miniTogglePlay()">
+                        <i data-feather="play" id="mini-play-icon" style="width: 16px; height: 16px;"></i>
+                    </button>
+                    <button class="control-btn" id="mini-next" onclick="miniPlayNext()">
+                        <i data-feather="skip-forward" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <audio id="global-audio-player"></audio>
+            
+            <style>
+                #music-widget {
+                    position: fixed;
+                    right: 20px;
+                    bottom: 20px;
+                    z-index: 10000;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    gap: 15px;
+                }
+                
+                #music-icon {
+                    width: 50px;
+                    height: 50px;
+                    background: #fff;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+                    border: 1px solid rgba(0,0,0,0.05);
+                }
+                
+                #music-icon:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                }
+                
+                #music-icon.playing {
+                    animation: pulse 2s infinite ease-in-out;
+                }
+                
+                @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0 rgba(135, 116, 255, 0.4); }
+                    70% { box-shadow: 0 0 0 10px rgba(135, 116, 255, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(135, 116, 255, 0); }
+                }
+                
+                #music-img {
+                    width: 24px;
+                    height: 24px;
+                }
+                
+                #music-player-container {
+                    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+                    transform-origin: bottom right;
+                }
+                
+                #music-player-container.hidden {
+                    opacity: 0;
+                    transform: scale(0.8) translateY(20px);
+                    pointer-events: none;
+                }
+                
+                /* Mini Player Styles */
+                .mini-player {
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    border-radius: 20px;
+                    padding: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+                    border: 1px solid rgba(255, 255, 255, 0.5);
+                    width: 280px;
+                    transition: all 0.3s ease;
+                }
+                
+                .mini-player-dark {
+                    background: rgba(30, 30, 30, 0.85);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                }
+                
+                .player-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    flex: 1;
+                    min-width: 0;
+                }
+                
+                #mini-cover {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    transition: transform 0.5s ease;
+                }
+                
+                #mini-cover.spinning {
+                    animation: spin 10s linear infinite;
+                    border-radius: 50%;
+                }
+                
+                @keyframes spin {
+                    100% { transform: rotate(360deg); }
+                }
+                
+                .song-info {
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                }
+                
+                .song-title {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #333;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-bottom: 2px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                }
+                
+                .mini-player-dark .song-title { color: #fff; }
+                
+                .song-artist {
+                    font-size: 11px;
+                    color: #888;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                }
+                
+                .mini-player-dark .song-artist { color: #aaa; }
+                
+                .controls {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                
+                .control-btn {
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    color: #555;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    transition: all 0.2s;
+                }
+                
+                .mini-player-dark .control-btn { color: #ccc; }
+                
+                .control-btn:hover {
+                    background: rgba(0,0,0,0.05);
+                    color: #111;
+                }
+                
+                .mini-player-dark .control-btn:hover {
+                    background: rgba(255,255,255,0.1);
+                    color: #fff;
+                }
+                
+                .play-pause-btn {
+                    background: #f0f0f0;
+                    color: #333;
+                    width: 34px;
+                    height: 34px;
+                }
+                
+                .mini-player-dark .play-pause-btn {
+                    background: #333;
+                    color: #fff;
+                }
+                
+                .play-pause-btn:hover {
+                    background: #e0e0e0;
+                    transform: scale(1.05);
+                }
+                
+                .mini-player-dark .play-pause-btn:hover {
+                    background: #444;
+                }
+            </style>
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (typeof feather !== 'undefined') {
+                        feather.replace();
+                    }
+                    initAudioPlayer();
+                });
+
+                const playlist = [
+                    {
+                        title: "Perfect Night",
+                        artist: "LE SSERAFIM",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M000000rC01T3xT2Ym_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400000jW9hN2h1pB6.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    },
+                    {
+                        title: "Hype Boy",
+                        artist: "NewJeans",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M0000010cTks1Rz2U1_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400001y1qV83X6p1g.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    },
+                    {
+                        title: "Ditto",
+                        artist: "NewJeans",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M000004OPIF24T3eED_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400001Wv9qD3u0Hq0.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    }
+                ];
+                
+                let currentSongIndex = 0;
+                let audioPlayer = null;
+                let isPlaying = false;
+                
+                function initAudioPlayer() {
+                    audioPlayer = document.getElementById('global-audio-player');
+                    if (!audioPlayer) return;
+                    
+                    audioPlayer.volume = 0.5;
+                    
+                    audioPlayer.addEventListener('ended', () => {
+                        miniPlayNext();
+                    });
+                    
+                    audioPlayer.addEventListener('play', () => {
+                        isPlaying = true;
+                        updatePlayUI(true);
+                        document.getElementById('music-icon').classList.add('playing');
+                    });
+                    
+                    audioPlayer.addEventListener('pause', () => {
+                        isPlaying = false;
+                        updatePlayUI(false);
+                        document.getElementById('music-icon').classList.remove('playing');
+                    });
+                    
+                    const savedIndex = localStorage.getItem('musicPlayerIndex');
+                    if (savedIndex !== null && savedIndex < playlist.length) {
+                        currentSongIndex = parseInt(savedIndex);
+                        loadSong(currentSongIndex, false);
+                    } else {
+                        loadSong(0, false);
+                    }
+                }
+                
+                function toggleMusicWidget() {
+                    const container = document.getElementById('music-player-container');
+                    container.classList.toggle('hidden');
+                }
+                
+                function loadSong(index, autoPlay = true) {
+                    if (!audioPlayer) return;
+                    const song = playlist[index];
+                    document.getElementById('mini-title').innerText = song.title;
+                    document.getElementById('mini-artist').innerText = song.artist;
+                    document.getElementById('mini-cover').src = song.cover;
+                    localStorage.setItem('musicPlayerIndex', index);
+                    if (autoPlay) { simulatePlay(); }
+                }
+                
+                function simulatePlay() {
+                    isPlaying = true;
+                    updatePlayUI(true);
+                    document.getElementById('music-icon').classList.add('playing');
+                    document.getElementById('mini-cover').classList.add('spinning');
+                }
+                
+                function simulatePause() {
+                    isPlaying = false;
+                    updatePlayUI(false);
+                    document.getElementById('music-icon').classList.remove('playing');
+                    document.getElementById('mini-cover').classList.remove('spinning');
+                }
+                
+                function updatePlayUI(playing) {
+                    const iconContainer = document.getElementById('mini-play-icon');
+                    if (!iconContainer) return;
+                    if (playing) {
+                        iconContainer.outerHTML = '<i data-feather="pause" id="mini-play-icon" style="width: 16px; height: 16px;"></i>';
+                    } else {
+                        iconContainer.outerHTML = '<i data-feather="play" id="mini-play-icon" style="width: 16px; height: 16px;"></i>';
+                    }
+                    if (typeof feather !== 'undefined') { feather.replace(); }
+                }
+                
+                function miniTogglePlay() {
+                    if (isPlaying) { simulatePause(); } else { simulatePlay(); }
+                }
+                
+                function miniPlayNext() {
+                    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                    loadSong(currentSongIndex, isPlaying);
+                }
+                
+                function miniPlayPrev() {
+                    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+                    loadSong(currentSongIndex, isPlaying);
+                }
+            </script>
+        </div>
     </div>
 
     <script>
@@ -548,5 +811,5 @@
             event.target.classList.add('active');
         }
     </script>
-<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+<iframe allow="autoplay" src="../pages/music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
 </html>
