@@ -303,28 +303,55 @@
             box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
             z-index: 9999;
         }
+
         .dock a {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
+            width: 90px;
+            height: 90px;
             gap: 4px;
             text-decoration: none;
             color: #888;
             border-radius: 20px;
-            transition: all 0.2s ease;
+            /* 优化过渡动画，使果冻回弹效果更加丝滑自然 */
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
         }
+
         .dock-label {
             font-size: 11px;
             font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             pointer-events: none;
         }
-        .dock a:hover, .dock a.active {
+
+        .dock a:hover {
             background: #f5f5f5;
             color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
         }
+
+        /* 纯 CSS 实现相邻元素果冻缩放，彻底解决 JS 布局重绘 (Layout Thrashing) 导致的卡顿问题 */
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
+        }
+
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        
         .dock a.active::after {
             content: '';
             position: absolute;
@@ -335,6 +362,31 @@
             height: 4px;
             background-color: #555;
             border-radius: 2px;
+        }
+
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        /* 专门维持 More 图标保持原大小 */
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+        
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background-color: #eee;
+            margin: 0 10px;
         }
 
         [data-lang] { display: none; }
@@ -369,33 +421,46 @@
         <button class="lang-btn" onclick="switchLang('ja')">JA</button>
     </div>
 
-    <!-- 底部导航 Dock -->
-    <div class="dock">
-        <a href="../index.html#home" title="Home">
-            <i data-feather="home"></i>
-            <span class="dock-label">
-                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
-            </span>
-        </a>
-        <a href="projects.html" class="active" title="Projects">
-            <i data-feather="grid"></i>
-            <span class="dock-label">
-                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
-            </span>
-        </a>
-        <a href="../index.html#about" title="About">
-            <i data-feather="user"></i>
-            <span class="dock-label">
-                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
-            </span>
-        </a>
-        <a href="../index.html#contact" title="Contact">
-            <i data-feather="mail"></i>
-            <span class="dock-label">
-                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
-            </span>
-        </a>
-    </div>
+        <!-- 底部导航 Dock -->
+        <div class="dock">
+            <a href="../index.html#home" title="Home">
+                <img src="../icon/Home.png" alt="Home">
+                <span class="dock-label">
+                    <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+                </span>
+            </a>
+            <a href="projects.html" class="active" title="Projects">
+                <img src="../icon/Projects.png" alt="Projects">
+                <span class="dock-label">
+                    <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+                </span>
+            </a>
+            <a href="../index.html#about" title="About">
+                <img src="../icon/About.png" alt="About">
+                <span class="dock-label">
+                    <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+                </span>
+            </a>
+            <a href="../index.html#contact" title="Contact">
+                <img src="../icon/Contact.png" alt="Contact">
+                <span class="dock-label">
+                    <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+                </span>
+            </a>
+            <a href="explore.html" title="Explore">
+                <img src="../icon/Explore.png" alt="Explore">
+                <span class="dock-label">
+                    <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
+                </span>
+            </a>
+            <div class="dock-divider"></div>
+            <a href="#" title="More">
+                <img src="../icon/More.png" alt="More">
+                <span class="dock-label">
+                    <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
+                </span>
+            </a>
+        </div>
 
     <div class="container">
         <!-- 顶部返回按钮 -->

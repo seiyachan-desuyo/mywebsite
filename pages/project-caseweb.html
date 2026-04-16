@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brief Cost Tracker | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #8774ff;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)), 
+                url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        /* Fonts */
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        
+        .sys-font { font-family: 'Poppins', sans-serif; }
+        .mono-font { font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Zilla Slab', serif; }
+        body[data-current-lang="zh"] .project-title { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        .project-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            text-align: left;
+        }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 30px;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 30px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Zilla Slab', serif; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 50px 0 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '💼';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 2.5rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        /* 三张图片的散落拍立得排版 */
+        .polaroid-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 80px 0;
+            padding: 20px 0;
+        }
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 35px 10px; /* 模拟拍立得底部留白 */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            width: 32%;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">👀</text></g></svg>') 8 16, pointer !important;
+        }
+        .polaroid img {
+            width: 100%;
+            display: block;
+            border: 1px solid #f0f0f0;
+            border-radius: 2px;
+        }
+        
+        /* 赋予三张照片不同的角度、高度和层级，模拟散落桌面的真实感 */
+        .polaroid:nth-child(1) { 
+            transform: rotate(-6deg); 
+            z-index: 1; 
+            right: -8%; 
+        }
+        .polaroid:nth-child(2) { 
+            transform: rotate(2deg) translateY(-20px); 
+            z-index: 3; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .polaroid:nth-child(3) { 
+            transform: rotate(8deg) translateY(10px); 
+            z-index: 2; 
+            left: -8%; 
+        }
+        
+        /* 鼠标悬停时像拿起来查看一样 */
+        .polaroid:hover {
+            transform: scale(1.15) rotate(0deg) translateY(-10px) !important;
+            z-index: 10 !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #e8f5e9;
+        }
+
+                /* Nav & Dock */
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999; /* 大幅提升 z-index，防止被别的贴纸层盖住 */
+        }
+
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            /* 优化过渡动画，使果冻回弹效果更加丝滑自然 */
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
+        }
+
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        .dock a:hover {
+            background: #f5f5f5;
+            color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+
+        /* 纯 CSS 实现相邻元素果冻缩放，彻底解决 JS 布局重绘 (Layout Thrashing) 导致的卡顿问题 */
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
+        }
+
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        /* 专门维持 More 图标保持原大小 */
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+        
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background-color: #eee;
+            margin: 0 10px;
+        }
+
+
+
+
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"],
+        body[data-current-lang="zh"] li[data-lang="zh"],
+        body[data-current-lang="en"] li[data-lang="en"],
+        body[data-current-lang="ja"] li[data-lang="ja"] { display: block; }
+        
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+            .meta-item { text-align: center; }
+                        .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; width: 60px; height: 60px; }
+            .dock a img { width: 40px; height: 40px; }
+            
+            .polaroid { width: 80%; transform: none !important; margin-bottom: 20px; z-index: 1; right: auto; left: auto;}
+            .polaroid:hover { transform: scale(1.05) !important; }
+            .polaroid-gallery { flex-direction: column; gap: 15px; margin: 40px 0; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+        <!-- 底部导航 Dock -->
+    <div class="dock">
+        <a href="../index.html#home"  title="Home" onclick="updateDock(this)">
+            <img src="../icon/Home.png" alt="Home">
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" title="Projects">
+            <img src="../icon/Projects.png" alt="Projects">
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="../index.html#about" title="About" onclick="updateDock(this)">
+            <img src="../icon/About.png" alt="About">
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="../index.html#contact" title="Contact" onclick="updateDock(this)">
+            <img src="../icon/Contact.png" alt="Contact">
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+        <a href="explore.html" title="Explore" onclick="updateDock(this)">
+            <img src="../icon/Explore.png" alt="Explore">
+            <span class="dock-label">
+                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
+            </span>
+        </a>
+        <div class="dock-divider"></div>
+
+    <div class="container">
+        <!-- 顶部返回按钮 -->
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <!-- 页面头部信息 -->
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">案例与成本数据大屏</span>
+                <span data-lang="en">Case Data Builder</span>
+                <span data-lang="ja">データビルダー</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">融合极速 OCR 与自研模板引擎，为 Apple Finance 打造的智能化成本追踪分析平台。</span>
+                <span data-lang="en">An intelligent cost tracking platform built for Apple Finance, integrating fast OCR and a custom template engine.</span>
+                <span data-lang="ja">高速OCRと独自のテンプレートエンジンを統合した、Apple Finance向けのインテリジェントなコスト追跡プラットフォーム。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Full Stack Dev / Analyst</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">12 Weeks • Present</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">类别</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Data App / Automation</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 图文内容区 -->
+        <article class="article-content">
+            
+            <!-- 散落的拍立得照片排版 -->
+            <div class="polaroid-gallery">
+                <div class="polaroid">
+                    <img src="../project/company project/case-web/1.png" alt="Platform Screenshot 1">
+                </div>
+                <div class="polaroid">
+                    <img src="../project/company project/case-web/2.png" alt="Platform Screenshot 2">
+                </div>
+                <div class="polaroid">
+                    <img src="../project/company project/case-web/3.png" alt="Platform Screenshot 3">
+                </div>
+            </div>
+
+            <h2>
+                <span data-lang="zh">项目背景</span>
+                <span data-lang="en">Background</span>
+                <span data-lang="ja">背景</span>
+            </h2>
+            <p>
+                <span data-lang="zh">在 Apple Finance 团队中，分析多维度的成本数据及审批各类门店扩展案例需要耗费大量人工去核对 Excel 表格和 PDF 文件。为了将繁重的工作自动化并打通数据孤岛，我设计并开发了这个名为 Brief Cost Tracker（Case Data Builder）的数据应用平台。</span>
+                <span data-lang="en">Within the Apple Finance team, analyzing multi-dimensional cost data and approving various store expansion cases previously required extensive manual effort to cross-check Excel sheets and PDFs. To automate this heavy workload and break down data silos, I designed and developed this data application platform named Brief Cost Tracker (Case Data Builder).</span>
+                <span data-lang="ja">Apple Financeチームでは、多次元のコストデータを分析し、さまざまな出店ケースを承認するために、ExcelシートとPDFを手作業で照合する膨大な労力が必要でした。この重労働を自動化し、データの孤立を解消するために、Brief Cost Tracker（Case Data Builder）というデータアプリケーションプラットフォームを設計および開発しました。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>💼 商业价值：</strong> 大幅提升跨维度案例检索的效率，实现成本追踪的可视化，并将原本繁琐的英文商业审批报告实现了「一键生成」，极大解放了财务团队的生产力。</span>
+                    <span data-lang="en"><strong>💼 Business Value:</strong> Significantly improved the efficiency of cross-dimensional case retrieval, realized visual cost tracking, and achieved "one-click generation" of previously tedious English business approval reports, greatly freeing up the finance team's productivity.</span>
+                    <span data-lang="ja"><strong>💼 ビジネス価値：</strong> 多次元ケース検索の効率を大幅に向上させ、コスト追跡を視覚化し、以前は面倒だった英語のビジネス承認レポートの「ワンクリック生成」を実現し、財務チームの生産性を大幅に解放しました。</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">核心功能展示</span>
+                <span data-lang="en">Core Features</span>
+                <span data-lang="ja">主な機能の紹介</span>
+            </h2>
+            <ul style="padding-left: 20px;">
+                <li data-lang="zh"><strong>多维数据看板 (Streamlit)：</strong> 采用 Streamlit 构建响应式前端界面，提供全文智能搜索与双视图模式（表格/卡片），能够快速对海量案例和成本数据进行筛选、联动展示与下钻分析。</li>
+                <li data-lang="en"><strong>Multi-dimensional Dashboard (Streamlit):</strong> Built a responsive frontend interface using Streamlit, featuring full-text smart search and dual view modes (Table/Card) to quickly filter, link, and drill-down into massive cases and cost data.</li>
+                <li data-lang="ja"><strong>多次元ダッシュボード (Streamlit)：</strong> Streamlitを使用してレスポンシブなフロントエンドインターフェースを構築し、全文スマート検索とデュアルビューモード（テーブル/カード）を備え、大量のケースとコストデータの迅速なフィルタリングとドリルダウン分析を可能にしました。</li>
+
+                <li data-lang="zh" style="margin-top: 25px;"><strong>极速定点 OCR 与智能解析：</strong> 基于 <code>pdf2image</code> 与 <code>easyocr</code> 集成了防内存溢出的极速 OCR 技术。通过生成 72 DPI 缩略图速查锁定页面，再行 300 DPI 定点精确解析，一键提取 PDF 与 Excel 中的关键商业及财务指标。</li>
+                <li data-lang="en" style="margin-top: 25px;"><strong>Targeted OCR & Smart Parsing:</strong> Integrated high-speed OCR using <code>pdf2image</code> and <code>easyocr</code> with OOM prevention. It uses 72 DPI thumbnails for rapid page targeting followed by 300 DPI precision extraction, pulling key business and financial metrics from PDFs and Excel instantly.</li>
+                <li data-lang="ja" style="margin-top: 25px;"><strong>高速OCRとスマート解析：</strong> メモリ不足を防ぐために <code>pdf2image</code> と <code>easyocr</code> を使用した高速OCRを統合しました。72 DPIのサムネイルでターゲットページを素早く見つけ、300 DPIの高精度抽出を行い、PDFやExcelから重要なビジネス指標と財務指標を瞬時に抽出します。</li>
+
+                <li data-lang="zh" style="margin-top: 25px;"><strong>自动化文案组装与推荐 (Template Engine)：</strong> 搭载自研的模板引擎，自动汇集解析后的数据填入标准化句式中。同时匹配历史数据库，依据多维度权重打分 (Scoring)，智能推荐历史最佳的审批金句供直接采纳。</li>
+                <li data-lang="en" style="margin-top: 25px;"><strong>Automated Report Assembly & Recommendation:</strong> Features a custom template engine that aggregates parsed data into standardized sentences. It also matches historical databases, scoring them across multiple dimensions to recommend the best historical approval phrases for immediate use.</li>
+                <li data-lang="ja" style="margin-top: 25px;"><strong>自動レポート作成と推奨：</strong> 解析されたデータを標準化された文に集約するカスタムテンプレートエンジンを搭載しています。また、過去のデータベースと照合し、多次元のスコアリングに基づいて最適な過去の承認フレーズを推奨し、すぐに使用できるようにします。</li>
+            </ul>
+
+            <p style="text-align: center; margin-top: 40px; font-size: 0.9rem; color: #aaa;">
+                <span data-lang="zh">🔒 由于企业数据隐私政策，线上版本及截图包含的是脱敏或模拟数据。</span>
+                <span data-lang="en">🔒 Due to corporate data privacy policies, the live version and screenshots contain anonymized or mock data.</span>
+                <span data-lang="ja">🔒 企業のデータプライバシーポリシーにより、ライブバージョンとスクリーンショットには匿名化またはモックデータが含まれています。</span>
+            </p>
+
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>
