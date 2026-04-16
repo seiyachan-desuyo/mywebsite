@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTM Finance Skills Marketplace | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #4f7cff;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image:
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)),
+                url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.2rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px; }
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.45rem;
+            color: #666;
+            max-width: 760px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item { text-align: left; }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+            background: linear-gradient(180deg, #f8fbff 0%, #edf4ff 100%);
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .hero-image-container img {
+            width: 100%;
+            max-width: 780px;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .article-content {
+            max-width: 820px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p { margin-bottom: 24px; }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 24px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 34px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '🧩';
+            position: absolute;
+            top: -28px;
+            left: 34px;
+            font-size: 2.3rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .article-content ul {
+            margin: 0 0 20px 24px;
+        }
+        .article-content li {
+            margin-bottom: 14px;
+        }
+
+        .notice-box {
+            border: 2px dashed #c4d6ff;
+            border-radius: 16px;
+            background: #f7faff;
+            padding: 22px;
+            margin: 36px 0;
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
+        }
+
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        .dock a:hover {
+            background: #f5f5f5;
+            color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
+        }
+
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background-color: #eee;
+            margin: 0 10px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                text-align: center;
+            }
+            .meta-item { text-align: center; }
+            .dock {
+                width: 90%;
+                justify-content: space-around;
+            }
+            .dock a {
+                width: 64px;
+                height: 64px;
+            }
+            .dock a img {
+                width: 42px;
+                height: 42px;
+            }
+            .dock-label {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="dock">
+        <a href="../index.html#home" title="Home">
+            <img src="../icon/Home.png" alt="Home">
+            <span class="dock-label">
+                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
+            </span>
+        </a>
+        <a href="projects.html" class="active" title="Projects">
+            <img src="../icon/Projects.png" alt="Projects">
+            <span class="dock-label">
+                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
+            </span>
+        </a>
+        <a href="../index.html#about" title="About">
+            <img src="../icon/About.png" alt="About">
+            <span class="dock-label">
+                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
+            </span>
+        </a>
+        <a href="../index.html#contact" title="Contact">
+            <img src="../icon/Contact.png" alt="Contact">
+            <span class="dock-label">
+                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
+            </span>
+        </a>
+        <a href="explore.html" title="Explore">
+            <img src="../icon/Explore.png" alt="Explore">
+            <span class="dock-label">
+                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
+            </span>
+        </a>
+        <div class="dock-divider"></div>
+        <a href="#" title="More">
+            <img src="../icon/More.png" alt="More">
+            <span class="dock-label">
+                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
+            </span>
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">RTM Finance Skills Marketplace</span>
+                <span data-lang="en">RTM Finance Skills Marketplace</span>
+                <span data-lang="ja">RTM Finance Skills Marketplace</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">为 Apple RTM Finance 团队打造的内部技能市场网页，支持中英双语搜索、分类浏览与一键复制安装命令，帮助团队快速获取自动化脚本与 AI 工具。</span>
+                <span data-lang="en">An internal skills marketplace for Apple RTM Finance, with bilingual search, category browsing, and one-click install command copy for automation and AI tools.</span>
+                <span data-lang="ja">Apple RTM Finance 向けの社内スキルマーケット。二言語検索、カテゴリ閲覧、インストールコマンドのワンクリックコピーに対応します。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Product Design / Front-end Development</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Internal Tooling / Marketplace</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="hero-image-container">
+            <img src="../project/company project/skills-marketplace/1.png" alt="Skills Marketplace screenshot">
+        </div>
+
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目简介</span>
+                <span data-lang="en">Project Overview</span>
+                <span data-lang="ja">プロジェクト概要</span>
+            </h2>
+            <p>
+                <span data-lang="zh">RTM Finance Skills Marketplace 是一个面向 Apple RTM Finance 团队的内部技能插件门户。目标是把分散的脚本和自动化能力集中到一个可检索、可分类、可直接复制安装命令的统一入口，降低工具发现成本。</span>
+                <span data-lang="en">RTM Finance Skills Marketplace is an internal skill portal for Apple RTM Finance. It centralizes distributed scripts and automations into a searchable and categorized entry point with direct install command copy.</span>
+                <span data-lang="ja">RTM Finance Skills Marketplace は Apple RTM Finance 向けの社内スキルポータルです。分散したスクリプトと自動化機能を、検索可能で分類済みの単一入口に統合します。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>核心价值：</strong> 从“知道有工具”到“30 秒内找到并安装工具”。通过中英双语、统一分类和一键复制命令，显著提升团队自动化工具的触达效率。</span>
+                    <span data-lang="en"><strong>Core Value:</strong> Move from "knowing a tool exists" to "finding and installing it in 30 seconds" via bilingual UX, clear taxonomy, and one-click command copy.</span>
+                    <span data-lang="ja"><strong>コア価値：</strong> 「ツールがあると知っている」から「30秒で見つけて導入できる」へ。二言語UXと統一分類で到達性を高めます。</span>
+                </p>
+            </div>
+
+            <h2>
+                <span data-lang="zh">功能设计</span>
+                <span data-lang="en">Feature Design</span>
+                <span data-lang="ja">機能設計</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>极速检索：</strong> 支持中英双语关键词与模糊匹配，快速定位技能。</span>
+                    <span data-lang="en"><strong>Fast Search:</strong> Bilingual fuzzy search for quick skill discovery.</span>
+                    <span data-lang="ja"><strong>高速検索：</strong> 二言語のあいまい検索で迅速にスキルを特定。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>工作流分类：</strong> 按 Mono、Keynote、Data Analyze、Article、Email、Automation 六大类组织。</span>
+                    <span data-lang="en"><strong>Workflow Categories:</strong> Mono, Keynote, Data Analyze, Article, Email, Automation.</span>
+                    <span data-lang="ja"><strong>ワークフロー分類：</strong> Mono、Keynote、Data Analyze、Article、Email、Automation。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>一键安装：</strong> 自动生成并复制 npx 安装命令，降低上手门槛。</span>
+                    <span data-lang="en"><strong>One-click Install:</strong> Auto-generate and copy npx installation commands.</span>
+                    <span data-lang="ja"><strong>ワンクリック導入：</strong> npx 導入コマンドを自動生成・コピー。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>双语界面：</strong> 内置 CN/EN 切换，适配跨地区团队协作。</span>
+                    <span data-lang="en"><strong>Bilingual UI:</strong> Built-in CN/EN switch for global collaboration.</span>
+                    <span data-lang="ja"><strong>二言語UI：</strong> CN/EN 切り替えでグローバル連携に対応。</span>
+                </li>
+            </ul>
+
+            <h2>
+                <span data-lang="zh">实现方式</span>
+                <span data-lang="en">Implementation</span>
+                <span data-lang="ja">実装方式</span>
+            </h2>
+            <ul>
+                <li>
+                    <span data-lang="zh"><strong>纯前端架构：</strong> 以静态页面方式运行，无需数据库和后端服务。</span>
+                    <span data-lang="en"><strong>Static Front-end:</strong> Runs as pure static pages without backend dependencies.</span>
+                    <span data-lang="ja"><strong>静的フロントエンド：</strong> バックエンド不要の静的構成。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>核心文件：</strong> index.html、app.js、style.css 负责 UI、数据渲染与交互逻辑。</span>
+                    <span data-lang="en"><strong>Core Files:</strong> index.html, app.js, style.css for layout, rendering, and interaction.</span>
+                    <span data-lang="ja"><strong>主要ファイル：</strong> index.html、app.js、style.css が UI とロジックを担当。</span>
+                </li>
+                <li>
+                    <span data-lang="zh"><strong>扩展机制：</strong> 通过 app.js 的 skillsData 数组即可快速新增 Skill 卡片。</span>
+                    <span data-lang="en"><strong>Extensibility:</strong> Add new skills by extending the skillsData array in app.js.</span>
+                    <span data-lang="ja"><strong>拡張性：</strong> app.js の skillsData 配列に追加するだけで拡張可能。</span>
+                </li>
+            </ul>
+
+            <div class="notice-box">
+                <p style="margin-bottom: 8px;">
+                    <span data-lang="zh"><strong>预览说明：</strong> 该项目为公司内部站点，当前不提供公网预览链接。</span>
+                    <span data-lang="en"><strong>Preview Note:</strong> This is an internal company website and no public live preview is available.</span>
+                    <span data-lang="ja"><strong>プレビュー注記：</strong> 社内サイトのため、公開プレビューは提供していません。</span>
+                </p>
+                <p style="margin: 0; color: #666;">
+                    <span data-lang="zh">如需演示，可在内网环境通过本地静态服务启动并访问。</span>
+                    <span data-lang="en">For demos, run it in the internal environment via a local static server.</span>
+                    <span data-lang="ja">デモが必要な場合は、社内環境でローカル静的サーバーを起動して確認します。</span>
+                </p>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>
