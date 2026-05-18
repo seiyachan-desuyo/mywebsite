@@ -693,45 +693,7 @@
 <body data-current-lang="en">
 
     <!-- 底部导航 Dock -->
-    <div class="dock">
-        <a href="../index.html#home" title="Home">
-            <img src="../icon/Home.png" alt="Home">
-            <span class="dock-label">
-                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
-            </span>
-        </a>
-        <a href="projects.html" class="active" title="Projects">
-            <img src="../icon/Projects.png" alt="Projects">
-            <span class="dock-label">
-                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
-            </span>
-        </a>
-        <a href="../index.html#about" title="About">
-            <img src="../icon/About.png" alt="About">
-            <span class="dock-label">
-                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
-            </span>
-        </a>
-        <a href="../index.html#contact" title="Contact">
-            <img src="../icon/Contact.png" alt="Contact">
-            <span class="dock-label">
-                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
-            </span>
-        </a>
-        <a href="#" title="Explore">
-            <img src="../icon/Explore.png" alt="Explore">
-            <span class="dock-label">
-                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
-            </span>
-        </a>
-        <div class="dock-divider"></div>
-        <a href="#" title="More">
-            <img src="../icon/More.png" alt="More">
-            <span class="dock-label">
-                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
-            </span>
-        </a>
-    </div>
+    <div class="shared-dock-root" data-active="projects"></div>
 
     <div class="lang-switch">
         <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
@@ -828,6 +790,57 @@
                         <div class="card-date">Fall 2025</div>
                     </div>
                 </a>
+
+                <!-- 项目 12: Resume Tracker -->
+                <a href="#" class="project-card" onclick="openModal('project-12', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #f4f0ff;">
+                            <img src="../project/my%20own%20project/Resume%20Tracker/1.jpg" alt="Cover">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">Resume Tracker</span>
+                            <span data-lang="en">Resume Tracker</span>
+                            <span data-lang="ja" class="cartoon-font-ja">Resume Tracker</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+
+                <!-- 项目 15: 7鬼523 -->
+                <a href="#" class="project-card" onclick="openModal('project-15', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #101820; padding: 0;">
+                            <img src="../project/my%20own%20project/7鬼523/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">7鬼523</span>
+                            <span data-lang="en">7鬼523</span>
+                            <span data-lang="ja" class="cartoon-font-ja">7鬼523</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
+
+                <!-- 项目 16: 管综数学复习导航 -->
+                <a href="#" class="project-card" onclick="openModal('project-16', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #f7f4ee; padding: 0;">
+                            <img src="../project/my%20own%20project/管综数学学习网站/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">管综数学复习导航</span>
+                            <span data-lang="en">Math Review Navigator</span>
+                            <span data-lang="ja" class="cartoon-font-ja">管綜数学復習ナビ</span>
+                        </div>
+                        <div class="card-date">Spring 2026</div>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -875,6 +888,40 @@
                     </div>
                 </a>
 
+                <!-- 项目 13: Case Comment Writer -->
+                <a href="#" class="project-card" onclick="openModal('project-13', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #ffffff; padding: 0;">
+                            <img src="../project/company project/case-comments-write/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">Case Comment Writer</span>
+                            <span data-lang="en">Case Comment Writer</span>
+                            <span data-lang="ja" class="cartoon-font-ja">Case Comment Writer</span>
+                        </div>
+                        <div class="card-date">Present</div>
+                    </div>
+                </a>
+
+                <!-- 项目 14: POS Map -->
+                <a href="#" class="project-card" onclick="openModal('project-14', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #ffffff; padding: 0;">
+                            <img src="../project/company project/pos map/1.png" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">POS Map</span>
+                            <span data-lang="en">POS Map</span>
+                            <span data-lang="ja" class="cartoon-font-ja">POS Map</span>
+                        </div>
+                        <div class="card-date">2026</div>
+                    </div>
+                </a>
+
                 <!-- 项目 5: Case Data Builder -->
                 <a href="#" class="project-card" onclick="openModal('project-5', event); return false;">
                     <div class="book-model">
@@ -892,20 +939,6 @@
                     </div>
                 </a>
 
-                <!-- 项目 2: 巧妈妈 -->
-                <a href="#" class="project-card" onclick="openModal('project-2', event); return false;">
-                    <div class="book-model">
-                        <div class="card-image-wrap" style="background-color: #fdf5e6;">🎨</div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-title">
-                            <span data-lang="zh" class="cartoon-font-zh">巧妈妈包装设计</span>
-                            <span data-lang="en">Qiaomama Branding</span>
-                            <span data-lang="ja" class="cartoon-font-ja">巧ママのパッケージ</span>
-                        </div>
-                        <div class="card-date">Spring 2026</div>
-                    </div>
-                </a>
             </div>
         </div>
 
@@ -936,18 +969,37 @@
                     </div>
                 </a>
 
-                <!-- 项目 3: 金融广告设计 -->
-                <a href="#" class="project-card" onclick="openModal('project-3', event); return false;">
+                <!-- 项目 2: 巧妈妈 Branding -->
+                <a href="#" class="project-card" onclick="openModal('project-2', event); return false;">
                     <div class="book-model">
-                        <div class="card-image-wrap" style="background-color: #e3f2fd;">🎬</div>
+                        <div class="card-image-wrap" style="background-color: #fff8e1;">
+                            <img src="../project/competition%20project/巧妈妈/首页图.png" alt="Cover">
+                        </div>
                     </div>
                     <div class="card-info">
                         <div class="card-title">
-                            <span data-lang="zh" class="cartoon-font-zh">金融广告设计</span>
-                            <span data-lang="en">Financial Ad Design</span>
-                            <span data-lang="ja" class="cartoon-font-ja">金融広告デザイン</span>
+                            <span data-lang="zh" class="cartoon-font-zh">巧妈妈 Branding</span>
+                            <span data-lang="en">Qiaomama Branding</span>
+                            <span data-lang="ja" class="cartoon-font-ja">巧ママ ブランディング</span>
                         </div>
-                        <div class="card-date">Winter 2026</div>
+                        <div class="card-date">Fall 2025</div>
+                    </div>
+                </a>
+
+                <!-- 项目 11: Annotate -->
+                <a href="#" class="project-card" onclick="openModal('project-11', event); return false;">
+                    <div class="book-model">
+                        <div class="card-image-wrap" style="background-color: #eef4ff;">
+                            <img src="../project/competition%20project/annotate/1.png" alt="Cover">
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-title">
+                            <span data-lang="zh" class="cartoon-font-zh">Annotate 语笺</span>
+                            <span data-lang="en">Annotate</span>
+                            <span data-lang="ja" class="cartoon-font-ja">Annotate 語箋</span>
+                        </div>
+                        <div class="card-date">Fall 2025</div>
                     </div>
                 </a>
             </div>
@@ -984,6 +1036,45 @@
     <!-- 项目数据数据库 (JavaScript 对象模拟) -->
     <script>
         const projectDatabase = {
+            'project-16': {
+                bgColor: '#f7f4ee',
+                image: '../project/my%20own%20project/管综数学学习网站/1.png',
+                title: { zh: '管综数学复习导航', en: 'Math Review Navigator', ja: '管綜数学復習ナビ' },
+                date: 'Spring 2026',
+                desc: {
+                    zh: '一个基于 VitePress 搭建的管综数学复习网站，用来按章节整理知识点、题型方法和真题解析。项目重点在于把零散笔记整理成可搜索、可维护、适合高频复习的知识导航系统。',
+                    en: 'A VitePress-based math review site for the management entrance exam, designed to organize topics, problem-solving methods, and past-paper notes into a searchable and maintainable study navigation system.',
+                    ja: 'VitePress を使って構築した管綜数学の復習サイトで、知識点、解法、過去問メモを章ごとに整理し、検索しやすく継続更新しやすい学習ナビとしてまとめています。'
+                },
+                role: 'Product Design / Front-end Development / Content Architecture',
+                link: 'project-guanzong-math.html'
+            },
+            'project-15': {
+                bgColor: '#101820',
+                image: '../project/my%20own%20project/7鬼523/1.png',
+                title: { zh: '7鬼523', en: '7鬼523', ja: '7鬼523' },
+                date: 'Spring 2026',
+                desc: {
+                    zh: '一个带有 Balatro 视觉风格的多人联机卡牌小游戏。支持建房与加入房间、石头剪刀布抢先手、基础出牌校验、回合结算与实时状态同步，适合朋友间快速开一局。',
+                    en: 'A multiplayer card mini-game with a Balatro-inspired visual style. It supports room hosting and joining, rock-paper-scissors for first turn, basic play validation, turn settlement, and realtime state sync for quick matches with friends.',
+                    ja: 'Balatro ライクなビジュアルを持つマルチプレイヤーのカードミニゲームです。ルーム作成と参加、じゃんけんによる先手決定、基本的な手札判定、ターン決済、リアルタイム同期に対応しています。'
+                },
+                role: 'Game Design / Front-end Development',
+                link: 'project-7gui523.html'
+            },
+            'project-12': {
+                bgColor: '#f4f0ff',
+                image: '../project/my%20own%20project/Resume%20Tracker/1.jpg',
+                title: { zh: 'Resume Tracker', en: 'Resume Tracker', ja: 'Resume Tracker' },
+                date: 'Spring 2026',
+                desc: {
+                    zh: '一款本地运行的极简简历投递管理系统。支持记录投递的公司、岗位、时间轴和链接，提供按状态等多维度的高效筛选与搜索。内置“备投公司”心愿单与防重复机制，并支持导出 JSON、Excel 或图片，为海投阶段提供清晰安全的数据体验。',
+                    en: 'A local minimalist job application management system. It tracks companies, roles, timelines, and links with multi-dimensional filtering by status. Features include a "wishlist" for future applications, duplication check, and export options (JSON, Excel, Image) to provide a clear and secure data experience.',
+                    ja: 'ローカルで動作するミニマリストな履歴書応募管理システム。応募先の企業、職種、タイムライン、リンクを記録し、ステータスなどの多次元フィルタリングに対応。応募予定リストや重複チェック機能、多様なエクスポート機能（JSON、Excel、画像）を備え、明確で安全なデータ体験を提供します。'
+                },
+                role: 'Full-stack Developer',
+                link: 'project-resumetracker.html'
+            },
             'project-10': {
                 bgColor: '#f0fff4',
                 image: '../project/my%20own%20project/贸小饭/1.png',
@@ -1064,29 +1155,29 @@
             },
             'project-2': {
                 bgColor: '#fdf5e6',
-                emoji: '🎨',
+                image: '../project/competition%20project/巧妈妈/首页图.png',
                 title: { zh: '巧妈妈包装设计', en: 'Qiaomama Branding', ja: '巧ママのパッケージ' },
-                date: '10 Weeks • Spring 2026',
+                date: '10 Weeks • Fall 2025',
                 desc: {
-                    zh: '传统品牌年轻化升级。独立完成产品外包装视觉更新与全新 IP 形象设计。',
-                    en: 'Rejuvenation of a traditional brand. Independently designed new packaging visuals and a brand new IP character.',
-                    ja: '伝統的ブランドの若返り。製品パッケージのビジュアル刷新と新しいIPキャラクターデザインを単独で完了。'
+                    zh: '竞赛项目中的品牌视觉方向。围绕“巧妈妈”完成包装视觉语言、主 KV 与提案文档设计，突出产品识别度与货架吸引力。',
+                    en: 'A competition branding direction for Qiaomama. Delivered packaging visual language, key visual concept, and proposal document design to improve shelf recognition.',
+                    ja: '競技プロジェクトにおける巧ママのブランドビジュアル。パッケージ表現、KV、提案書デザインを統合し、店頭での識別性を強化しました。'
                 },
-                role: 'Brand Designer',
-                link: '#'
+                role: 'Art Designer',
+                link: 'project-qiaomama.html'
             },
-            'project-3': {
-                bgColor: '#e3f2fd',
-                emoji: '🎬',
-                title: { zh: '金融广告设计', en: 'Financial Ad Design', ja: '金融広告デザイン' },
-                date: '10 Weeks • Winter 2025',
+            'project-11': {
+                bgColor: '#eef4ff',
+                image: '../project/competition%20project/annotate/1.png',
+                title: { zh: 'Annotate 语笺', en: 'Annotate', ja: 'Annotate 語箋' },
+                date: '10 Weeks • Fall 2025',
                 desc: {
-                    zh: '全国一等奖项目。利用 AI 工具生成视觉物料，完成帧重绘、视频剪辑及配音制作。',
-                    en: 'National 1st Prize Project. Utilized AI tools for visual generation, frame repainting, video editing, and voiceover production.',
-                    ja: '全国1等賞プロジェクト。AIツールを使用してビジュアル素材を生成し、フレーム再描画、動画編集、吹き替え制作を完了。'
+                    zh: '竞赛项目 Annotate（语笺）聚焦学习与内容标注体验，包含产品概念展示、商业计划书与图表分析，并提供在线站点演示。',
+                    en: 'Annotate is a competition project focused on learning and annotation experience, featuring product concept showcase, business plan materials, chart analysis, and a live website demo.',
+                    ja: 'Annotate は学習・注釈体験に焦点を当てた競技プロジェクトで、製品コンセプト、事業計画資料、図表分析、オンラインデモを含みます。'
                 },
-                role: 'Visual Designer',
-                link: '#'
+                role: 'Product / Visual Design',
+                link: 'project-annotate.html'
             },
             'project-4': {
                 bgColor: '#ffffff',
@@ -1100,6 +1191,32 @@
                 },
                 role: 'Sales Finance Intern',
                 link: 'project-caseweb.html'
+            },
+            'project-13': {
+                bgColor: '#ffffff',
+                image: '../project/company project/case-comments-write/1.png',
+                title: { zh: 'Case Comment Writer', en: 'Case Comment Writer', ja: 'Case Comment Writer' },
+                date: 'Present',
+                desc: {
+                    zh: '一个面向内部业务评审场景的写作辅助工具。支持上传 Excel 与 PDF，自动提取关键信息、匹配历史参考表述、生成可编辑评论，并可批量回写到原始表格中，显著减少重复性整理工作。',
+                    en: 'A writing assistant for internal business review workflows. It accepts Excel and PDF inputs, extracts key context, matches reusable reference phrasing, generates editable comments, and writes results back to the original workbook in batch.',
+                    ja: '社内レビュー業務向けのライティング支援ツールです。Excel と PDF を入力として受け取り、要点抽出、参考表現の再利用、編集可能なコメント生成、元ファイルへの一括書き戻しまでを支援します。'
+                },
+                role: 'Automation / Full Stack Developer',
+                link: 'project-case-comments-write.html'
+            },
+            'project-14': {
+                bgColor: '#ffffff',
+                image: '../project/company project/pos map/1.png',
+                title: { zh: 'POS Map', en: 'POS Map', ja: 'POS Map' },
+                date: '2026',
+                desc: {
+                    zh: '一个用于北京门店网络分析的交互式地图项目。它把多份 Excel 门店数据合并成统一主表，再生成可直接在浏览器打开的地图页面，用于查看门店分布、商圈层、区县边界、覆盖范围以及搜索联动。',
+                    en: 'An interactive mapping project for analyzing the Beijing store network. It merges multiple Excel sources into a master table, then generates a browser-ready map for store distribution, trade areas, district boundaries, coverage ranges, and linked search exploration.',
+                    ja: '北京の店舗ネットワーク分析向けのインタラクティブ地図プロジェクトです。複数の Excel データを主テーブルへ統合し、店舗分布、商圏、行政区境界、カバレッジ範囲、検索連動を確認できるブラウザ用マップを生成します。'
+                },
+                role: 'Data Visualization / Automation Developer',
+                link: 'project-pos-map.html'
             },
             'project-5': {
                 bgColor: '#ffffff',
@@ -1237,5 +1354,8 @@
             }
         });
     </script>
-<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe>
+    <script src="../shared-dock.js"></script>
+    <script src="../nav-under-construction.js"></script>
+</body>
 </html>

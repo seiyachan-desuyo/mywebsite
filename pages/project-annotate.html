@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annotate | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --text-color: #474747;
+            --paper-bg: #fcf8ef;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image: linear-gradient(rgba(253, 251, 245, 0.35), rgba(253, 251, 245, 0.35)), url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        .container { max-width: 1020px; margin: 0 auto; padding: 40px 20px; }
+
+        .top-nav { display: flex; align-items: center; margin-bottom: 56px; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 10px; color: var(--text-color); text-decoration: none;
+            font-weight: 600; font-size: 1.1rem; padding: 10px 20px; border: 2px solid var(--text-color);
+            border-radius: 30px; transition: all 0.2s; background: #fff;
+        }
+        .back-btn:hover { background: var(--text-color); color: #fff; transform: translateX(-5px); }
+
+        .project-header { text-align: center; margin-bottom: 48px; }
+        .project-title { font-size: 4.2rem; line-height: 1.1; margin-bottom: 16px; color: var(--text-color); }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px; }
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle { font-size: 1.35rem; color: #666; max-width: 780px; margin: 0 auto 34px auto; line-height: 1.6; }
+
+        .project-meta { display: flex; justify-content: center; gap: 56px; margin-bottom: 56px; flex-wrap: wrap; }
+        .meta-item { text-align: left; }
+        .meta-label { font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+        .meta-value { font-size: 1.08rem; font-weight: 700; color: var(--text-color); }
+
+        .hero-image-container {
+            width: 100%; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 72px; border: 4px solid #fff;
+        }
+        .hero-image-container img { width: 100%; height: auto; display: block; }
+
+        .article-content { max-width: 820px; margin: 0 auto; font-size: 1.16rem; line-height: 1.8; color: #444; }
+        .article-content p { margin-bottom: 22px; }
+        .article-content h2 { font-size: 2rem; margin: 56px 0 24px 0; color: var(--text-color); }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff; padding: 34px; border-radius: 20px; border: 2px solid rgba(0,0,0,0.05);
+            margin: 38px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.03); position: relative;
+        }
+        .highlight-box::before {
+            content: '📝'; position: absolute; top: -28px; left: 34px; font-size: 2.3rem; background: #fff;
+            border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .demo-section { margin-top: 70px; width: 94vw; position: relative; left: 50%; transform: translateX(-50%); }
+        .demo-wrap { width: 100%; max-width: 1380px; margin: 0 auto; }
+
+        .browser-mockup {
+            background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header { background: #f1f1f1; padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .browser-dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        .browser-url {
+            flex: 1; text-align: center; background: #fff; margin: 0 20px; padding: 6px 15px; border-radius: 6px;
+            font-family: monospace; font-size: 0.9rem; color: #666; max-width: 520px; margin: 0 auto;
+        }
+        .browser-mockup iframe { width: 100%; height: 760px; border: none; display: block; background: #fff; }
+
+        .book-shell {
+            margin-top: 36px;
+            background: linear-gradient(180deg, #f4ead7 0%, #eadbc2 100%);
+            border-radius: 18px; padding: 22px 20px 20px 20px; box-shadow: 0 24px 50px rgba(0,0,0,0.16);
+        }
+        .book-toolbar { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+        .book-btn {
+            border: 2px solid #5d4c37; background: #fff; color: #5d4c37; border-radius: 999px; padding: 8px 16px;
+            font-weight: 700; font-size: 0.95rem; transition: all 0.18s;
+        }
+        .book-btn:hover { background: #5d4c37; color: #fff; }
+        .page-indicator { font-weight: 700; color: #4d3e2d; min-width: 140px; text-align: center; }
+
+        .book-view {
+            background: var(--paper-bg); border-radius: 12px; padding: 14px; border: 1px solid rgba(70, 50, 30, 0.18);
+            position: relative; transform-style: preserve-3d; perspective: 1400px; overflow: hidden;
+        }
+        .book-view::before {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 46px; transform: translateX(-50%);
+            background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.09), rgba(0,0,0,0)); pointer-events: none; z-index: 2;
+        }
+        #pdf-frame,
+        #biz-pdf-frame {
+            width: 100%; height: 860px; border: none; border-radius: 10px; background: #fff;
+            transform-origin: left center;
+            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease;
+            opacity: 1; position: relative; z-index: 1;
+        }
+        #pdf-frame.turning-next,
+        #biz-pdf-frame.turning-next { transform: rotateY(-16deg) translateX(8px); opacity: 0.55; }
+        #pdf-frame.turning-prev,
+        #biz-pdf-frame.turning-prev { transform: rotateY(16deg) translateX(-8px); opacity: 0.55; }
+        .pdf-note { margin-top: 12px; text-align: center; color: #5c513f; font-size: 0.95rem; }
+
+        .docx-box {
+            margin-top: 22px; background: #fff; border: 2px dashed #ddd; border-radius: 14px;
+            padding: 18px 20px; text-align: center;
+        }
+        .docx-link {
+            display: inline-block; text-decoration: none; color: #333; font-weight: 700; margin-top: 8px;
+            border: 2px solid #333; padding: 8px 14px; border-radius: 22px;
+        }
+        .docx-link:hover { background: #333; color: #fff; }
+
+        .lang-switch { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
+        .lang-btn {
+            background: #fff; border: 2px solid var(--text-color); border-radius: 20px;
+            padding: 5px 12px; font-family: 'Gaegu', sans-serif; font-weight: 700; font-size: 16px; transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active { background: #faefcc; }
+
+        .dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); border: 1px solid rgba(0,0,0,0.05); border-radius: 40px; padding: 8px;
+            display: flex; align-items: center; gap: 5px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); z-index: 9999;
+        }
+        .dock a {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; width: 90px; height: 90px; gap: 4px;
+            text-decoration: none; color: #888; border-radius: 20px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; transform-origin: bottom center; will-change: transform, margin;
+        }
+        .dock-label { font-size: 11px; font-weight: 600; color: inherit; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; pointer-events: none; }
+        .dock a:hover { background: #f5f5f5; color: var(--text-color); transform: scale(1.35) translateY(-8px); margin: 0 12px; z-index: 10; }
+        .dock a:has(+ a:hover), .dock a:hover + a { transform: scale(1.15) translateY(-4px); margin: 0 6px; z-index: 5; }
+        .dock a.active { color: var(--text-color); background: #f5f5f5; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
+        .dock a.active::after {
+            content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 4px; background-color: #555; border-radius: 2px;
+        }
+        .dock a img { width: 60px; height: 60px; object-fit: contain; }
+        .dock a[title="More"] { width: 72px; height: 72px; }
+        .dock a[title="More"] img { width: 40px; height: 40px; }
+        .dock-divider { width: 1px; height: 40px; background-color: #eee; margin: 0 10px; }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .browser-mockup iframe { height: 620px; }
+            #pdf-frame, #biz-pdf-frame { height: 70vh; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { width: 64px; height: 64px; }
+            .dock a img { width: 42px; height: 42px; }
+            .dock-label { font-size: 10px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="dock">
+        <a href="../index.html#home" title="Home"><img src="../icon/Home.png" alt="Home"><span class="dock-label"><span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span></span></a>
+        <a href="projects.html" class="active" title="Projects"><img src="../icon/Projects.png" alt="Projects"><span class="dock-label"><span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span></span></a>
+        <a href="../index.html#about" title="About"><img src="../icon/About.png" alt="About"><span class="dock-label"><span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span></span></a>
+        <a href="../index.html#contact" title="Contact"><img src="../icon/Contact.png" alt="Contact"><span class="dock-label"><span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span></span></a>
+        <a href="explore.html" title="Explore"><img src="../icon/Explore.png" alt="Explore"><span class="dock-label"><span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span></span></a>
+        <div class="dock-divider"></div>
+        <a href="#" title="More"><img src="../icon/More.png" alt="More"><span class="dock-label"><span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span></span></a>
+    </div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">Annotate 语笺</span>
+                <span data-lang="en">Annotate</span>
+                <span data-lang="ja">Annotate 語箋</span>
+            </h1>
+            <p class="project-subtitle">
+                <span data-lang="zh" class="cartoon-font-zh">聚焦学习与内容标注体验的竞赛项目，包含产品概念、商业计划与图表分析，并提供线上站点演示。</span>
+                <span data-lang="en">A competition project focused on learning and content annotation experience, including product concept, business planning, and chart analysis with an online live site.</span>
+                <span data-lang="ja">学習とコンテンツ注釈体験に焦点を当てた競技プロジェクト。製品コンセプト、事業計画、図表分析、オンライン実演を含みます。</span>
+            </p>
+            <div class="project-meta">
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span></div><div class="meta-value">Product / Visual Design</div></div>
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">周期</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span></div><div class="meta-value">10 Weeks · Fall 2025</div></div>
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">类型</span><span data-lang="en">Type</span><span data-lang="ja">タイプ</span></div><div class="meta-value">Competition / Product</div></div>
+            </div>
+        </header>
+
+        <div class="hero-image-container">
+            <img src="../project/competition%20project/annotate/1.png" alt="Annotate cover">
+        </div>
+
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目说明</span>
+                <span data-lang="en">Project Description</span>
+                <span data-lang="ja">プロジェクト説明</span>
+            </h2>
+            <p>
+                <span data-lang="zh">Annotate（语笺）围绕“知识标注与学习反馈”场景，强调结构化记录、重点提取与可视化表达。项目交付包括产品页面、商业计划书文档和图表化分析内容。</span>
+                <span data-lang="en">Annotate targets learning and annotation workflows with structured note capture, key-point extraction, and visualized communication. Deliverables include product pages, business-plan docs, and chart-driven analysis.</span>
+                <span data-lang="ja">Annotate は「知識注釈と学習フィードバック」を中心に、構造化記録・要点抽出・可視化表現を統合した提案です。成果物として製品ページ、事業計画資料、図表分析を提供します。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin:0;">
+                    <span data-lang="zh"><strong>成果亮点：</strong> 提供可在线体验的网站版本（Demo），并通过图表 PDF 与完整商业计划书形成“产品 + 方案”闭环，便于路演与评审展示。</span>
+                    <span data-lang="en"><strong>Highlights:</strong> Includes a live demo website and a full proposal package (chart PDF + business plan) for complete product-and-strategy presentation.</span>
+                    <span data-lang="ja"><strong>ハイライト：</strong> オンラインデモサイトに加え、図表PDFと事業計画書を揃えた「製品 + 戦略」一体の提案構成です。</span>
+                </p>
+            </div>
+        </article>
+
+        <section class="demo-section">
+            <div class="demo-wrap">
+                <h2 style="text-align:center; margin: 0 0 18px 0;">
+                    <span data-lang="zh">网站演示</span>
+                    <span data-lang="en">Live Website</span>
+                    <span data-lang="ja">サイトデモ</span>
+                </h2>
+                <div class="browser-mockup">
+                    <div class="browser-header">
+                        <div class="browser-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                        <div class="browser-url">152.136.37.39/home</div>
+                        <div style="width: 44px;"></div>
+                    </div>
+                    <iframe src="http://152.136.37.39/home" title="Annotate Live Site"></iframe>
+                </div>
+
+                <h2 style="text-align:center; margin: 42px 0 18px 0;">
+                    <span data-lang="zh">图表资料（翻书阅读）</span>
+                    <span data-lang="en">Chart PDF (Book-style View)</span>
+                    <span data-lang="ja">図表PDF（ブック風ビュー）</span>
+                </h2>
+                <div class="book-shell">
+                    <div class="book-toolbar">
+                        <button class="book-btn" id="prev-page">◀ <span data-lang="zh">上一页</span><span data-lang="en">Prev</span><span data-lang="ja">前へ</span></button>
+                        <div class="page-indicator" id="page-indicator">Page 1</div>
+                        <button class="book-btn" id="next-page"><span data-lang="zh">下一页</span><span data-lang="en">Next</span><span data-lang="ja">次へ</span> ▶</button>
+                    </div>
+                    <div class="book-view">
+                        <iframe id="pdf-frame" src="../project/competition%20project/annotate/Annotate语笺-商业计划书图表%20.pdf#page=1&view=FitH" title="Annotate 图表 PDF"></iframe>
+                    </div>
+                    <div class="pdf-note">
+                        <span data-lang="zh">提示：点击“上一页 / 下一页”可获得翻页动画效果。</span>
+                        <span data-lang="en">Tip: Use Prev/Next for page-turn animation.</span>
+                        <span data-lang="ja">ヒント：前へ/次へでページめくりアニメーションを再現します。</span>
+                    </div>
+                </div>
+
+                <h2 style="text-align:center; margin: 42px 0 18px 0;">
+                    <span data-lang="zh">商业计划书（翻书阅读）</span>
+                    <span data-lang="en">Business Plan (Book-style View)</span>
+                    <span data-lang="ja">事業計画書（ブック風ビュー）</span>
+                </h2>
+                <div class="book-shell">
+                    <div class="book-toolbar">
+                        <button class="book-btn" id="biz-prev-page">◀ <span data-lang="zh">上一页</span><span data-lang="en">Prev</span><span data-lang="ja">前へ</span></button>
+                        <div class="page-indicator" id="biz-page-indicator">Page 1</div>
+                        <button class="book-btn" id="biz-next-page"><span data-lang="zh">下一页</span><span data-lang="en">Next</span><span data-lang="ja">次へ</span> ▶</button>
+                    </div>
+                    <div class="book-view">
+                        <iframe id="biz-pdf-frame" src="../project/competition%20project/annotate/小挑商业计划书.pdf#page=1&view=FitH" title="Annotate Business Plan Viewer"></iframe>
+                    </div>
+                    <div class="pdf-note">
+                        <span data-lang="zh">已切换为 PDF 版本，翻书阅读更稳定；也可直接下载原始 PDF。</span>
+                        <span data-lang="en">Switched to PDF for a more stable flipbook preview; you can also download the original PDF directly.</span>
+                        <span data-lang="ja">PDF版に切り替えたため、ブックビュー表示がより安定します。元のPDFも直接ダウンロード可能です。</span>
+                    </div>
+                </div>
+
+                <div class="docx-box">
+                    <p>
+                        <span data-lang="zh">原始商业计划书（PDF）下载</span>
+                        <span data-lang="en">Download Original Business Plan (PDF)</span>
+                        <span data-lang="ja">元の事業計画書（PDF）をダウンロード</span>
+                    </p>
+                    <a class="docx-link" href="../project/competition%20project/annotate/小挑商业计划书.pdf" download>
+                        <span data-lang="zh">下载文档</span>
+                        <span data-lang="en">Download PDF</span>
+                        <span data-lang="ja">PDFをダウンロード</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+
+        let currentLang = 'en';
+        let currentPage = 1;
+        let bizCurrentPage = 1;
+        const maxPages = 120;
+
+        const pdfFrame = document.getElementById('pdf-frame');
+        const pageIndicator = document.getElementById('page-indicator');
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+        const bizPdfFrame = document.getElementById('biz-pdf-frame');
+        const bizPageIndicator = document.getElementById('biz-page-indicator');
+        const bizPrevBtn = document.getElementById('biz-prev-page');
+        const bizNextBtn = document.getElementById('biz-next-page');
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderPageIndicator();
+        }
+
+        function renderPageIndicator() {
+            if (currentLang === 'zh') {
+                pageIndicator.innerText = '第 ' + currentPage + ' 页';
+            } else if (currentLang === 'ja') {
+                pageIndicator.innerText = currentPage + ' ページ';
+                bizPageIndicator.innerText = bizCurrentPage + ' ページ';
+            } else {
+                pageIndicator.innerText = 'Page ' + currentPage;
+                bizPageIndicator.innerText = 'Page ' + bizCurrentPage;
+            }
+
+            if (currentLang === 'zh') {
+                bizPageIndicator.innerText = '第 ' + bizCurrentPage + ' 页';
+            }
+        }
+
+        function loadPdfPage(direction) {
+            const turnClass = direction === 'next' ? 'turning-next' : 'turning-prev';
+            pdfFrame.classList.add(turnClass);
+            setTimeout(() => {
+                pdfFrame.src = '../project/competition%20project/annotate/Annotate语笺-商业计划书图表%20.pdf#page=' + currentPage + '&view=FitH';
+                renderPageIndicator();
+            }, 180);
+            setTimeout(() => {
+                pdfFrame.classList.remove('turning-next', 'turning-prev');
+            }, 420);
+        }
+
+        function loadBizPdfPage(direction) {
+            const turnClass = direction === 'next' ? 'turning-next' : 'turning-prev';
+            bizPdfFrame.classList.add(turnClass);
+            setTimeout(() => {
+                bizPdfFrame.src = '../project/competition%20project/annotate/小挑商业计划书.pdf#page=' + bizCurrentPage + '&view=FitH';
+                renderPageIndicator();
+            }, 180);
+            setTimeout(() => {
+                bizPdfFrame.classList.remove('turning-next', 'turning-prev');
+            }, 420);
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage <= 1) return;
+            currentPage -= 1;
+            loadPdfPage('prev');
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage >= maxPages) return;
+            currentPage += 1;
+            loadPdfPage('next');
+        });
+
+        bizPrevBtn.addEventListener('click', () => {
+            if (bizCurrentPage <= 1) return;
+            bizCurrentPage -= 1;
+            loadBizPdfPage('prev');
+        });
+
+        bizNextBtn.addEventListener('click', () => {
+            if (bizCurrentPage >= maxPages) return;
+            bizCurrentPage += 1;
+            loadBizPdfPage('next');
+        });
+
+        renderPageIndicator();
+    </script>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

@@ -534,6 +534,7 @@
 
         // 监听播放进度，时刻保存进度
         audio.addEventListener('timeupdate', saveState);
+        window.addEventListener('pagehide', saveState);
         // =====================================================================
 
         // 初始化播放器
@@ -555,20 +556,7 @@
         
         loadSong(currentIndex);
 
-        // 尝试页面加载后自动播放 (用于第一次打开或刷新)
-        window.addEventListener('DOMContentLoaded', () => {
-            if (shouldResumePlay) return; // 如果有历史记录，交由 loadedmetadata 处理
-            
-            audio.play().then(() => {
-                isPlaying = true;
-                iconPlay.style.display = 'none';
-                iconPause.style.display = 'inline-block';
-                player.classList.add('playing');
-                createNotes();
-            }).catch((err) => {
-                console.log("Browser autoplay prevented:", err);
-            });
-        });
+        // 页面初始加载时保持暂停，只有历史状态明确为播放中才在 loadedmetadata 里续播
 
         function togglePlay(e) {
             if (e && (e.target.closest('#next-btn') || e.target.closest('#prev-btn'))) return;
@@ -651,5 +639,7 @@
             setTimeout(createNotes, nextNoteInterval);
         }
     </script>
+    <script src="../shared-dock.js"></script>
+    <script src="../nav-under-construction.js"></script>
 </body>
 </html>

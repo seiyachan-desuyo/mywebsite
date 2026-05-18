@@ -688,7 +688,7 @@
         }
     </style>
 </head>
-<body>
+<body data-current-lang="en">
     <svg width="0" height="0" style="position:absolute;z-index:-1;pointer-events:none;">
         <filter id="pencil-texture" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
@@ -818,41 +818,15 @@
     </div>
 
     <!-- Dock -->
-    <div class="dock">
-        <a href="../index.html#home" title="Home" onclick="updateDock(this)">
-            <img src="../icon/Home.png" alt="Home">
-            <span class="dock-label"><span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span></span>
-        </a>
-        <a href="projects.html" title="Projects" onclick="updateDock(this)">
-            <img src="../icon/Projects.png" alt="Projects">
-            <span class="dock-label"><span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span></span>
-        </a>
-        <a href="../index.html#about" title="About" onclick="updateDock(this)">
-            <img src="../icon/About.png" alt="About">
-            <span class="dock-label"><span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span></span>
-        </a>
-        <a href="../index.html#contact" title="Contact" onclick="updateDock(this)">
-            <img src="../icon/Contact.png" alt="Contact">
-            <span class="dock-label"><span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span></span>
-        </a>
-        <a href="explore.html" class="active" title="Explore" onclick="updateDock(this)">
-            <img src="../icon/Explore.png" alt="Explore">
-            <span class="dock-label"><span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span></span>
-        </a>
-        <div class="dock-divider"></div>
-        <a href="#" title="More" onclick="updateDock(this)">
-            <img src="../icon/More.png" alt="More">
-            <span class="dock-label"><span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span></span>
-        </a>
-    </div>
+    <div class="shared-dock-root" data-active="explore"></div>
 
     <iframe class="music-player-iframe" src="music-player.html" title="Music Player"></iframe>
 
     <script>
         feather.replace();
 
-        // 默认语言设置
-        document.body.setAttribute('data-current-lang', 'zh'); // 设为中文默认
+        // 默认语言设置与页面初始状态保持一致
+        document.body.setAttribute('data-current-lang', document.body.getAttribute('data-current-lang') || 'en');
 
         // 确保语言切换点击时保留活动按钮的黄底样式
         function switchLang(lang) {
@@ -1355,5 +1329,7 @@
         });
 
     </script>
+    <script src="../shared-dock.js"></script>
+    <script src="../nav-under-construction.js"></script>
 </body>
 </html>

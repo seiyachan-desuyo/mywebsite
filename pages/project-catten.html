@@ -465,45 +465,7 @@
         <button class="lang-btn" onclick="switchLang('ja')">JA</button>
     </div>
 
-    <div class="dock">
-        <a href="../index.html#home" title="Home">
-            <img src="../icon/Home.png" alt="Home">
-            <span class="dock-label">
-                <span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span>
-            </span>
-        </a>
-        <a href="projects.html" class="active" title="Projects">
-            <img src="../icon/Projects.png" alt="Projects">
-            <span class="dock-label">
-                <span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span>
-            </span>
-        </a>
-        <a href="../index.html#about" title="About">
-            <img src="../icon/About.png" alt="About">
-            <span class="dock-label">
-                <span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span>
-            </span>
-        </a>
-        <a href="../index.html#contact" title="Contact">
-            <img src="../icon/Contact.png" alt="Contact">
-            <span class="dock-label">
-                <span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span>
-            </span>
-        </a>
-        <a href="explore.html" title="Explore">
-            <img src="../icon/Explore.png" alt="Explore">
-            <span class="dock-label">
-                <span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span>
-            </span>
-        </a>
-        <div class="dock-divider"></div>
-        <a href="#" title="More">
-            <img src="../icon/More.png" alt="More">
-            <span class="dock-label">
-                <span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span>
-            </span>
-        </a>
-    </div>
+    <div class="shared-dock-root" data-active="projects"></div>
 
     <div class="container">
         <div class="top-nav">
@@ -612,61 +574,15 @@
             </ul>
 
             <h2>
-                <span data-lang="zh">对话体验示例</span>
-                <span data-lang="en">Conversation Example</span>
-                <span data-lang="ja">会話例</span>
+                <span data-lang="zh">在线体验</span>
+                <span data-lang="en">Live Demo</span>
+                <span data-lang="ja">オンライン体験</span>
             </h2>
-            <div class="dialog-box">
-                <p>
-                    <span data-lang="zh"><strong>用户：</strong> 我在宁远楼，1点半有课，有点赶，想吃偏米饭，辣一点但不要太油，预算 12-15。</span>
-                    <span data-lang="en"><strong>User:</strong> I am near Ningyuan Building, class at 1:30, in a hurry, prefer rice, spicy but not greasy, budget 12-15.</span>
-                    <span data-lang="ja"><strong>ユーザー：</strong> 寧遠楼にいて 1:30 に授業。急ぎ。ご飯系、少し辛め、油っこくない、予算 12-15。</span>
-                </p>
-                <p>
-                    <span data-lang="zh"><strong>贸小饭：</strong> 推荐一食堂二楼黄焖鸡米饭（13元）。步行约6分钟，出餐快，辣口但不油，预算匹配。</span>
-                    <span data-lang="en"><strong>MaoXiaoFan:</strong> Recommend Braised Chicken Rice (13 RMB) on 2F of Canteen 1. About 6 minutes walk, quick serving, spicy but not greasy, budget fit.</span>
-                    <span data-lang="ja"><strong>贸小饭：</strong> 第一食堂2階の黄焖鸡米饭（13元）を推奨。徒歩約6分、提供が早く、辛めだが重すぎず、予算内です。</span>
-                </p>
-            </div>
-
-            <h2>
-                <span data-lang="zh">系统实现思路</span>
-                <span data-lang="en">Implementation Approach</span>
-                <span data-lang="ja">実装アプローチ</span>
-            </h2>
-            <ul>
-                <li>
-                    <span data-lang="zh"><strong>前后端分离：</strong> Flask 提供 API，前端以单页对话交互承载体验。</span>
-                    <span data-lang="en"><strong>Separated Architecture:</strong> Flask backend API + lightweight chat frontend.</span>
-                    <span data-lang="ja"><strong>分離構成：</strong> Flask API と軽量チャットUIの分離設計。</span>
-                </li>
-                <li>
-                    <span data-lang="zh"><strong>可扩展数据层：</strong> 当前可本地维护菜品表，后续可导入 CSV/RAG 扩展知识库。</span>
-                    <span data-lang="en"><strong>Extensible Data Layer:</strong> Local dish tables now, CSV/RAG integration later.</span>
-                    <span data-lang="ja"><strong>拡張可能なデータ層：</strong> 現在はローカル管理、将来は CSV/RAG 連携へ。</span>
-                </li>
-                <li>
-                    <span data-lang="zh"><strong>上下文对话：</strong> 多轮会话保留用户历史条件，逐步补全缺失信息。</span>
-                    <span data-lang="en"><strong>Contextual Dialogue:</strong> Multi-turn memory fills missing decision attributes.</span>
-                    <span data-lang="ja"><strong>文脈会話：</strong> 複数ターンで条件を保持し不足情報を補完。</span>
-                </li>
-            </ul>
+            <p style="text-align: center;">
+                <a class="cta-link" href="https://maoxiaofan.zh-cn.edgeone.cool" target="_blank" rel="noopener noreferrer">https://maoxiaofan.zh-cn.edgeone.cool</a>
+            </p>
 
             <div class="interactive-section">
-                <h2 style="text-align: center; margin-top: 0;">
-                    <span data-lang="zh">在线体验</span>
-                    <span data-lang="en">Live Demo</span>
-                    <span data-lang="ja">オンライン体験</span>
-                </h2>
-                <p style="text-align: center; color: #888; margin-bottom: 10px;">
-                    <span data-lang="zh">项目演示地址如下，可直接在浏览器中交互体验。</span>
-                    <span data-lang="en">Try the live project below directly in your browser.</span>
-                    <span data-lang="ja">以下のデモURLからブラウザで直接体験できます。</span>
-                </p>
-                <p style="text-align: center;">
-                    <a class="cta-link" href="https://maoxiaofan.zh-cn.edgeone.cool" target="_blank" rel="noopener noreferrer">https://maoxiaofan.zh-cn.edgeone.cool</a>
-                </p>
-
                 <div class="browser-mockup-wrapper">
                     <div class="browser-mockup">
                         <div class="browser-header">
@@ -696,5 +612,8 @@
             event.target.classList.add('active');
         }
     </script>
-<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe>
+    <script src="../shared-dock.js"></script>
+    <script src="../nav-under-construction.js"></script>
+</body>
 </html>

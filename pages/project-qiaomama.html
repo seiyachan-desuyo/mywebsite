@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qiaomama Branding | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            --text-color: #474747;
+            --paper-bg: #fcf8ef;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-image: linear-gradient(rgba(253, 251, 245, 0.35), rgba(253, 251, 245, 0.35)), url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+
+        .container { max-width: 1020px; margin: 0 auto; padding: 40px 20px; }
+
+        .top-nav { display: flex; align-items: center; margin-bottom: 56px; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            color: var(--text-color); text-decoration: none;
+            font-weight: 600; font-size: 1.1rem;
+            padding: 10px 20px; border: 2px solid var(--text-color);
+            border-radius: 30px; transition: all 0.2s; background: #fff;
+        }
+        .back-btn:hover { background: var(--text-color); color: #fff; transform: translateX(-5px); }
+
+        .project-header { text-align: center; margin-bottom: 48px; }
+        .project-title { font-size: 4.2rem; line-height: 1.1; margin-bottom: 16px; color: var(--text-color); }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px; }
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle { font-size: 1.35rem; color: #666; max-width: 780px; margin: 0 auto 34px auto; line-height: 1.6; }
+
+        .project-meta {
+            display: flex; justify-content: center; gap: 56px;
+            margin-bottom: 56px; flex-wrap: wrap;
+        }
+        .meta-item { text-align: left; }
+        .meta-label { font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+        .meta-value { font-size: 1.08rem; font-weight: 700; color: var(--text-color); }
+
+        .hero-image-container {
+            width: 100%; border-radius: 28px; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 72px; border: 4px solid #fff;
+        }
+        .hero-image-container img { width: 100%; height: auto; display: block; }
+
+        .article-content {
+            max-width: 820px; margin: 0 auto;
+            font-size: 1.16rem; line-height: 1.8; color: #444;
+        }
+        .article-content p { margin-bottom: 22px; }
+        .article-content h2 { font-size: 2rem; margin: 56px 0 24px 0; color: var(--text-color); }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff; padding: 34px; border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05); margin: 38px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); position: relative;
+        }
+        .highlight-box::before {
+            content: '🎨'; position: absolute; top: -28px; left: 34px;
+            font-size: 2.3rem; background: #fff; border-radius: 50%;
+            width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .media-section {
+            margin-top: 70px; width: 94vw; position: relative;
+            left: 50%; transform: translateX(-50%);
+        }
+        .media-wrap { width: 100%; max-width: 1380px; margin: 0 auto; }
+
+        .book-shell {
+            background: linear-gradient(180deg, #f4ead7 0%, #eadbc2 100%);
+            border-radius: 18px; padding: 22px 20px 20px 20px;
+            box-shadow: 0 24px 50px rgba(0,0,0,0.16);
+        }
+
+        .book-toolbar {
+            display: flex; align-items: center; justify-content: center;
+            gap: 14px; flex-wrap: wrap; margin-bottom: 14px;
+        }
+
+        .book-btn {
+            border: 2px solid #5d4c37; background: #fff; color: #5d4c37;
+            border-radius: 999px; padding: 8px 16px; font-weight: 700;
+            font-size: 0.95rem; transition: all 0.18s;
+        }
+        .book-btn:hover { background: #5d4c37; color: #fff; }
+
+        .page-indicator {
+            font-weight: 700; color: #4d3e2d;
+            min-width: 140px; text-align: center;
+        }
+
+        .book-view {
+            background: var(--paper-bg); border-radius: 12px; padding: 14px;
+            border: 1px solid rgba(70, 50, 30, 0.18); position: relative;
+            transform-style: preserve-3d; perspective: 1400px; overflow: hidden;
+        }
+        .book-view::before {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 46px;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.09), rgba(0,0,0,0));
+            pointer-events: none; z-index: 2;
+        }
+
+        #pdf-frame {
+            width: 100%; height: 860px; border: none; border-radius: 10px;
+            background: #fff; transform-origin: left center;
+            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease;
+            opacity: 1; position: relative; z-index: 1;
+        }
+        #pdf-frame.turning-next { transform: rotateY(-16deg) translateX(8px); opacity: 0.55; }
+        #pdf-frame.turning-prev { transform: rotateY(16deg) translateX(-8px); opacity: 0.55; }
+
+        .pdf-note { margin-top: 12px; text-align: center; color: #5c513f; font-size: 0.95rem; }
+
+        .lang-switch {
+            position: fixed; top: 20px; right: 20px;
+            display: flex; gap: 10px; z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff; border: 2px solid var(--text-color); border-radius: 20px;
+            padding: 5px 12px; font-family: 'Gaegu', sans-serif;
+            font-weight: 700; font-size: 16px; transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active { background: #faefcc; }
+
+        .dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05); border-radius: 40px; padding: 8px;
+            display: flex; align-items: center; gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); z-index: 9999;
+        }
+        .dock a {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 90px; height: 90px; gap: 4px; text-decoration: none; color: #888;
+            border-radius: 20px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; transform-origin: bottom center; will-change: transform, margin;
+        }
+        .dock-label {
+            font-size: 11px; font-weight: 600; color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+        .dock a:hover { background: #f5f5f5; color: var(--text-color); transform: scale(1.35) translateY(-8px); margin: 0 12px; z-index: 10; }
+        .dock a:has(+ a:hover), .dock a:hover + a { transform: scale(1.15) translateY(-4px); margin: 0 6px; z-index: 5; }
+        .dock a.active { color: var(--text-color); background: #f5f5f5; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
+        .dock a.active::after {
+            content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 4px; background-color: #555; border-radius: 2px;
+        }
+        .dock a img { width: 60px; height: 60px; object-fit: contain; }
+        .dock a[title="More"] { width: 72px; height: 72px; }
+        .dock a[title="More"] img { width: 40px; height: 40px; }
+        .dock-divider { width: 1px; height: 40px; background-color: #eee; margin: 0 10px; }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"] { display: block; }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; }
+            .meta-item { text-align: center; }
+            #pdf-frame { height: 70vh; }
+            .book-toolbar { gap: 8px; }
+            .book-btn { padding: 7px 13px; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { width: 64px; height: 64px; }
+            .dock a img { width: 42px; height: 42px; }
+            .dock-label { font-size: 10px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="dock">
+        <a href="../index.html#home" title="Home"><img src="../icon/Home.png" alt="Home"><span class="dock-label"><span data-lang="zh">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span></span></a>
+        <a href="projects.html" class="active" title="Projects"><img src="../icon/Projects.png" alt="Projects"><span class="dock-label"><span data-lang="zh">项目</span><span data-lang="en">Projects</span><span data-lang="ja">作 品</span></span></a>
+        <a href="../index.html#about" title="About"><img src="../icon/About.png" alt="About"><span class="dock-label"><span data-lang="zh">关于</span><span data-lang="en">About</span><span data-lang="ja">私について</span></span></a>
+        <a href="../index.html#contact" title="Contact"><img src="../icon/Contact.png" alt="Contact"><span class="dock-label"><span data-lang="zh">联系</span><span data-lang="en">Contact</span><span data-lang="ja">連絡先</span></span></a>
+        <a href="explore.html" title="Explore"><img src="../icon/Explore.png" alt="Explore"><span class="dock-label"><span data-lang="zh">探索</span><span data-lang="en">Explore</span><span data-lang="ja">探 索</span></span></a>
+        <div class="dock-divider"></div>
+        <a href="#" title="More"><img src="../icon/More.png" alt="More"><span class="dock-label"><span data-lang="zh">更多</span><span data-lang="en">More</span><span data-lang="ja">もっと</span></span></a>
+    </div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">巧妈妈 Branding</span>
+                <span data-lang="en">Qiaomama Branding</span>
+                <span data-lang="ja">巧ママ ブランディング</span>
+            </h1>
+            <p class="project-subtitle">
+                <span data-lang="zh" class="cartoon-font-zh">竞赛中的品牌视觉方向提案，围绕“巧妈妈”完成包装视觉系统与提案设计，提升品牌识别度与记忆点。</span>
+                <span data-lang="en">A competition branding proposal for Qiaomama, focused on packaging visual language and presentation design to improve brand recognition.</span>
+                <span data-lang="ja">競技企画として制作した巧ママのブランディング提案。パッケージビジュアルと言語設計により、認知と想起を強化。</span>
+            </p>
+            <div class="project-meta">
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span></div><div class="meta-value">Art Designer</div></div>
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">周期</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span></div><div class="meta-value">10 Weeks · Fall 2025</div></div>
+                <div class="meta-item"><div class="meta-label"><span data-lang="zh">类型</span><span data-lang="en">Type</span><span data-lang="ja">タイプ</span></div><div class="meta-value">Competition / Branding</div></div>
+            </div>
+        </header>
+
+        <div class="hero-image-container">
+            <img src="../project/competition%20project/巧妈妈/首页图.png" alt="Qiaomama cover">
+        </div>
+
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">项目说明</span>
+                <span data-lang="en">Project Description</span>
+                <span data-lang="ja">プロジェクト説明</span>
+            </h2>
+            <p>
+                <span data-lang="zh">本项目以“传统品牌年轻化”为主题，针对视觉识别系统进行更新。设计方向强调温暖、亲和与健康感，通过色彩、图形和版式的统一语言，增强在货架与社媒场景中的辨识度。</span>
+                <span data-lang="en">This project targets brand rejuvenation for a traditional product line. The visual system emphasizes warmth, friendliness, and freshness through unified color, shape, and typography language.</span>
+                <span data-lang="ja">本案件は伝統ブランドの若返りを目的に、視覚識別システムを再設計。色・図形・タイポの統一により、店頭とSNSの両方で識別性を高めました。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin:0;">
+                    <span data-lang="zh"><strong>我的职责（美工）：</strong> 负责视觉主风格制定、包装版式设计、提案视觉整理与画面细节打磨，确保从封面到方案文档风格一致。</span>
+                    <span data-lang="en"><strong>My Role (Art Designer):</strong> Defined key visual style, created packaging layouts, and polished proposal visuals to keep a consistent brand tone across outputs.</span>
+                    <span data-lang="ja"><strong>担当（アートデザイン）：</strong> キービジュアル設計、パッケージレイアウト、提案資料のビジュアル統合を担当し、全体のトーンを統一しました。</span>
+                </p>
+            </div>
+        </article>
+
+        <section class="media-section">
+            <div class="media-wrap">
+                <h2 style="text-align:center; margin: 0 0 18px 0;">
+                    <span data-lang="zh">项目提案书（翻书阅读）</span>
+                    <span data-lang="en">Proposal PDF (Book-style View)</span>
+                    <span data-lang="ja">提案書PDF（ブック風ビュー）</span>
+                </h2>
+
+                <div class="book-shell">
+                    <div class="book-toolbar">
+                        <button class="book-btn" id="prev-page">◀ <span data-lang="zh">上一页</span><span data-lang="en">Prev</span><span data-lang="ja">前へ</span></button>
+                        <div class="page-indicator" id="page-indicator">Page 1</div>
+                        <button class="book-btn" id="next-page"><span data-lang="zh">下一页</span><span data-lang="en">Next</span><span data-lang="ja">次へ</span> ▶</button>
+                    </div>
+                    <div class="book-view">
+                        <iframe id="pdf-frame" src="../project/competition%20project/巧妈妈/酵醒.pdf#page=1&view=FitH" title="巧妈妈提案 PDF"></iframe>
+                    </div>
+                    <div class="pdf-note">
+                        <span data-lang="zh">提示：点击“上一页 / 下一页”可获得翻页动画效果。</span>
+                        <span data-lang="en">Tip: Use Prev/Next for page-turn animation.</span>
+                        <span data-lang="ja">ヒント：前へ/次へでページめくりアニメーションを再現します。</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        feather.replace();
+
+        let currentLang = 'en';
+        let currentPage = 1;
+        const maxPages = 120;
+
+        const pdfFrame = document.getElementById('pdf-frame');
+        const pageIndicator = document.getElementById('page-indicator');
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderPageIndicator();
+        }
+
+        function renderPageIndicator() {
+            if (currentLang === 'zh') {
+                pageIndicator.innerText = '第 ' + currentPage + ' 页';
+            } else if (currentLang === 'ja') {
+                pageIndicator.innerText = currentPage + ' ページ';
+            } else {
+                pageIndicator.innerText = 'Page ' + currentPage;
+            }
+        }
+
+        function loadPdfPage(direction) {
+            const turnClass = direction === 'next' ? 'turning-next' : 'turning-prev';
+            pdfFrame.classList.add(turnClass);
+            setTimeout(() => {
+                pdfFrame.src = '../project/competition%20project/巧妈妈/酵醒.pdf#page=' + currentPage + '&view=FitH';
+                renderPageIndicator();
+            }, 180);
+            setTimeout(() => {
+                pdfFrame.classList.remove('turning-next', 'turning-prev');
+            }, 420);
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage <= 1) return;
+            currentPage -= 1;
+            loadPdfPage('prev');
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage >= maxPages) return;
+            currentPage += 1;
+            loadPdfPage('next');
+        });
+
+        renderPageIndicator();
+    </script>
+<iframe allow="autoplay" src="music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe></body>
+</html>

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管综数学复习导航 | 吴丹</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700&family=Gaegu:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        :root {
+            --text-color: #474747;
+            --bg-color: #ffffff;
+            --accent-color: #8774ff;
+        }
+
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, auto;
+            scroll-behavior: smooth;
+        }
+        
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><g transform="scale(-1, 1) translate(-64, 0)"><text x="20" y="44" font-size="36">✏️</text></g></svg>') 8 16, pointer !important;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(rgba(253, 251, 245, 0.4), rgba(253, 251, 245, 0.4)), 
+                url('../picture/other/background.jpg');
+            background-size: 100% auto;
+            background-repeat: repeat-y;
+            padding-bottom: 150px;
+        }
+
+        .cartoon-font-en { font-family: 'Gaegu', cursive; font-weight: 700; }
+        .cartoon-font-zh { font-family: 'ZCOOL KuaiLe', cursive; font-weight: 400; }
+        .cartoon-font-ja { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; }
+        
+        .sys-font { font-family: 'Nunito', 'Noto Sans SC', 'Noto Sans JP', -apple-system, sans-serif; }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 30px;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .back-btn:hover {
+            background: var(--text-color);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .project-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .project-title { font-family: 'Courier New', Courier, monospace; }
+        body[data-current-lang="zh"] .project-title { font-family: 'Nunito', 'Noto Sans SC', sans-serif; font-weight: 900; letter-spacing: 2px;}
+        body[data-current-lang="ja"] .project-title { font-family: 'Nunito', 'Noto Sans JP', sans-serif; font-weight: 900; }
+
+        .project-subtitle {
+            font-size: 1.5rem;
+            color: #666;
+            max-width: 760px;
+            margin: 0 auto 40px auto;
+            line-height: 1.5;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            text-align: left;
+        }
+        .meta-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .hero-image-container {
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-bottom: 80px;
+            border: 4px solid #fff;
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .article-content p {
+            margin-bottom: 30px;
+        }
+        .article-content h2 {
+            font-size: 2rem;
+            margin: 60px 0 30px 0;
+            color: var(--text-color);
+        }
+        body[data-current-lang="en"] .article-content h2 { font-family: 'Courier New', Courier, monospace; }
+
+        .highlight-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(0,0,0,0.05);
+            margin: 50px 0 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            font-size: 2.5rem;
+            background: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .interactive-section {
+            margin-top: 80px;
+            width: 92vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+        }
+
+        .browser-mockup-wrapper {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 1600px;
+        }
+
+        .browser-mockup {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .browser-header {
+            background: #f1f1f1;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .browser-url {
+            flex: 1;
+            text-align: center;
+            background: #fff;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .browser-mockup iframe {
+            width: 100%;
+            height: 850px;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .lang-btn {
+            background: #fff;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Gaegu', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #faefcc;
+        }
+
+        .dock {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            z-index: 9999;
+        }
+        .dock a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            gap: 4px;
+            text-decoration: none;
+            color: #888;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            transform-origin: bottom center;
+            will-change: transform, margin;
+        }
+        .dock-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: inherit;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            pointer-events: none;
+        }
+        .dock a:hover {
+            background: #f5f5f5;
+            color: var(--text-color);
+            transform: scale(1.35) translateY(-8px);
+            margin: 0 12px;
+            z-index: 10;
+        }
+        .dock a:has(+ a:hover),
+        .dock a:hover + a {
+            transform: scale(1.15) translateY(-4px);
+            margin: 0 6px;
+            z-index: 5;
+        }
+        .dock a.active {
+            color: var(--text-color);
+            background: #f5f5f5;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        .dock a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 4px;
+            background-color: #555;
+            border-radius: 2px;
+        }
+        .dock a img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .dock a[title="More"] {
+            width: 72px;
+            height: 72px;
+        }
+        .dock a[title="More"] img {
+            width: 40px;
+            height: 40px;
+        }
+        .dock-divider {
+            width: 1px;
+            height: 40px;
+            background: #eee;
+            margin: 0 10px;
+        }
+
+        [data-lang] { display: none; }
+        body[data-current-lang="zh"] [data-lang="zh"],
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="ja"] [data-lang="ja"] { display: inline-block; }
+        body[data-current-lang="zh"] p[data-lang="zh"],
+        body[data-current-lang="en"] p[data-lang="en"],
+        body[data-current-lang="ja"] p[data-lang="ja"],
+        body[data-current-lang="zh"] h2[data-lang="zh"],
+        body[data-current-lang="en"] h2[data-lang="en"],
+        body[data-current-lang="ja"] h2[data-lang="ja"],
+        body[data-current-lang="zh"] h1[data-lang="zh"],
+        body[data-current-lang="en"] h1[data-lang="en"],
+        body[data-current-lang="ja"] h1[data-lang="ja"],
+        body[data-current-lang="zh"] li[data-lang="zh"],
+        body[data-current-lang="en"] li[data-lang="en"],
+        body[data-current-lang="ja"] li[data-lang="ja"] { display: block; }
+        
+        @media (max-width: 768px) {
+            .project-title { font-size: 3rem; }
+            .project-meta { flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+            .meta-item { text-align: center; }
+            .browser-url { display: none; }
+            .dock { width: 90%; justify-content: space-around; }
+            .dock a { font-size: 18px; padding: 5px; width: 60px; height: 60px; }
+            .dock a img { width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body data-current-lang="en">
+
+    <div class="lang-switch">
+        <button class="lang-btn" onclick="switchLang('zh')">ZH</button>
+        <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn" onclick="switchLang('ja')">JA</button>
+    </div>
+
+    <div class="shared-dock-root" data-active="projects"></div>
+
+    <div class="container">
+        <div class="top-nav">
+            <a href="projects.html" class="back-btn">
+                <i data-feather="arrow-left"></i>
+                <span data-lang="zh">返回项目库</span>
+                <span data-lang="en">Back to Projects</span>
+                <span data-lang="ja">プロジェクトへ戻る</span>
+            </a>
+        </div>
+
+        <header class="project-header">
+            <h1 class="project-title">
+                <span data-lang="zh">管综数学复习导航</span>
+                <span data-lang="en">Math Review Navigator</span>
+                <span data-lang="ja">管綜数学復習ナビ</span>
+            </h1>
+            <p class="project-subtitle cartoon-font-en">
+                <span data-lang="zh" class="cartoon-font-zh">一个基于 VitePress 搭建的管综数学知识网站，把章节目录、知识点模板、搜索与真题整理成适合反复复习的网页导航。</span>
+                <span data-lang="en">A VitePress-based study site that turns chapter structure, topic templates, search, and past-paper notes into a reusable review navigator for management-exam math.</span>
+                <span data-lang="ja">VitePress で構築した管綜数学の学習サイトで、章構成、知識点テンプレート、検索、過去問整理を反復復習しやすいナビゲーションにまとめています。</span>
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">角色</span><span data-lang="en">Role</span><span data-lang="ja">役割</span>
+                    </div>
+                    <div class="meta-value sys-font">Product Design / Front-end Development / Content Architecture</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">时间</span><span data-lang="en">Timeline</span><span data-lang="ja">期間</span>
+                    </div>
+                    <div class="meta-value sys-font">Spring 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">
+                        <span data-lang="zh">分类</span><span data-lang="en">Category</span><span data-lang="ja">カテゴリー</span>
+                    </div>
+                    <div class="meta-value sys-font">Study Website / Knowledge Navigation</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="hero-image-container">
+            <img src="../project/my%20own%20project/管综数学学习网站/1.png" alt="Math Review Navigator Home">
+        </div>
+
+        <article class="article-content">
+            <h2>
+                <span data-lang="zh">一、把零散知识整理成可复习的网站结构</span>
+                <span data-lang="en">1. Turning Notes into a Reviewable Site Structure</span>
+                <span data-lang="ja">一、散らばったノートを復習しやすい構造へ</span>
+            </h2>
+            <p>
+                <span data-lang="zh">这个项目的出发点不是单纯做一个笔记站，而是把管综数学里分散的章节、题型方法和历年真题解析，整理成一个真正适合高频回看的复习入口。整体基于 VitePress 搭建，目录按算术、应用题、代数、几何、概率等专题展开，打开首页后可以快速进入当前需要复习的模块，而不是在文档文件夹里来回翻找。</span>
+                <span data-lang="en">The goal was not just to build a note site, but to turn scattered math topics, methods, and past-paper explanations into a structure that actually supports repeated review. Built with VitePress, the site organizes content by arithmetic, word problems, algebra, geometry, probability, and more, so the homepage acts as a fast entry point instead of a raw document folder.</span>
+                <span data-lang="ja">このプロジェクトは単なるノートサイトではなく、散在していた数学の知識点、解法、過去問解説を、反復復習に本当に使える構造へ整理することを目的にしています。VitePress を基盤に、算術、文章題、代数、幾何、確率などのテーマごとに展開し、トップから必要な章へすぐ入れる構成にしました。</span>
+            </p>
+
+            <div class="highlight-box">
+                <p style="margin: 0;">
+                    <span data-lang="zh"><strong>💡 设计重点：</strong>我把它当作“知识导航系统”而不是普通博客来设计，核心是让内容搜得到、看得顺、后续还能持续补充，而不是只追求一次性的页面展示。</span>
+                    <span data-lang="en"><strong>💡 Design Focus:</strong> I approached it as a knowledge navigation system rather than a blog. The priority was searchability, clear review flow, and long-term maintainability instead of one-off presentation.</span>
+                    <span data-lang="ja"><strong>💡 設計のポイント：</strong>通常のブログではなく知識ナビゲーションとして設計し、検索しやすさ、復習しやすさ、継続更新のしやすさを優先しました。</span>
+                </p>
+            </div>
+
+            <div class="hero-image-container" style="margin-top: 40px;">
+                <img src="../project/my%20own%20project/管综数学学习网站/2.png" alt="Math Review Navigator Section Layout">
+            </div>
+
+            <h2>
+                <span data-lang="zh">二、统一内容模板与章节导航</span>
+                <span data-lang="en">2. Unified Templates and Chapter Navigation</span>
+                <span data-lang="ja">二、統一テンプレートと章ナビゲーション</span>
+            </h2>
+            <p>
+                <span data-lang="zh">为了避免知识页越写越乱，我在内容结构上先定了统一模板：每篇知识点尽量围绕“这一节学什么、核心定义、常用公式、典型题型、解题方法、易错点、例题解析、关联知识点、复习提示”展开。这样不仅能让单页信息层级稳定，也方便后续扩展搜索、侧边栏和专题整理。配合左侧按章节展开的导航，整站更像一本可翻阅的复习手册，而不是无序堆积的 markdown 集合。</span>
+                <span data-lang="en">To keep the content from becoming messy over time, I defined a stable topic template first: what this section covers, core definitions, formulas, common problem types, solving methods, pitfalls, worked examples, related topics, and review notes. That consistency makes each page easier to scan and also supports future search, sidebar structure, and专题 aggregation.</span>
+                <span data-lang="ja">ページ構成がばらつかないように、まず内容テンプレートを統一しました。各ページは「この節で学ぶこと、定義、公式、典型問題、解法、注意点、例題、関連知識、復習メモ」を軸に整理しています。これによりページ単体が読みやすくなるだけでなく、検索やサイドバー、特集ページへの拡張もやりやすくなります。</span>
+            </p>
+
+            <div class="hero-image-container" style="margin-top: 40px;">
+                <img src="../project/my%20own%20project/管综数学学习网站/3.png" alt="Math Review Navigator Content Page">
+            </div>
+
+            <h2>
+                <span data-lang="zh">三、内容真源与后续维护流程</span>
+                <span data-lang="en">3. Source-of-Truth Content and Maintenance Flow</span>
+                <span data-lang="ja">三、コンテンツの真源と更新フロー</span>
+            </h2>
+            <p>
+                <span data-lang="zh">项目在结构上刻意把“知识库”和“docs 展示层”分开：知识库负责沉淀原始知识内容，docs 则负责 VitePress 页面、导航配置和最终展示。第一阶段先通过统一命名和手动同步把流程跑通，后续再逐步升级到自动同步脚本。这种做法的好处是，内容可以持续生长，展示层也保留迭代空间，不会因为前端结构调整而打乱原始学习资料。</span>
+                <span data-lang="en">Structurally, the project separates the knowledge base from the docs presentation layer. The knowledge base stores the source material, while docs handles VitePress pages, navigation, and rendering. The first phase relies on naming conventions and manual sync, with room to evolve into automation later. This keeps the content stable while still allowing the site structure to improve over time.</span>
+                <span data-lang="ja">構造面では、知識庫と docs の表示層を意図的に分離しています。知識庫は原稿の真源として機能し、docs は VitePress のページ、ナビゲーション、表示を担います。まずは命名規則と手動同期で運用を成立させ、後から自動化へ広げられるようにしています。これにより学習内容を安定して蓄積しながら、サイト側の改善も続けやすくなります。</span>
+            </p>
+
+            <div class="interactive-section">
+                <h2 style="text-align: center; margin-top: 0;">
+                    <span data-lang="zh">网页预览</span>
+                    <span data-lang="en">Live Web Preview</span>
+                    <span data-lang="ja">Web プレビュー</span>
+                </h2>
+                <p style="text-align: center; color: #888;">
+                    <span data-lang="zh">下方嵌入的是项目当前的线上版本，可以直接查看首页入口、章节结构和知识点页面的实际浏览效果。</span>
+                    <span data-lang="en">The embedded preview below shows the current live site, including the home entry, chapter structure, and topic pages.</span>
+                    <span data-lang="ja">以下には現在公開されているオンライン版を埋め込んでおり、トップ導線、章構成、知識ページの実際の見え方を確認できます。</span>
+                </p>
+
+                <div class="browser-mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="browser-url">guanzongshuxue.netlify.app</div>
+                            <div style="width: 44px;"></div>
+                        </div>
+                        <iframe src="https://guanzongshuxue.netlify.app" title="Math Review Navigator Live Demo"></iframe>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+
+    <div id="music-widget">
+        <div id="music-icon" onclick="toggleMusicWidget()">
+            <img src="../icon/music-icon.svg" alt="Music" id="music-img">
+        </div>
+        <div id="music-player-container" class="hidden">
+            <!-- 直接嵌入音乐播放器的 HTML 结构和脚本 -->
+            <div id="mini-player" class="mini-player mini-player-light">
+                <div class="player-content">
+                    <img id="mini-cover" src="https://y.qq.com/music/photo_new/T002R300x300M000000rC01T3xT2Ym_1.jpg" alt="Album Cover">
+                    <div class="song-info">
+                        <div id="mini-title" class="song-title">Perfect Night</div>
+                        <div id="mini-artist" class="song-artist">LE SSERAFIM</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" id="mini-prev" onclick="miniPlayPrev()">
+                        <i data-feather="skip-back" style="width: 14px; height: 14px;"></i>
+                    </button>
+                    <button class="control-btn play-pause-btn" id="mini-play" onclick="miniTogglePlay()">
+                        <i data-feather="play" id="mini-play-icon" style="width: 16px; height: 16px;"></i>
+                    </button>
+                    <button class="control-btn" id="mini-next" onclick="miniPlayNext()">
+                        <i data-feather="skip-forward" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <audio id="global-audio-player"></audio>
+            
+            <style>
+                #music-widget {
+                    position: fixed;
+                    right: 20px;
+                    bottom: 20px;
+                    z-index: 10000;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    gap: 15px;
+                }
+                #music-icon {
+                    width: 50px;
+                    height: 50px;
+                    background: #fff;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+                    border: 1px solid rgba(0,0,0,0.05);
+                }
+                #music-icon:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                }
+                #music-icon.playing {
+                    animation: pulse 2s infinite ease-in-out;
+                }
+                @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0 rgba(135, 116, 255, 0.4); }
+                    70% { box-shadow: 0 0 0 10px rgba(135, 116, 255, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(135, 116, 255, 0); }
+                }
+                #music-img {
+                    width: 24px;
+                    height: 24px;
+                }
+                #music-player-container {
+                    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+                    transform-origin: bottom right;
+                }
+                #music-player-container.hidden {
+                    opacity: 0;
+                    transform: scale(0.8) translateY(20px);
+                    pointer-events: none;
+                }
+                .mini-player {
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    border-radius: 20px;
+                    padding: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 15px;
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+                    border: 1px solid rgba(255, 255, 255, 0.5);
+                    width: 280px;
+                    transition: all 0.3s ease;
+                }
+                .mini-player-dark {
+                    background: rgba(30, 30, 30, 0.85);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                }
+                .player-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    flex: 1;
+                    min-width: 0;
+                }
+                #mini-cover {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    transition: transform 0.5s ease;
+                }
+                #mini-cover.spinning {
+                    animation: spin 10s linear infinite;
+                    border-radius: 50%;
+                }
+                @keyframes spin {
+                    100% { transform: rotate(360deg); }
+                }
+                .song-info {
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                }
+                .song-title {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #333;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-bottom: 2px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                }
+                .mini-player-dark .song-title { color: #fff; }
+                .song-artist {
+                    font-size: 11px;
+                    color: #888;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                }
+                .mini-player-dark .song-artist { color: #aaa; }
+                .controls {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                .control-btn {
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    color: #555;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    transition: all 0.2s;
+                }
+                .mini-player-dark .control-btn { color: #ccc; }
+                .control-btn:hover {
+                    background: rgba(0,0,0,0.05);
+                    color: #111;
+                }
+                .mini-player-dark .control-btn:hover {
+                    background: rgba(255,255,255,0.1);
+                    color: #fff;
+                }
+                .play-pause-btn {
+                    background: #f0f0f0;
+                    color: #333;
+                    width: 34px;
+                    height: 34px;
+                }
+                .mini-player-dark .play-pause-btn {
+                    background: #333;
+                    color: #fff;
+                }
+                .play-pause-btn:hover {
+                    background: #e0e0e0;
+                    transform: scale(1.05);
+                }
+                .mini-player-dark .play-pause-btn:hover {
+                    background: #444;
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (typeof feather !== 'undefined') {
+                        feather.replace();
+                    }
+                    initAudioPlayer();
+                });
+
+                const playlist = [
+                    {
+                        title: "Perfect Night",
+                        artist: "LE SSERAFIM",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M000000rC01T3xT2Ym_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400000jW9hN2h1pB6.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    },
+                    {
+                        title: "Hype Boy",
+                        artist: "NewJeans",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M0000010cTks1Rz2U1_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400001y1qV83X6p1g.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    },
+                    {
+                        title: "Ditto",
+                        artist: "NewJeans",
+                        cover: "https://y.qq.com/music/photo_new/T002R300x300M000004OPIF24T3eED_1.jpg?max_age=2592000",
+                        src: "https://dl.stream.qqmusic.qq.com/C400001Wv9qD3u0Hq0.m4a?guid=1234567890&vkey=AB1234567890&uin=0&fromtag=120032"
+                    }
+                ];
+                
+                let currentSongIndex = 0;
+                let audioPlayer = null;
+                let isPlaying = false;
+                
+                function initAudioPlayer() {
+                    audioPlayer = document.getElementById('global-audio-player');
+                    if (!audioPlayer) return;
+                    
+                    audioPlayer.volume = 0.5;
+                    
+                    audioPlayer.addEventListener('ended', () => {
+                        miniPlayNext();
+                    });
+                    
+                    audioPlayer.addEventListener('play', () => {
+                        isPlaying = true;
+                        updatePlayUI(true);
+                        document.getElementById('music-icon').classList.add('playing');
+                    });
+                    
+                    audioPlayer.addEventListener('pause', () => {
+                        isPlaying = false;
+                        updatePlayUI(false);
+                        document.getElementById('music-icon').classList.remove('playing');
+                    });
+                    
+                    const savedIndex = localStorage.getItem('musicPlayerIndex');
+                    if (savedIndex !== null && savedIndex < playlist.length) {
+                        currentSongIndex = parseInt(savedIndex, 10);
+                        loadSong(currentSongIndex, false);
+                    } else {
+                        loadSong(0, false);
+                    }
+                }
+                
+                function toggleMusicWidget() {
+                    const container = document.getElementById('music-player-container');
+                    container.classList.toggle('hidden');
+                }
+                
+                function loadSong(index, autoPlay = true) {
+                    if (!audioPlayer) return;
+                    const song = playlist[index];
+                    document.getElementById('mini-title').innerText = song.title;
+                    document.getElementById('mini-artist').innerText = song.artist;
+                    document.getElementById('mini-cover').src = song.cover;
+                    localStorage.setItem('musicPlayerIndex', index);
+                    if (autoPlay) { simulatePlay(); }
+                }
+                
+                function simulatePlay() {
+                    isPlaying = true;
+                    updatePlayUI(true);
+                    document.getElementById('music-icon').classList.add('playing');
+                    document.getElementById('mini-cover').classList.add('spinning');
+                }
+                
+                function simulatePause() {
+                    isPlaying = false;
+                    updatePlayUI(false);
+                    document.getElementById('music-icon').classList.remove('playing');
+                    document.getElementById('mini-cover').classList.remove('spinning');
+                }
+                
+                function updatePlayUI(playing) {
+                    const iconContainer = document.getElementById('mini-play-icon');
+                    if (!iconContainer) return;
+                    if (playing) {
+                        iconContainer.outerHTML = '<i data-feather="pause" id="mini-play-icon" style="width: 16px; height: 16px;"></i>';
+                    } else {
+                        iconContainer.outerHTML = '<i data-feather="play" id="mini-play-icon" style="width: 16px; height: 16px;"></i>';
+                    }
+                    if (typeof feather !== 'undefined') { feather.replace(); }
+                }
+                
+                function miniTogglePlay() {
+                    if (isPlaying) { simulatePause(); } else { simulatePlay(); }
+                }
+                
+                function miniPlayNext() {
+                    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                    loadSong(currentSongIndex, isPlaying);
+                }
+                
+                function miniPlayPrev() {
+                    currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+                    loadSong(currentSongIndex, isPlaying);
+                }
+            </script>
+        </div>
+    </div>
+
+    <script src="../shared-dock.js"></script>
+    <script src="../nav-under-construction.js"></script>
+    <script>
+        feather.replace();
+
+        function switchLang(lang) {
+            document.body.setAttribute('data-current-lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[onclick="switchLang('${lang}')"]`).classList.add('active');
+        }
+    </script>
+    <iframe allow="autoplay" src="../pages/music-player.html?v=16" class="music-player-iframe" allowtransparency="true" style="position: fixed; bottom: 60px; right: 0px; width: 320px; height: 240px; border: none; background: transparent; z-index: 9998; pointer-events: auto;"></iframe>
+</body>
+</html>
